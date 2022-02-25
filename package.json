@@ -1,0 +1,26 @@
+{
+    "name": "yuescript",
+    "displayName": "Yuescript",
+    "description": "An extension for Yuescript.",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.61.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "yuescript",
+            "aliases": ["Yuescript", "yuescript"],
+            "extensions": [".yue"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "yuescript",
+            "scopeName": "source.yue",
+            "path": "./syntaxes/yuescript.tmLanguage.json"
+        }]
+    },
+    "icon": "images/icon.png"
+}
