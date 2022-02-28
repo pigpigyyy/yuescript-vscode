@@ -96,7 +96,7 @@
 			  "patterns": [
 					{
 						 "match": "@\\w*",
-						 "name": "storage.type.annotation.yuescript"
+						 "name": "storage.type.annotation.yue"
 					}
 			  ]
 		 },
@@ -121,8 +121,8 @@
 			  "name": "keyword.control.yue"
 		 },
 		 {
-			  "match": "(?x)~=|%|\\^|\\*|\\/|(\\-)?\\-(?!>)\\+|==|\\|>|=(?!>)|!=|<=|>=|\\.\\.=|<|>|\\.\\.(\\.)?|\\||\\|\\|\\*=|(?<!\\()/=|%=|\\+=|\\.\\.=|\\-=|\\b(?<![\\.\\$])(and|or|not)(?!\\s*:)\\b",
-			  "name": "keyword.operator.yue"
+			  "match": "(?x)~=|%|\\^|\\*|\\/|\\+|\\-|\\#|(\\-)?\\-(?!>)\\+|==|\\|>|!=|<=|>=|\\.\\.=|<|>|\\.\\.(\\.)?|\\||\\|\\|\\*=|(?<!\\()/=|%=|\\+=|\\.\\.=|\\-=|\\b(?<![\\.\\$])(and|or|not)(?!\\s*:)\\b",
+			  "name": "keyword.control.yue"
 		 },
 		 {
 			  "match": "\\b(?<![\\.\\$])(function|end)(?!\\s*:)\\b",
@@ -132,13 +132,13 @@
 			  "begin": "(?<=\\s|^)(\\{)(?=.+?\\}\\s+[:=])",
 			  "beginCaptures": {
 					"0": {
-						 "name": "keyword.operator.yue"
+						 "name": "keyword.control.yue"
 					}
 			  },
 			  "end": "(\\}\\s*[:=])",
 			  "endCaptures": {
 					"0": {
-						 "name": "keyword.operator.yue"
+						 "name": "keyword.control.yue"
 					}
 			  },
 			  "name": "meta.variable.assignment.destructured.object.yue",
@@ -383,7 +383,7 @@
 					},
 					{
 						 "match": "[?+*]|\\{(\\d+,\\d+|\\d+,|,\\d+|\\d+)\\}\\??",
-						 "name": "keyword.operator.quantifier.regexp"
+						 "name": "keyword.control.quantifier.regexp"
 					},
 					{
 						 "begin": "(\\()((\\?=)|(\\?!))",
@@ -438,7 +438,7 @@
 									"name": "punctuation.definition.character-class.regexp"
 							  },
 							  "2": {
-									"name": "keyword.operator.negation.regexp"
+									"name": "keyword.control.negation.regexp"
 							  }
 						 },
 						 "end": "(\\])",
