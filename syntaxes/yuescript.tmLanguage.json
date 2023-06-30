@@ -70,13 +70,13 @@
 			  ]
 		 },
 		 {
-			  "begin": "\\[\\[",
+			  "begin": "\\[(=*)\\[",
 			  "beginCaptures": {
 					"0": {
 						 "name": "punctuation.definition.string.begin.yue"
 					}
 			  },
-			  "end": "\\]\\]",
+			  "end": "\\]\\1\\]",
 			  "endCaptures": {
 					"0": {
 						 "name": "punctuation.definition.string.end.yue"
