@@ -2,7 +2,7 @@
     "name": "yuescript",
     "displayName": "Yuescript",
     "description": "An extension for Yuescript.",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "engines": {
         "vscode": "^1.61.0"
     },
@@ -37,15 +37,19 @@
             },
             {
                 "language": "yuescript",
-                "path": "./snippets/control-flow.json"
+                "path": "./snippets/flow-control.json"
             },
             {
                 "language": "yuescript",
-                "path": "./snippets/stdlib.json"
+                "path": "./snippets/standard-lua.json"
             },
             {
                 "language": "yuescript",
                 "path": "./snippets/constants.json"
+            },
+            {
+                "language": "yuescript",
+                "path": "./snippets/standard-yue.json"
             }
         ]
     },

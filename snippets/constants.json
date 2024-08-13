@@ -10,5 +10,10 @@
 	"Constant - Nil": {
 		"prefix": "nil",
 		"body": "nil $0"
-	}
+	},
+    "Constant - Lua Version": {
+        "prefix": "_VERSION",
+        "body": "_VERSION$0",
+        "description": "represents the current Lua version"
+    },
 }

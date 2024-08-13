@@ -31,19 +31,4 @@ A `VSCode` plugin for [`Yuescript`](https://github.com/pigpigyyy/yuescript-vscod
 
 ## Known Issues
 
-- Some `Yuescript` word tokens may be colored incorrectly.
-
-## Release Notes
-
-### $0.0.7$
-
-- Improved snippets.
-- Added `Yuescript`-specific snippets.
-
-### $0.0.6$
-
-- Added basic Snippets.
-
-### $0.0.1$
-
-- Initial release of the `Yuescript` extension.
+- Some word tokens may be colored incorrectly.

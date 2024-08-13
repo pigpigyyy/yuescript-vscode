@@ -4,11 +4,6 @@
         "body": "_G$0",
         "description": "represents the global Lua environment (_G._G =_G)"
     },
-    "Built-in - Lua Version": {
-        "prefix": "_VERSION",
-        "body": "_VERSION$0",
-        "description": "represents the current Lua version"
-    },
     "Built-in - Import": {
         "prefix": "import",
         "body": "import $1 as :$0",
