@@ -1,0 +1,28 @@
+{
+    "Operator - Or": {
+		"prefix": "or",
+		"body": "or $0"
+	},
+	"Operator - And": {
+		"prefix": "and",
+		"body": "and $0"
+	},
+    "Operator - Uppercase variables as Globals": {
+        "prefix": "global ^",
+        "body": "global ^\n",
+        "description": "Declare all uppercase variables as globals"
+    },
+    "Operator - All variables as Globals": {
+        "prefix": "global *",
+        "body": "global *\n",
+        "description": "Declare all variables as globals"
+    },
+    "Operator - Macro": {
+        "prefix": "macro",
+        "body": "macro $1 = ($2)-> $0"
+    },
+    "Operator - Try": {
+        "prefix": "try",
+        "body": "try\n\t$1\ncatch err\n\t$0"
+    }
+}

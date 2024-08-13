@@ -5,6 +5,7 @@ A vscode plugin for Yuescript.
 ## Features
 
 * Syntax highlighting
+* Snippets
 
 ## Requirements
 

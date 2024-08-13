@@ -117,7 +117,7 @@
 			  ]
 		 },
 		 {
-			  "match": "(?x)\\b(?<![\\.\\$])(\\b(if|then|else|elseif|export|until|global|const|macro|import|as|from|switch|when|with|using|do|for|in|while|return|unless|continue|break|local|try|catch)\\b)(?!\\s*:)\\b",
+			  "match": "(?x)\\b(?<![\\.\\$])(\\b(if|then|else|elseif|export|until|global|macro|import|as|from|switch|when|with|using|do|for|in|while|return|unless|continue|break|local|try|catch)\\b)(?!\\s*:)\\b",
 			  "name": "keyword.control.yue"
 		 },
 		 {

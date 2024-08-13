@@ -1,0 +1,14 @@
+{
+    "Constant - True": {
+		"prefix": "true",
+		"body": "true $0"
+	},
+	"Constant - False": {
+		"prefix": "false",
+		"body": "false $0"
+	},
+	"Constant - Nil": {
+		"prefix": "nil",
+		"body": "nil $0"
+	}
+}
