@@ -1,17 +1,14 @@
 {
-    "Constant - true": {
+    "Constant - True": {
 		"prefix": "true",
-		"body": "true $0",
-		"description": "(Keyword) true"
+		"body": "true $0"
 	},
-	"Constant - false": {
+	"Constant - False": {
 		"prefix": "false",
-		"body": "false $0",
-		"description": "(Keyword) false"
+		"body": "false $0"
 	},
-	"Constant - nil": {
+	"Constant - Nil": {
 		"prefix": "nil",
-		"body": "nil $0",
-		"description": "(Keyword) nil"
-	},
+		"body": "nil $0"
+	}
 }

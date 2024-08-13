@@ -33,10 +33,6 @@
         "snippets": [
             {
                 "language": "yuescript",
-                "path": "./snippets/built-ins.json"
-            },
-            {
-                "language": "yuescript",
                 "path": "./snippets/operators.json"
             },
             {
