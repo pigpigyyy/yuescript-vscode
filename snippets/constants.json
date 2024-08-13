@@ -1,0 +1,17 @@
+{
+    "Constant - true": {
+		"prefix": "true",
+		"body": "true $0",
+		"description": "(Keyword) true"
+	},
+	"Constant - false": {
+		"prefix": "false",
+		"body": "false $0",
+		"description": "(Keyword) false"
+	},
+	"Constant - nil": {
+		"prefix": "nil",
+		"body": "nil $0",
+		"description": "(Keyword) nil"
+	},
+}

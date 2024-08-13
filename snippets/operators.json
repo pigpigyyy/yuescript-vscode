@@ -1,0 +1,12 @@
+{
+    "Operator - or": {
+		"prefix": "or",
+		"body": "or $0",
+		"description": "(Keyword) or"
+	},
+	"Operator - and": {
+		"prefix": "and",
+		"body": "and $0",
+		"description": "(Keyword) and"
+	},
+}

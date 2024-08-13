@@ -1,0 +1,59 @@
+{
+    "Control Flow - if": {
+        "prefix": "if",
+        "body": [
+            "if (${1:condition})",
+            "\t$0"
+        ]
+    },
+    "Control Flow - elseif": {
+        "prefix": "elseif",
+        "body": [
+            "elseif (${1:condition})",
+            "\t$0"
+        ]
+    },
+    "Control Flow - else": {
+        "prefix": "else",
+        "body": [
+            "else",
+            "\t$0"
+        ]
+    },
+    "Control Flow - while": {
+        "prefix": "while",
+        "body": [
+            "while (${1:condition})",
+            "\t$0"
+        ]
+    },
+    "Control Flow - continue": {
+        "prefix": "continue",
+        "body": [
+            "continue",
+            "$0"
+        ]
+    },
+    "Control Flow - break": {
+        "prefix": "break",
+        "body": "break $0"
+    },
+    "Control Flow - return": {
+        "prefix": "return",
+        "body": "return $0"
+    },
+    "Control Flow - for ipairs": {
+        "prefix": "foripairs",
+        "body": [
+            "for $2,$3 in ipairs($1) do",
+            "\t$0"
+        ]
+    },
+    "Control Flow - for pairs": {
+        "prefix": "forpairs",
+        "body": [
+            "for $2,$3 in pairs($1) do",
+            "\t$0"
+        ]
+    }
+}

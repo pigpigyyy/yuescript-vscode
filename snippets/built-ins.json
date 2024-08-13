@@ -1,0 +1,27 @@
+{
+    "Built-in - _G": {
+        "prefix": "_G",
+        "body": "_G$0",
+        "description": "represents the global Lua environment (_G._G =_G)"
+    },
+    "Built-in - __VERSION": {
+        "prefix": "_VERSION",
+        "body": "_VERSION$0",
+        "description": "represents the current Lua version"
+    },
+    "Built-in - Import": {
+        "prefix": "import",
+        "body": "import $1 as :$0",
+        "description": "imports a module, and extracts specific `const` items from it"
+    },
+    "Built-in - Loadfile": {
+        "prefix": "loadfile",
+        "body": "loadfile($0)",
+        "description": "loads a Lua chunk from a file, but doesn't execute it"
+    },
+    "Built-in - Dofile": {
+        "prefix": "dofile",
+        "body": "dofile($0)",
+        "description": "loads a Lua chunk from a file, and then executes it"
+    },
+}

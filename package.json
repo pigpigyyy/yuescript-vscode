@@ -2,7 +2,7 @@
     "name": "yuescript",
     "displayName": "Yuescript",
     "description": "An extension for Yuescript.",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "engines": {
         "vscode": "^1.61.0"
     },
@@ -10,17 +10,48 @@
         "Programming Languages"
     ],
     "contributes": {
-        "languages": [{
-            "id": "yuescript",
-            "aliases": ["Yuescript", "yuescript"],
-            "extensions": [".yue"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "yuescript",
-            "scopeName": "source.yue",
-            "path": "./syntaxes/yuescript.tmLanguage.json"
-        }]
+        "languages": [
+            {
+                "id": "yuescript",
+                "aliases": [
+                    "Yuescript",
+                    "yuescript"
+                ],
+                "extensions": [
+                    ".yue"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "yuescript",
+                "scopeName": "source.yue",
+                "path": "./syntaxes/yuescript.tmLanguage.json"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "yuescript",
+                "path": "./snippets/built-ins.json"
+            },
+            {
+                "language": "yuescript",
+                "path": "./snippets/operators.json"
+            },
+            {
+                "language": "yuescript",
+                "path": "./snippets/control-flow.json"
+            },
+            {
+                "language": "yuescript",
+                "path": "./snippets/stdlib.json"
+            },
+            {
+                "language": "yuescript",
+                "path": "./snippets/constants.json"
+            }
+        ]
     },
     "icon": "images/icon.png",
     "publisher": "LiJin",
