@@ -1,7 +1,7 @@
 {
     "name": "yuescript",
     "displayName": "Yuescript",
-    "description": "An extension for Yuescript.",
+    "description": "An extension for Yuescript",
     "version": "0.0.7",
     "engines": {
         "vscode": "^1.61.0"
