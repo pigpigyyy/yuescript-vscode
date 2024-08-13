@@ -7,13 +7,13 @@
 <img src="images/icon.png" width=128 height=128>
 
 ![Last Commit](https://img.shields.io/github/last-commit/pigpigyyy/yuescript-vscode?style=flat-square)
-![Release](https://img.shields.io/github/v/tag/pigpigyyy/yuescript-vscode?style=flat-square)
+![Release](https://img.shields.io/github/v/release/pigpigyyy/yuescript-vscode?style=flat-square)
 ![Repo Size](https://img.shields.io/github/repo-size/pigpigyyy/yuescript-vscode?style=flat-square)
 ![Repo Stars](https://img.shields.io/github/stars/pigpigyyy/yuescript-vscode?style=flat-square)
 
-A `VSCode` plugin for [`Yuescript`](https://github.com/pigpigyyy/yuescript-vscode.git)
+A `VSCode` extension for [`Yuescript`](https://github.com/pigpigyyy/yuescript-vscode.git)
 
-[read the documentation here](https://yuescript.org/)
+[read the documentation here 🔗](https://yuescript.org/)
 
 </center>
 
@@ -32,3 +32,4 @@ A `VSCode` plugin for [`Yuescript`](https://github.com/pigpigyyy/yuescript-vscod
 ## Known Issues
 
 - Some word tokens may be colored incorrectly.
+- [`coroutine`](https://www.lua.org/manual/5.1/manual.html#2.11) snippets are unavailable.
