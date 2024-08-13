@@ -7,7 +7,7 @@
     "Built-in - Import": {
         "prefix": "import",
         "body": "import $1 as :$0",
-        "description": "imports a module, and extracts specific `const` items from it"
+        "description": "This statement is syntactic sugar for requiring a module or help extracting items from an imported module. The imported items are const by default."
     },
     "Built-in - Require": {
         "prefix": "require",

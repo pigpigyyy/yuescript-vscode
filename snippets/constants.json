@@ -15,5 +15,5 @@
         "prefix": "_VERSION",
         "body": "_VERSION$0",
         "description": "represents the current Lua version"
-    },
+    }
 }
