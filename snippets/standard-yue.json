@@ -1,19 +1,19 @@
 {
     "Yuescript - Class": {
         "prefix": "class",
-        "body": "class $1\n"
+        "body": "class $1\n\t$0"
     },
     "Yuescript - Extended Class": {
         "prefix": "class",
-        "body": "class $1 extends $0\n"
+        "body": "class $2 extends $1\n\t$0"
     },
     "Yuescript - Mixed Class": {
         "prefix": "class",
-        "body": "class $1 using $0\n"
+        "body": "class $1 using $0\n\t$0"
     },
     "Yuescript - Self Inherited": {
         "prefix": "@__inherited",
-        "body": "@__inherited$0"
+        "body": "@__inherited: (child)=>\n\t$0"
     },
     "Yuescript - New": {
         "prefix": "new",

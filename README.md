@@ -32,4 +32,4 @@ A `VSCode` extension for [`Yuescript`](https://github.com/pigpigyyy/yuescript-vs
 ## Known Issues
 
 - Some word tokens may be colored incorrectly.
-- [`coroutine`](https://www.lua.org/manual/5.1/manual.html#2.11) snippets are unavailable.
+- Snippets are unavailable for: [`coroutine` & `package` & `table` & `math` & `io` & `os` & `debug`](https://www.lua.org/manual/5.1/manual.html#5.2)

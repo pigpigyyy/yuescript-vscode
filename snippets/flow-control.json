@@ -21,12 +21,20 @@
     },
     "Flow Control - Break": {
         "prefix": "break",
-        "body": "break $0"
+        "body": "break\n"
     },
     "Flow Control - Return": {
         "prefix": "return",
-        "body": "return $0"
+        "body": "return $0\n"
     },
+    "Flow Control - Do": {
+		"prefix": "do",
+		"body": "do\n\t$0"
+	},
+	"Flow Control - For": {
+		"prefix": "for",
+		"body": "for $0"
+	},
     "Flow Control - For ipairs": {
         "prefix": "foripairs",
         "body": "for $2,$3 in ipairs($1) do\n\t$0"
@@ -37,6 +45,6 @@
     },
     "Flow Control - Pass/No Operation": {
         "prefix": ["pass", "noop"],
-        "body": "(()->nil)!"
+        "body": "(()->nil)!\n"
     }
 }
