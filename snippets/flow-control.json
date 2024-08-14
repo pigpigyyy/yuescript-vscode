@@ -1,50 +1,42 @@
 {
-    "Flow Control - If": {
+    "Flow-Control - If": {
         "prefix": "if",
-        "body": "if (${1:condition})\n\t$0"
+        "body": "if (${1:condition}) $0"
     },
-    "Flow Control - Elseif": {
+    "Flow-Control - Elseif": {
         "prefix": "elseif",
-        "body": "elseif (${1:condition})\n\t$0"
+        "body": "elseif (${1:condition}) $0"
     },
-    "Flow Control - Else": {
+    "Flow-Control - Else": {
         "prefix": "else",
         "body": "else\n\t$0"
     },
-    "Flow Control - While": {
+    "Flow-Control - While": {
         "prefix": "while",
-        "body": "while (${1:condition})\n\t$0"
+        "body": "while (${1:condition}) $0"
     },
-    "Flow Control - Continue": {
+    "Flow-Control - Continue": {
         "prefix": "continue",
-        "body": "continue\n"
+        "body": "continue$0"
     },
-    "Flow Control - Break": {
+    "Flow-Control - Break": {
         "prefix": "break",
-        "body": "break\n"
+        "body": "break$0"
     },
-    "Flow Control - Return": {
+    "Flow-Control - Return": {
         "prefix": "return",
-        "body": "return $0\n"
+        "body": "return $0"
     },
-    "Flow Control - Do": {
-		"prefix": "do",
-		"body": "do\n\t$0"
-	},
-	"Flow Control - For": {
-		"prefix": "for",
-		"body": "for $0"
-	},
-    "Flow Control - For ipairs": {
+    "Flow-Control - For ipairs": {
         "prefix": "foripairs",
-        "body": "for $2,$3 in ipairs($1) do\n\t$0"
+        "body": "for $2,$3 in ipairs($1) $0"
     },
-    "Flow Control - For pairs": {
+    "Flow-Control - For pairs": {
         "prefix": "forpairs",
-        "body": "for $2,$3 in pairs($1) do\n\t$0"
+        "body": "for $2,$3 in pairs($1) $0"
     },
-    "Flow Control - Pass/No Operation": {
+    "Flow-Control - Pass/No Operation": {
         "prefix": ["pass", "noop"],
-        "body": "(()->nil)!\n"
+        "body": "(()->nil)!$0"
     }
 }

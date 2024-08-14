@@ -107,7 +107,7 @@
 
     "Lua-Coroutine - Create": {
         "prefix": "coroutine.create",
-        "body": "coroutine.create($1)$0"
+        "body": "$2 = coroutine.create(()->\n\t$1\n)$0"
     },
     "Lua-Coroutine - Resume": {
         "prefix": "coroutine.resume",
@@ -123,7 +123,7 @@
     },
     "Lua-Coroutine - Wrap": {
         "prefix": "coroutine.wrap",
-        "body": "coroutine.wrap($1)$0"
+        "body": "$2 = coroutine.wrap($1)$0"
     },
     "Lua-Coroutine - Yield": {
         "prefix": "coroutine.yield",
@@ -357,7 +357,7 @@
     },
     "Lua-Math - Power": {
         "prefix": "math.pow",
-        "body": "math.pow($2, $1)$0",
+        "body": "math.pow($1, $2)$0",
         "description": "Returns xy. (You can also use the expression x^y to compute this value.)"
     },
     "Lua-Math - Degrees to Radians": {

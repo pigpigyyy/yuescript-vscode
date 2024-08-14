@@ -7,6 +7,10 @@
 		"prefix": "and",
 		"body": "and $0"
 	},
+    "Operator - Not": {
+		"prefix": "not",
+		"body": "not($0)"
+	},
     "Operator - Uppercase variables as Globals": {
         "prefix": "global ^",
         "body": "global ^\n",
@@ -23,7 +27,7 @@
     },
     "Operator - Try": {
         "prefix": "try",
-        "body": "try\n\t$1\ncatch err\n\t$2\n$0"
+        "body": "try\n\t$2\ncatch err\n\t$1\n$0"
     },
     "Operator - With": {
         "prefix": "with",
