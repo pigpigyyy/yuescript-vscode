@@ -37,6 +37,7 @@
         "prefix": "using",
         "body": "using $0"
     },
+    
     "Operator - Metatable Tostring": {
         "prefix": "__tostring",
         "body": "__tostring:=>\n\ttostring @"

@@ -1,120 +1,404 @@
 {
-    "Built-in - Global Environment": {
+    "Lua - Global Environment": {
         "prefix": "_G",
         "body": "_G$0",
         "description": "represents the global Lua environment (_G._G =_G)"
     },
-    "Built-in - Import": {
-        "prefix": "import",
-        "body": "import $1 as :$0",
-        "description": "This statement is syntactic sugar for requiring a module or help extracting items from an imported module. The imported items are const by default."
-    },
-    "Built-in - Require": {
-        "prefix": "require",
-        "body": "$2 = require($1)\n$0",
-        "description": "imports a module, and extracts specific `const` items from it"
-    },
-    "Built-in - Load File": {
+    "Lua - Load File": {
         "prefix": "loadfile",
-        "body": "loadfile($0)",
-        "description": "loads a Lua chunk from a file, but doesn't execute it"
+        "body": "loadfile($0)"
     },
-    "Built-in - Load": {
+    "Lua - Load": {
         "prefix": "load",
         "body": "load($1)"
     },
-    "Built-in - Do File": {
+    "Lua - Do File": {
         "prefix": "dofile",
-        "body": "dofile($0)",
-        "description": "Loads a Lua chunk from a file, and then executes it"
+        "body": "dofile($0)"
     },
-    "Built-in - Load String": {
+    "Lua - Load String": {
         "prefix": "loadstring",
-        "body": "loadstring($0)",
-        "description": "Similar to load, but gets the chunk from the given string"
+        "body": "loadstring($0)"
     },
-    "Built-in - Next": {
+    "Lua - Next": {
         "prefix": "next",
         "body": "next($0)"
     },
-    "Built-in - Protected Call": {
+    "Lua - Protected Call": {
         "prefix": "pcall",
         "body": "pcall($1, $0)"
     },
-    "Built-in - Raw Equal": {
+    "Lua - Raw Equal": {
         "prefix": "rawequal",
         "body": "rawequal($1, $0)"
     },
-    "Built-in - Raw Get": {
+    "Lua - Raw Get": {
         "prefix": "rawget",
         "body": "rawget($1, $0)"
     },
-    "Built-in - Raw Set": {
+    "Lua - Raw Set": {
         "prefix": "rawset",
         "body": "rawset($1, $2, $0)"
     },
-    "Built-in - Select": {
+    "Lua - Select": {
         "prefix": "select",
         "body": "select($0)"
     },
-    "Built-in - Set Function Environment": {
+    "Lua - Set Function Environment": {
         "prefix": "setfenv",
         "body": "setfenv($1, $0)"
     },
-    "Built-in - Set Metatable": {
+    "Lua - Set Metatable": {
         "prefix": "setmetatable",
         "body": "setmetatable($1, $0)"
     },
-    "Built-in - Assert": {
+    "Lua - Assert": {
         "prefix": "assert",
         "body": "assert($1, $0)"
     },
-    "Built-in - To Number": {
+    "Lua - To Number": {
         "prefix": "tonumber",
         "body": "tonumber($0)"
     },
-    "Built-in - To String": {
+    "Lua - To String": {
         "prefix": "tostring",
         "body": "tostring($0)"
     },
-    "Built-in - Get Type": {
+    "Lua - Get Type": {
         "prefix": "type",
         "body": "type($0)"
     },
-    "Built-in - Unpack": {
+    "Lua - Unpack": {
         "prefix": "unpack",
         "body": "unpack($0)"
     },
-    "Built-in - Handled Protected Call": {
+    "Lua - Handled Protected Call": {
         "prefix": "xpcall",
         "body": "xpcall($1, $0)"
     },
-    "Built-in - Collect Garbage": {
+    "Lua - Collect Garbage": {
         "prefix": "collectgarbage",
         "body": "collectgarbage($0)"
     },
-    "Built-in - Error": {
+    "Lua - Error": {
         "prefix": "error",
         "body": "error($0)"
     },
-    "Built-in - Get Function Environment": {
+    "Lua - Get Function Environment": {
         "prefix": "getfenv",
         "body": "getfenv($0)"
     },
-    "Built-in - Get Metatable": {
+    "Lua - Get Metatable": {
         "prefix": "getmetatable",
         "body": "getmetatable($0)"
     },
-    "Built-in - Iterate all Integer keys": {
+    "Lua - Iterate all Integer keys": {
         "prefix": "ipairs",
         "body": "ipairs($0)"
     },
-    "Built-in - Iterate all keys": {
+    "Lua - Iterate all keys": {
         "prefix": "pairs",
         "body": "pairs($0)"
     },
-    "Built-in - Print": {
+    "Lua - Print": {
         "prefix": "print",
         "body": "print($0)"
+    },
+
+    "Lua-Coroutine - Create": {
+        "prefix": "coroutine.create",
+        "body": "coroutine.create($1)$0"
+    },
+    "Lua-Coroutine - Resume": {
+        "prefix": "coroutine.resume",
+        "body": "coroutine.resume($1)$0"
+    },
+    "Lua-Coroutine - Is Running": {
+        "prefix": "coroutine.running",
+        "body": "coroutine.running!$0"
+    },
+    "Lua-Coroutine Status": {
+        "prefix": "coroutine.status",
+        "body": "coroutine.status($1)$0"
+    },
+    "Lua-Coroutine - Wrap": {
+        "prefix": "coroutine.wrap",
+        "body": "coroutine.wrap($1)$0"
+    },
+    "Lua-Coroutine - Yield": {
+        "prefix": "coroutine.yield",
+        "body": "coroutine.yield($1)$0"
+    },
+
+    "Lua-Package - Require": {
+        "prefix": "require",
+        "body": "require($1)\n$0"
+    },
+    "Lua-Package - Create Module": {
+        "prefix": "module",
+        "body": "module($1)\n$0"
+    },
+    "Lua-Package - C Search Path": {
+        "prefix": "package.cpath",
+        "body": "package.cpath$0"
+    },
+    "Lua-Package - Search Path": {
+        "prefix": "package.path",
+        "body": "package.path$0"
+    },
+    "Lua-Package - Loaded": {
+        "prefix": "package.loaded",
+        "body": "package.loaded$0"
+    },
+    "Lua-Package Loaders": {
+        "prefix": "package.loaders",
+        "body": "package.loaded$0"
+    },
+    "Lua-Package - Module-Specific Loaders": {
+        "prefix": "package.preload",
+        "body": "package.preload$0",
+        "description": "A table to store loaders for specific modules"
+    },
+    "Lua-Package - Inherit Global Variables in Module": {
+        "prefix": "package.seeall",
+        "body": "package.seeall($1)$0",
+        "description": "To be used as an option to: module()."
+    },
+
+    "Lua-String - Get Bytes": {
+        "prefix": "string.byte",
+        "body": "string.byte($1)$0"
+    },
+    "Lua-String - Build from Bytes": {
+        "prefix": "string.char",
+        "body": "string.char($1)$0"
+    },
+    "Lua-String - Dump Function": {
+        "prefix": "string.dump",
+        "body": "string.dump($1)$0",
+        "description": "Loadstring on this result returns a copy of the argument function"
+    },
+    "Lua-String - Match Pattern": {
+        "prefix": "string.find",
+        "body": "string.find($2, $1)$0"
+    },
+    "Lua-String - Iteration-Match": {
+        "prefix": "string.gmatch",
+        "body": "string.gmatch($2, $1)$0"
+    },
+    "Lua-String - Format": {
+        "prefix": "string.format",
+        "body": "string.format($2, $1)$0"
+    },
+    "Lua-String - Replacement": {
+        "prefix": "string.gsub",
+        "body": "string.gsub($2, $1)$0"
+    },
+    "Lua-String - Length": {
+        "prefix": "string.len",
+        "body": "string.len($1)$0"
+    },
+    "Lua-String - Lowercase": {
+        "prefix": "string.lower",
+        "body": "string.lower($1)$0"
+    },
+    "Lua-String - Match": {
+        "prefix": "string.match",
+        "body": "string.match($2, $1)$0",
+        "description": "Looks for the first match of pattern in the string"
+    },
+    "Lua-String - Repeat": {
+        "prefix": "string.rep",
+        "body": "string.rep($2, $1)$0"
+    },
+    "Lua-String - Reverse": {
+        "prefix": "string.reverse",
+        "body": "string.reverse($1)$0"
+    },
+    "Lua-String - Substring": {
+        "prefix": "string.sub",
+        "body": "string.sub($2, $1)$0"
+    },
+    "Lua-String - Uppercase": {
+        "prefix": "string.upper",
+        "body": "string.upper($1)$0"
+    },
+
+    "Lua-Table - Concatenate": {
+        "prefix": "table.concat",
+        "body": "table.concat($1)$0"
+    },
+    "Lua-Table - Insert Element": {
+        "prefix": "table.insert",
+        "body": "table.insert($2, $1)$0"
+    },
+    "Lua-Table - Max numerical index": {
+        "prefix": "table.maxn",
+        "body": "table.maxn($1)$0"
+    },
+    "Lua-Table - Remove Element": {
+        "prefix": "table.remove",
+        "body": "table.remove($1)$0"
+    },
+    "Lua-Table - Sort": {
+        "prefix": "table.sort",
+        "body": "table.sort($1)$0"
+    },
+
+    "Lua-Math - Absolute": {
+        "prefix": "math.abs",
+        "body": "math.abs($1)$0"
+    },
+    "Lua-Math - Arc Cosine": {
+        "prefix": "math.acos",
+        "body": "math.acos($1)$0",
+        "description": "Returns the arc cosine of x (in radians)."
+    },
+    "Lua-Math - Arc Sine": {
+        "prefix": "math.asin",
+        "body": "math.asin($1)$0",
+        "description": "Returns the arc sine of x (in radians)."
+    },
+    "Lua-Math - Arc Tangent": {
+        "prefix": "math.atan",
+        "body": "math.atan($1)$0",
+        "description": "Returns the arc tangent of x (in radians)."
+    },
+    "Lua-Math - Arc Cosine #2": {
+        "prefix": "math.atan2",
+        "body": "math.atan2($2, $1)$0",
+        "description": "Returns the arc tangent of y/x (in radians), but uses the signs of both parameters to find the quadrant of the result. (It also handles correctly the case of x being zero.)"
+
+    },
+    "Lua-Math - Cosine": {
+        "prefix": "math.cos",
+        "body": "math.cos($1)$0",
+        "description": "Returns the cosine of x (assumed to be in radians)."
+    },
+    "Lua-Math - Hyperbolic Cosine": {
+        "prefix": "math.cosh",
+        "body": "math.cosh($1)$0",
+        "description": "Returns the hyperbolic cosine of x."
+
+    },
+    "Lua-Math - Radians to Degrees": {
+        "prefix": "math.deg",
+        "body": "math.deg($1)$0",
+        "description": "Returns the angle x (given in radians) in degrees."
+    },
+    "Lua-Math - Exponent of E": {
+        "prefix": "math.exp",
+        "body": "math.exp($1)$0",
+        "description": "Returns the value e^x."
+
+    },
+    "Lua-Math - FMod": {
+        "prefix": "math.fmod",
+        "body": "math.fmod($2, $1)$0",
+        "description": "Returns the remainder of the division of x by y that rounds the quotient towards zero."
+    },
+    "Lua-Math - Floor": {
+        "prefix": "math.floor",
+        "body": "math.floor($1)$0",
+        "description": "Returns the largest integer smaller than or equal to x."
+    },
+    "Lua-Math - FRExp": {
+        "prefix": "math.frexp",
+        "body": "math.frexp($1)$0",
+        "description": "Returns m and e such that x = m2e, e is an integer and the absolute value of m is in the range [0.5, 1) (or zero when x is zero)."
+
+    },
+    "Lua-Math - Huge": {
+        "prefix": "math.huge",
+        "body": "math.huge$0",
+        "description": "The value HUGE_VAL, a value larger than or equal to any other numerical value."
+    },
+    "Lua-Math - LDExp": {
+        "prefix": "math.ldexp",
+        "body": "math.ldexp($2, $1)$0",
+        "description": "Returns m2e (e should be an integer)."
+
+    },
+    "Lua-Math - Natural Logarithm": {
+        "prefix": "math.log",
+        "body": "math.log($1)$0",
+        "description": "Returns the natural logarithm of x."
+    },
+    "Lua-Math - Base-10 Logarithm": {
+        "prefix": "math.log10",
+        "body": "math.log10($1)$0",
+        "description": "Returns the base-10 logarithm of x."
+    },
+    "Lua-Math - Maximum": {
+        "prefix": "math.max",
+        "body": "math.max($1)$0",
+        "description": "Returns the maximum value among its arguments."
+
+    },
+    "Lua-Math - Minimum": {
+        "prefix": "math.min",
+        "body": "math.min($1)$0",
+        "description": "Returns the minimum value among its arguments."
+    },
+    "Lua-Math - ModF": {
+        "prefix": "math.modf",
+        "body": "math.modf($1)$0",
+        "description": "Returns two numbers, the integral part of x and the fractional part of x."
+    },
+    "Lua-Math - Pi": {
+        "prefix": "math.pi",
+        "body": "math.pi$0",
+        "description": "The value of Pi."
+    },
+    "Lua-Math - Tau": {
+        "prefix": "tau",
+        "body": "(math.pi * 2)$0",
+        "description": "The value of 2Pi."
+    },
+    "Lua-Math - Power": {
+        "prefix": "math.pow",
+        "body": "math.pow($2, $1)$0",
+        "description": "Returns xy. (You can also use the expression x^y to compute this value.)"
+    },
+    "Lua-Math - Degrees to Radians": {
+        "prefix": "math.rad",
+        "body": "math.rad($1)$0",
+        "description": "Returns the angle x (given in degrees) in radians."
+
+    },
+    "Lua-Math - Random": {
+        "prefix": "math.random",
+        "body": "math.random($1)$0"
+    },
+    "Lua-Math - Set Random Seed": {
+        "prefix": "math.randomseed",
+        "body": "math.randomseed($1)$0",
+        "description": "Sets x as the 'seed' for the pseudo-random generator."
+    },
+    "Lua-Math - Sine": {
+        "prefix": "math.sin",
+        "body": "math.sin($1)$0",
+        "description": "Returns the sine of x (assumed to be in radians)."
+    },
+    "Lua-Math - Hyperbolic Sine": {
+        "prefix": "math.sinh",
+        "body": "math.sinh($1)$0",
+        "description": "Returns the hyperbolic sine of x."
+    },
+    "Lua-Math - Square Root": {
+        "prefix": "math.sqrt",
+        "body": "math.sqrt($1)$0",
+        "description": "Returns the square root of x."
+
+    },
+    "Lua-Math - Tangent": {
+        "prefix": "math.tan",
+        "body": "math.tan($1)$0",
+        "description": "Returns the tangent of x (assumed to be in radians)."
+    },
+    "Lua-Math - Hyperbolic Tangent": {
+        "prefix": "math.tanh",
+        "body": "math.tanh($1)$0",
+        "description": "Returns the hyperbolic tangent of x."
     }
 }

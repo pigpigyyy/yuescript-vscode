@@ -34,5 +34,9 @@
     "Yuescript - Super Class": {
         "prefix": "super",
         "body": "super$0"
+    },
+    "Yuescript - Import": {
+        "prefix": "import",
+        "body": "import $1 as :$0"
     }
 }
