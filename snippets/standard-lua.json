@@ -400,5 +400,195 @@
         "prefix": "math.tanh",
         "body": "math.tanh($1)$0",
         "description": "Returns the hyperbolic tangent of x."
+    },
+    "Lua-IO - Close File": {
+    "prefix": "io.close",
+    "body": "io.close($1)$0",
+    "description": "Closes the given file handle, or the default output file."
+    },
+    "Lua-IO - Flush": {
+        "prefix": "io.flush",
+        "body": "io.flush!$0",
+        "description": "Flushes the default output file."
+    },
+    "Lua-IO - Input": {
+        "prefix": "io.input",
+        "body": "io.input($1)$0",
+        "description": "Sets and returns the default input file."
+    },
+    "Lua-IO - Lines": {
+        "prefix": "io.lines",
+        "body": "io.lines(${1:filename})$0",
+        "description": "Opens the given file and returns an iterator function that reads each line in the file."
+    },
+    "Lua-IO - Open": {
+        "prefix": "io.open",
+        "body": "io.open(${1:filename}, ${2:mode})$0",
+        "description": "Opens the given file in the specified mode."
+    },
+    "Lua-IO - Output": {
+        "prefix": "io.output",
+        "body": "io.output($1)$0",
+        "description": "Sets and returns the default output file."
+    },
+    "Lua-IO - Popen": {
+        "prefix": "io.popen",
+        "body": "io.popen(${1:prog}, ${2:mode})$0",
+        "description": "Opens a pipe to or from a process."
+    },
+    "Lua-IO - Read": {
+        "prefix": "io.read",
+        "body": "io.read(${1:*})$0",
+        "description": "Reads from the default input file according to the given formats."
+    },
+    "Lua-IO - Tmpfile": {
+        "prefix": "io.tmpfile",
+        "body": "io.tmpfile!$0",
+        "description": "Returns a handle for a temporary file."
+    },
+    "Lua-IO - Type": {
+        "prefix": "io.type",
+        "body": "io.type(${1:obj})$0",
+        "description": "Checks whether the given object is a valid file handle."
+    },
+    "Lua-IO - Write": {
+        "prefix": "io.write",
+        "body": "io.write($1)$0",
+        "description": "Writes to the default output file."
+    },
+    "Lua-OS - Clock": {
+    "prefix": "os.clock",
+    "body": "os.clock()$0",
+    "description": "Returns an approximation of the amount of CPU time used by the program."
+    },
+    "Lua-OS - Date": {
+        "prefix": "os.date",
+        "body": "os.date(${1:format}, ${2:time})$0",
+        "description": "Returns a string or a table containing date and time, formatted according to the given string format."
+    },
+    "Lua-OS - Difftime": {
+        "prefix": "os.difftime",
+        "body": "os.difftime(${1:t2}, ${2:t1})$0",
+        "description": "Returns the difference in seconds between two times."
+    },
+    "Lua-OS - Execute": {
+        "prefix": "os.execute",
+        "body": "os.execute(${1:command})$0",
+        "description": "Executes a shell command."
+    },
+    "Lua-OS - Exit": {
+        "prefix": "os.exit",
+        "body": "os.exit(${1:code}, ${2:close})$0",
+        "description": "Terminates the host program."
+    },
+    "Lua-OS - Getenv": {
+        "prefix": "os.getenv",
+        "body": "os.getenv(${1:varname})$0",
+        "description": "Returns the value of the environment variable."
+    },
+    "Lua-OS - Remove": {
+        "prefix": "os.remove",
+        "body": "os.remove(${1:filename})$0",
+        "description": "Deletes the specified file."
+    },
+    "Lua-OS - Rename": {
+        "prefix": "os.rename",
+        "body": "os.rename(${1:oldname}, ${2:newname})$0",
+        "description": "Renames or moves the specified file or directory."
+    },
+    "Lua-OS - Setlocale": {
+        "prefix": "os.setlocale",
+        "body": "os.setlocale(${1:locale}, ${2:category})$0",
+        "description": "Sets the current locale of the program."
+    },
+    "Lua-OS - Time": {
+        "prefix": "os.time",
+        "body": "os.time(${1:table})$0",
+        "description": "Returns the current time when called without arguments, or the time specified by the given table."
+    },
+    "Lua-OS - Tmpname": {
+        "prefix": "os.tmpname",
+        "body": "os.tmpname!$0",
+        "description": "Returns a string with a filename for a temporary file."
+    },
+    "Lua-Debug - Debug": {
+        "prefix": "debug.debug",
+        "body": "debug.debug!$0",
+        "description": "Enters an interactive mode with the user, running on the debug level."
+    },
+    "Lua-Debug - Getfenv": {
+        "prefix": "debug.getfenv",
+        "body": "debug.getfenv(${1:f})$0",
+        "description": "Returns the environment of the given function."
+    },
+    "Lua-Debug - Gethook": {
+        "prefix": "debug.gethook",
+        "body": "debug.gethook(${1:thread})$0",
+        "description": "Returns the current hook settings of the thread."
+    },
+    "Lua-Debug - Getinfo": {
+        "prefix": "debug.getinfo",
+        "body": "debug.getinfo(${1:f|thread}, ${2:what})$0",
+        "description": "Returns a table with information about a function or a function running on a specific thread."
+    },
+    "Lua-Debug - Getlocal": {
+        "prefix": "debug.getlocal",
+        "body": "debug.getlocal(${1:thread|f}, ${2:local})$0",
+        "description": "Returns the name and value of the local variable at the specified index."
+    },
+    "Lua-Debug - Getmetatable": {
+        "prefix": "debug.getmetatable",
+        "body": "debug.getmetatable(${1:value})$0",
+        "description": "Returns the metatable of the given value."
+    },
+    "Lua-Debug - Getregistry": {
+        "prefix": "debug.getregistry",
+        "body": "debug.getregistry!$0",
+        "description": "Returns the registry table, a pre-defined table used by Lua to store global information."
+    },
+    "Lua-Debug - Getupvalue": {
+        "prefix": "debug.getupvalue",
+        "body": "debug.getupvalue(${1:f}, ${2:up})$0",
+        "description": "Returns the name and value of the upvalue at the specified index."
+    },
+    "Lua-Debug - Setfenv": {
+        "prefix": "debug.setfenv",
+        "body": "debug.setfenv(${1:f}, ${2:table})$0",
+        "description": "Sets the environment of the given function to the specified table."
+    },
+    "Lua-Debug - Sethook": {
+        "prefix": "debug.sethook",
+        "body": "debug.sethook(${1:hook}, ${2:mask}, ${3:count})$0",
+        "description": "Sets the hook function to monitor the execution of Lua code."
+    },
+    "Lua-Debug - Setlocal": {
+        "prefix": "debug.setlocal",
+        "body": "debug.setlocal(${1:thread|f}, ${2:local}, ${3:value})$0",
+        "description": "Sets the value of a local variable in a function."
+    },
+    "Lua-Debug - Setmetatable": {
+        "prefix": "debug.setmetatable",
+        "body": "debug.setmetatable(${1:value}, ${2:table})$0",
+        "description": "Sets the metatable for the given value to the specified table."
+    },
+    "Lua-Debug - Setupvalue": {
+        "prefix": "debug.setupvalue",
+        "body": "debug.setupvalue(${1:f}, ${2:up}, ${3:value})$0",
+        "description": "Sets the value of an upvalue for a function."
+    },
+    "Lua-Debug - Traceback": {
+        "prefix": "debug.traceback",
+        "body": "debug.traceback(${1:thread|message}, ${2:level})$0",
+        "description": "Returns a string with the traceback of the call stack."
+    },
+    "Lua-Debug - Upvalueid": {
+        "prefix": "debug.upvalueid",
+        "body": "debug.upvalueid(${1:f}, ${2:up})$0",
+        "description": "Returns a unique identifier for the upvalue at the specified index."
+    },
+    "Lua-Debug - Upvaluejoin": {
+        "prefix": "debug.upvaluejoin",
+        "body": "debug.upvaluejoin(${1:f1}, ${2:n1}, ${3:f2}, ${4:n2})$0",
+        "description": "Makes the `n1`-th upvalue of `f1` refer to the same upvalue as the `n2`-th upvalue of `f2`."
     }
 }
