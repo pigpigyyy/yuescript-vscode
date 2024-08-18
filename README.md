@@ -7,7 +7,6 @@
 <img src="images/icon.png" width=128 height=128>
 
 ![Last Commit](https://img.shields.io/github/last-commit/pigpigyyy/yuescript-vscode?style=flat-square)
-![Release](https://img.shields.io/github/v/release/pigpigyyy/yuescript-vscode?style=flat-square)
 ![Repo Size](https://img.shields.io/github/repo-size/pigpigyyy/yuescript-vscode?style=flat-square)
 ![Repo Stars](https://img.shields.io/github/stars/pigpigyyy/yuescript-vscode?style=flat-square)
 
