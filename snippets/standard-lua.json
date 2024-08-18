@@ -1,0 +1,594 @@
+{
+    "Lua - Global Environment": {
+        "prefix": "_G",
+        "body": "_G$0",
+        "description": "represents the global Lua environment (_G._G =_G)"
+    },
+    "Lua - Load File": {
+        "prefix": "loadfile",
+        "body": "loadfile($0)"
+    },
+    "Lua - Load": {
+        "prefix": "load",
+        "body": "load($1)"
+    },
+    "Lua - Do File": {
+        "prefix": "dofile",
+        "body": "dofile($0)"
+    },
+    "Lua - Load String": {
+        "prefix": "loadstring",
+        "body": "loadstring($0)"
+    },
+    "Lua - Next": {
+        "prefix": "next",
+        "body": "next($0)"
+    },
+    "Lua - Protected Call": {
+        "prefix": "pcall",
+        "body": "pcall($1, $0)"
+    },
+    "Lua - Raw Equal": {
+        "prefix": "rawequal",
+        "body": "rawequal($1, $0)"
+    },
+    "Lua - Raw Get": {
+        "prefix": "rawget",
+        "body": "rawget($1, $0)"
+    },
+    "Lua - Raw Set": {
+        "prefix": "rawset",
+        "body": "rawset($1, $2, $0)"
+    },
+    "Lua - Select": {
+        "prefix": "select",
+        "body": "select($0)"
+    },
+    "Lua - Set Function Environment": {
+        "prefix": "setfenv",
+        "body": "setfenv($1, $0)"
+    },
+    "Lua - Set Metatable": {
+        "prefix": "setmetatable",
+        "body": "setmetatable($1, $0)"
+    },
+    "Lua - Assert": {
+        "prefix": "assert",
+        "body": "assert($1, $0)"
+    },
+    "Lua - To Number": {
+        "prefix": "tonumber",
+        "body": "tonumber($0)"
+    },
+    "Lua - To String": {
+        "prefix": "tostring",
+        "body": "tostring($0)"
+    },
+    "Lua - Get Type": {
+        "prefix": "type",
+        "body": "type($0)"
+    },
+    "Lua - Unpack": {
+        "prefix": "unpack",
+        "body": "unpack($0)"
+    },
+    "Lua - Handled Protected Call": {
+        "prefix": "xpcall",
+        "body": "xpcall($1, $0)"
+    },
+    "Lua - Collect Garbage": {
+        "prefix": "collectgarbage",
+        "body": "collectgarbage($0)"
+    },
+    "Lua - Error": {
+        "prefix": "error",
+        "body": "error($0)"
+    },
+    "Lua - Get Function Environment": {
+        "prefix": "getfenv",
+        "body": "getfenv($0)"
+    },
+    "Lua - Get Metatable": {
+        "prefix": "getmetatable",
+        "body": "getmetatable($0)"
+    },
+    "Lua - Iterate all Integer keys": {
+        "prefix": "ipairs",
+        "body": "ipairs($0)"
+    },
+    "Lua - Iterate all keys": {
+        "prefix": "pairs",
+        "body": "pairs($0)"
+    },
+    "Lua - Print": {
+        "prefix": "print",
+        "body": "print($0)"
+    },
+
+    "Lua-Coroutine - Create": {
+        "prefix": "coroutine.create",
+        "body": "$2 = coroutine.create(()->\n\t$1\n)$0"
+    },
+    "Lua-Coroutine - Resume": {
+        "prefix": "coroutine.resume",
+        "body": "coroutine.resume($1)$0"
+    },
+    "Lua-Coroutine - Is Running": {
+        "prefix": "coroutine.running",
+        "body": "coroutine.running!$0"
+    },
+    "Lua-Coroutine Status": {
+        "prefix": "coroutine.status",
+        "body": "coroutine.status($1)$0"
+    },
+    "Lua-Coroutine - Wrap": {
+        "prefix": "coroutine.wrap",
+        "body": "$2 = coroutine.wrap($1)$0"
+    },
+    "Lua-Coroutine - Yield": {
+        "prefix": "coroutine.yield",
+        "body": "coroutine.yield($1)$0"
+    },
+
+    "Lua-Package - Require": {
+        "prefix": "require",
+        "body": "require($1)\n$0"
+    },
+    "Lua-Package - Create Module": {
+        "prefix": "module",
+        "body": "module($1)\n$0"
+    },
+    "Lua-Package - C Search Path": {
+        "prefix": "package.cpath",
+        "body": "package.cpath$0"
+    },
+    "Lua-Package - Search Path": {
+        "prefix": "package.path",
+        "body": "package.path$0"
+    },
+    "Lua-Package - Loaded": {
+        "prefix": "package.loaded",
+        "body": "package.loaded$0"
+    },
+    "Lua-Package Loaders": {
+        "prefix": "package.loaders",
+        "body": "package.loaded$0"
+    },
+    "Lua-Package - Module-Specific Loaders": {
+        "prefix": "package.preload",
+        "body": "package.preload$0",
+        "description": "A table to store loaders for specific modules"
+    },
+    "Lua-Package - Inherit Global Variables in Module": {
+        "prefix": "package.seeall",
+        "body": "package.seeall($1)$0",
+        "description": "To be used as an option to: module()."
+    },
+
+    "Lua-String - Get Bytes": {
+        "prefix": "string.byte",
+        "body": "string.byte($1)$0"
+    },
+    "Lua-String - Build from Bytes": {
+        "prefix": "string.char",
+        "body": "string.char($1)$0"
+    },
+    "Lua-String - Dump Function": {
+        "prefix": "string.dump",
+        "body": "string.dump($1)$0",
+        "description": "Loadstring on this result returns a copy of the argument function"
+    },
+    "Lua-String - Match Pattern": {
+        "prefix": "string.find",
+        "body": "string.find($2, $1)$0"
+    },
+    "Lua-String - Iteration-Match": {
+        "prefix": "string.gmatch",
+        "body": "string.gmatch($2, $1)$0"
+    },
+    "Lua-String - Format": {
+        "prefix": "string.format",
+        "body": "string.format($2, $1)$0"
+    },
+    "Lua-String - Replacement": {
+        "prefix": "string.gsub",
+        "body": "string.gsub($2, $1)$0"
+    },
+    "Lua-String - Length": {
+        "prefix": "string.len",
+        "body": "string.len($1)$0"
+    },
+    "Lua-String - Lowercase": {
+        "prefix": "string.lower",
+        "body": "string.lower($1)$0"
+    },
+    "Lua-String - Match": {
+        "prefix": "string.match",
+        "body": "string.match($2, $1)$0",
+        "description": "Looks for the first match of pattern in the string"
+    },
+    "Lua-String - Repeat": {
+        "prefix": "string.rep",
+        "body": "string.rep($2, $1)$0"
+    },
+    "Lua-String - Reverse": {
+        "prefix": "string.reverse",
+        "body": "string.reverse($1)$0"
+    },
+    "Lua-String - Substring": {
+        "prefix": "string.sub",
+        "body": "string.sub($2, $1)$0"
+    },
+    "Lua-String - Uppercase": {
+        "prefix": "string.upper",
+        "body": "string.upper($1)$0"
+    },
+
+    "Lua-Table - Concatenate": {
+        "prefix": "table.concat",
+        "body": "table.concat($1)$0"
+    },
+    "Lua-Table - Insert Element": {
+        "prefix": "table.insert",
+        "body": "table.insert($2, $1)$0"
+    },
+    "Lua-Table - Max numerical index": {
+        "prefix": "table.maxn",
+        "body": "table.maxn($1)$0"
+    },
+    "Lua-Table - Remove Element": {
+        "prefix": "table.remove",
+        "body": "table.remove($1)$0"
+    },
+    "Lua-Table - Sort": {
+        "prefix": "table.sort",
+        "body": "table.sort($1)$0"
+    },
+
+    "Lua-Math - Absolute": {
+        "prefix": "math.abs",
+        "body": "math.abs($1)$0"
+    },
+    "Lua-Math - Arc Cosine": {
+        "prefix": "math.acos",
+        "body": "math.acos($1)$0",
+        "description": "Returns the arc cosine of x (in radians)."
+    },
+    "Lua-Math - Arc Sine": {
+        "prefix": "math.asin",
+        "body": "math.asin($1)$0",
+        "description": "Returns the arc sine of x (in radians)."
+    },
+    "Lua-Math - Arc Tangent": {
+        "prefix": "math.atan",
+        "body": "math.atan($1)$0",
+        "description": "Returns the arc tangent of x (in radians)."
+    },
+    "Lua-Math - Arc Cosine #2": {
+        "prefix": "math.atan2",
+        "body": "math.atan2($2, $1)$0",
+        "description": "Returns the arc tangent of y/x (in radians), but uses the signs of both parameters to find the quadrant of the result. (It also handles correctly the case of x being zero.)"
+
+    },
+    "Lua-Math - Cosine": {
+        "prefix": "math.cos",
+        "body": "math.cos($1)$0",
+        "description": "Returns the cosine of x (assumed to be in radians)."
+    },
+    "Lua-Math - Hyperbolic Cosine": {
+        "prefix": "math.cosh",
+        "body": "math.cosh($1)$0",
+        "description": "Returns the hyperbolic cosine of x."
+
+    },
+    "Lua-Math - Radians to Degrees": {
+        "prefix": "math.deg",
+        "body": "math.deg($1)$0",
+        "description": "Returns the angle x (given in radians) in degrees."
+    },
+    "Lua-Math - Exponent of E": {
+        "prefix": "math.exp",
+        "body": "math.exp($1)$0",
+        "description": "Returns the value e^x."
+
+    },
+    "Lua-Math - FMod": {
+        "prefix": "math.fmod",
+        "body": "math.fmod($2, $1)$0",
+        "description": "Returns the remainder of the division of x by y that rounds the quotient towards zero."
+    },
+    "Lua-Math - Floor": {
+        "prefix": "math.floor",
+        "body": "math.floor($1)$0",
+        "description": "Returns the largest integer smaller than or equal to x."
+    },
+    "Lua-Math - FRExp": {
+        "prefix": "math.frexp",
+        "body": "math.frexp($1)$0",
+        "description": "Returns m and e such that x = m2e, e is an integer and the absolute value of m is in the range [0.5, 1) (or zero when x is zero)."
+
+    },
+    "Lua-Math - Huge": {
+        "prefix": "math.huge",
+        "body": "math.huge$0",
+        "description": "The value HUGE_VAL, a value larger than or equal to any other numerical value."
+    },
+    "Lua-Math - LDExp": {
+        "prefix": "math.ldexp",
+        "body": "math.ldexp($2, $1)$0",
+        "description": "Returns m2e (e should be an integer)."
+
+    },
+    "Lua-Math - Natural Logarithm": {
+        "prefix": "math.log",
+        "body": "math.log($1)$0",
+        "description": "Returns the natural logarithm of x."
+    },
+    "Lua-Math - Base-10 Logarithm": {
+        "prefix": "math.log10",
+        "body": "math.log10($1)$0",
+        "description": "Returns the base-10 logarithm of x."
+    },
+    "Lua-Math - Maximum": {
+        "prefix": "math.max",
+        "body": "math.max($1)$0",
+        "description": "Returns the maximum value among its arguments."
+
+    },
+    "Lua-Math - Minimum": {
+        "prefix": "math.min",
+        "body": "math.min($1)$0",
+        "description": "Returns the minimum value among its arguments."
+    },
+    "Lua-Math - ModF": {
+        "prefix": "math.modf",
+        "body": "math.modf($1)$0",
+        "description": "Returns two numbers, the integral part of x and the fractional part of x."
+    },
+    "Lua-Math - Pi": {
+        "prefix": "math.pi",
+        "body": "math.pi$0",
+        "description": "The value of Pi."
+    },
+    "Lua-Math - Tau": {
+        "prefix": "tau",
+        "body": "(math.pi * 2)$0",
+        "description": "The value of 2Pi."
+    },
+    "Lua-Math - Power": {
+        "prefix": "math.pow",
+        "body": "math.pow($1, $2)$0",
+        "description": "Returns xy. (You can also use the expression x^y to compute this value.)"
+    },
+    "Lua-Math - Degrees to Radians": {
+        "prefix": "math.rad",
+        "body": "math.rad($1)$0",
+        "description": "Returns the angle x (given in degrees) in radians."
+
+    },
+    "Lua-Math - Random": {
+        "prefix": "math.random",
+        "body": "math.random($1)$0"
+    },
+    "Lua-Math - Set Random Seed": {
+        "prefix": "math.randomseed",
+        "body": "math.randomseed($1)$0",
+        "description": "Sets x as the 'seed' for the pseudo-random generator."
+    },
+    "Lua-Math - Sine": {
+        "prefix": "math.sin",
+        "body": "math.sin($1)$0",
+        "description": "Returns the sine of x (assumed to be in radians)."
+    },
+    "Lua-Math - Hyperbolic Sine": {
+        "prefix": "math.sinh",
+        "body": "math.sinh($1)$0",
+        "description": "Returns the hyperbolic sine of x."
+    },
+    "Lua-Math - Square Root": {
+        "prefix": "math.sqrt",
+        "body": "math.sqrt($1)$0",
+        "description": "Returns the square root of x."
+
+    },
+    "Lua-Math - Tangent": {
+        "prefix": "math.tan",
+        "body": "math.tan($1)$0",
+        "description": "Returns the tangent of x (assumed to be in radians)."
+    },
+    "Lua-Math - Hyperbolic Tangent": {
+        "prefix": "math.tanh",
+        "body": "math.tanh($1)$0",
+        "description": "Returns the hyperbolic tangent of x."
+    },
+    "Lua-IO - Close File": {
+    "prefix": "io.close",
+    "body": "io.close($1)$0",
+    "description": "Closes the given file handle, or the default output file."
+    },
+    "Lua-IO - Flush": {
+        "prefix": "io.flush",
+        "body": "io.flush!$0",
+        "description": "Flushes the default output file."
+    },
+    "Lua-IO - Input": {
+        "prefix": "io.input",
+        "body": "io.input($1)$0",
+        "description": "Sets and returns the default input file."
+    },
+    "Lua-IO - Lines": {
+        "prefix": "io.lines",
+        "body": "io.lines(${1:filename})$0",
+        "description": "Opens the given file and returns an iterator function that reads each line in the file."
+    },
+    "Lua-IO - Open": {
+        "prefix": "io.open",
+        "body": "io.open(${1:filename}, ${2:mode})$0",
+        "description": "Opens the given file in the specified mode."
+    },
+    "Lua-IO - Output": {
+        "prefix": "io.output",
+        "body": "io.output($1)$0",
+        "description": "Sets and returns the default output file."
+    },
+    "Lua-IO - Popen": {
+        "prefix": "io.popen",
+        "body": "io.popen(${1:prog}, ${2:mode})$0",
+        "description": "Opens a pipe to or from a process."
+    },
+    "Lua-IO - Read": {
+        "prefix": "io.read",
+        "body": "io.read(${1:*})$0",
+        "description": "Reads from the default input file according to the given formats."
+    },
+    "Lua-IO - Tmpfile": {
+        "prefix": "io.tmpfile",
+        "body": "io.tmpfile!$0",
+        "description": "Returns a handle for a temporary file."
+    },
+    "Lua-IO - Type": {
+        "prefix": "io.type",
+        "body": "io.type(${1:obj})$0",
+        "description": "Checks whether the given object is a valid file handle."
+    },
+    "Lua-IO - Write": {
+        "prefix": "io.write",
+        "body": "io.write($1)$0",
+        "description": "Writes to the default output file."
+    },
+    "Lua-OS - Clock": {
+    "prefix": "os.clock",
+    "body": "os.clock()$0",
+    "description": "Returns an approximation of the amount of CPU time used by the program."
+    },
+    "Lua-OS - Date": {
+        "prefix": "os.date",
+        "body": "os.date(${1:format}, ${2:time})$0",
+        "description": "Returns a string or a table containing date and time, formatted according to the given string format."
+    },
+    "Lua-OS - Difftime": {
+        "prefix": "os.difftime",
+        "body": "os.difftime(${1:t2}, ${2:t1})$0",
+        "description": "Returns the difference in seconds between two times."
+    },
+    "Lua-OS - Execute": {
+        "prefix": "os.execute",
+        "body": "os.execute(${1:command})$0",
+        "description": "Executes a shell command."
+    },
+    "Lua-OS - Exit": {
+        "prefix": "os.exit",
+        "body": "os.exit(${1:code}, ${2:close})$0",
+        "description": "Terminates the host program."
+    },
+    "Lua-OS - Getenv": {
+        "prefix": "os.getenv",
+        "body": "os.getenv(${1:varname})$0",
+        "description": "Returns the value of the environment variable."
+    },
+    "Lua-OS - Remove": {
+        "prefix": "os.remove",
+        "body": "os.remove(${1:filename})$0",
+        "description": "Deletes the specified file."
+    },
+    "Lua-OS - Rename": {
+        "prefix": "os.rename",
+        "body": "os.rename(${1:oldname}, ${2:newname})$0",
+        "description": "Renames or moves the specified file or directory."
+    },
+    "Lua-OS - Setlocale": {
+        "prefix": "os.setlocale",
+        "body": "os.setlocale(${1:locale}, ${2:category})$0",
+        "description": "Sets the current locale of the program."
+    },
+    "Lua-OS - Time": {
+        "prefix": "os.time",
+        "body": "os.time(${1:table})$0",
+        "description": "Returns the current time when called without arguments, or the time specified by the given table."
+    },
+    "Lua-OS - Tmpname": {
+        "prefix": "os.tmpname",
+        "body": "os.tmpname!$0",
+        "description": "Returns a string with a filename for a temporary file."
+    },
+    "Lua-Debug - Debug": {
+        "prefix": "debug.debug",
+        "body": "debug.debug!$0",
+        "description": "Enters an interactive mode with the user, running on the debug level."
+    },
+    "Lua-Debug - Getfenv": {
+        "prefix": "debug.getfenv",
+        "body": "debug.getfenv(${1:f})$0",
+        "description": "Returns the environment of the given function."
+    },
+    "Lua-Debug - Gethook": {
+        "prefix": "debug.gethook",
+        "body": "debug.gethook(${1:thread})$0",
+        "description": "Returns the current hook settings of the thread."
+    },
+    "Lua-Debug - Getinfo": {
+        "prefix": "debug.getinfo",
+        "body": "debug.getinfo(${1:f|thread}, ${2:what})$0",
+        "description": "Returns a table with information about a function or a function running on a specific thread."
+    },
+    "Lua-Debug - Getlocal": {
+        "prefix": "debug.getlocal",
+        "body": "debug.getlocal(${1:thread|f}, ${2:local})$0",
+        "description": "Returns the name and value of the local variable at the specified index."
+    },
+    "Lua-Debug - Getmetatable": {
+        "prefix": "debug.getmetatable",
+        "body": "debug.getmetatable(${1:value})$0",
+        "description": "Returns the metatable of the given value."
+    },
+    "Lua-Debug - Getregistry": {
+        "prefix": "debug.getregistry",
+        "body": "debug.getregistry!$0",
+        "description": "Returns the registry table, a pre-defined table used by Lua to store global information."
+    },
+    "Lua-Debug - Getupvalue": {
+        "prefix": "debug.getupvalue",
+        "body": "debug.getupvalue(${1:f}, ${2:up})$0",
+        "description": "Returns the name and value of the upvalue at the specified index."
+    },
+    "Lua-Debug - Setfenv": {
+        "prefix": "debug.setfenv",
+        "body": "debug.setfenv(${1:f}, ${2:table})$0",
+        "description": "Sets the environment of the given function to the specified table."
+    },
+    "Lua-Debug - Sethook": {
+        "prefix": "debug.sethook",
+        "body": "debug.sethook(${1:hook}, ${2:mask}, ${3:count})$0",
+        "description": "Sets the hook function to monitor the execution of Lua code."
+    },
+    "Lua-Debug - Setlocal": {
+        "prefix": "debug.setlocal",
+        "body": "debug.setlocal(${1:thread|f}, ${2:local}, ${3:value})$0",
+        "description": "Sets the value of a local variable in a function."
+    },
+    "Lua-Debug - Setmetatable": {
+        "prefix": "debug.setmetatable",
+        "body": "debug.setmetatable(${1:value}, ${2:table})$0",
+        "description": "Sets the metatable for the given value to the specified table."
+    },
+    "Lua-Debug - Setupvalue": {
+        "prefix": "debug.setupvalue",
+        "body": "debug.setupvalue(${1:f}, ${2:up}, ${3:value})$0",
+        "description": "Sets the value of an upvalue for a function."
+    },
+    "Lua-Debug - Traceback": {
+        "prefix": "debug.traceback",
+        "body": "debug.traceback(${1:thread|message}, ${2:level})$0",
+        "description": "Returns a string with the traceback of the call stack."
+    },
+    "Lua-Debug - Upvalueid": {
+        "prefix": "debug.upvalueid",
+        "body": "debug.upvalueid(${1:f}, ${2:up})$0",
+        "description": "Returns a unique identifier for the upvalue at the specified index."
+    },
+    "Lua-Debug - Upvaluejoin": {
+        "prefix": "debug.upvaluejoin",
+        "body": "debug.upvaluejoin(${1:f1}, ${2:n1}, ${3:f2}, ${4:n2})$0",
+        "description": "Makes the `n1`-th upvalue of `f1` refer to the same upvalue as the `n2`-th upvalue of `f2`."
+    }
+}

@@ -7,6 +7,10 @@
 		"prefix": "and",
 		"body": "and $0"
 	},
+    "Operator - Not": {
+		"prefix": "not",
+		"body": "not($0)"
+	},
     "Operator - Uppercase variables as Globals": {
         "prefix": "global ^",
         "body": "global ^\n",
@@ -23,6 +27,83 @@
     },
     "Operator - Try": {
         "prefix": "try",
-        "body": "try\n\t$1\ncatch err\n\t$0"
+        "body": "try\n\t$2\ncatch err\n\t$1\n$0"
+    },
+    "Operator - With": {
+        "prefix": "with",
+        "body": "with $0\n\t"
+    },
+    "Operator - Switch": {
+        "prefix": "switch",
+        "body": "switch ($1)\n\twhen ($2)\n$0"
+    },
+    "Operator - Using": {
+        "prefix": "using",
+        "body": "using $0"
+    },
+    
+    "Operator - Metatable Tostring": {
+        "prefix": "__tostring",
+        "body": "__tostring:=>\n\ttostring @"
+    },
+    "Operator - Metatable Call": {
+        "prefix": "__call",
+        "body": "__call: ()=>\n\t$0"
+    },
+    "Operator - Metatable Add": {
+        "prefix": "__add",
+        "body": "__add: (value)=>\n\t$0"
+    },
+    "Operator - Metatable Subtract": {
+        "prefix": "__sub",
+        "body": "__sub: (value)=>\n\t$0"
+    },
+    "Operator - Metatable Multiply": {
+        "prefix": "__mul",
+        "body": "__mul: (value)=>\n\t$0"
+    },
+    "Operator - Metatable Divide": {
+        "prefix": "__div",
+        "body": "__div: (value)=>\n\t$0"
+    },
+    "Operator - Metatable Modulus": {
+        "prefix": "__mod",
+        "body": "__mod: (value)=>\n\t$0"
+    },
+    "Operator - Metatable Power": {
+        "prefix": "__pow",
+        "body": "__pow: (value)=>\n\t$0"
+    },
+    "Operator - Metatable Unary": {
+        "prefix": "__unm",
+        "body": "__unm:=>\n\t$0"
+    },
+    "Operator - Metatable Concatenate": {
+        "prefix": "__concat",
+        "body": "__concat: (value)=>\n\t$0"
+    },
+    "Operator - Metatable Length": {
+        "prefix": "__len",
+        "body": "__len:=>\n\t$0"
+    },
+    "Operator - Metatable Equals": {
+        "prefix": "__eq",
+        "body": "__eq: (value)=>\n\t$0"
+    },
+    "Operator - Metatable Less-Than": {
+        "prefix": "__lt",
+        "body": "__lt: (value)=>\n\t$0"
+    },
+    "Operator - Metatable Less-Than-or-Equal": {
+        "prefix": "__le",
+        "body": "__le: (value)=>\n\t$0"
+    },
+    "Operator - Metatable Indexor": {
+        "prefix": "__index",
+        "body": "__index: (idx)=>\n\t$0"
+    },
+    "Operator - Metatable New-Index": {
+        "prefix": "__newindex",
+        "body": "__newindex: (key, value)=>\n\t$0"
     }
 }
