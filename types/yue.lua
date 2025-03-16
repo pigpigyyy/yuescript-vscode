@@ -1,5 +1,4 @@
 ---@meta yue
----@source
 ---@class yue
 ---@field version      string
 ---@field yue_compiled { [string]: string }
