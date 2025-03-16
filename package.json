@@ -1,70 +1,70 @@
 {
-    "name": "yuescript",
-    "displayName": "YueScript",
-    "description": "An extension for YueScript",
-    "version": "0.1.0",
-    "engines": {
-        "vscode": "^1.90.0"
-    },
-    "categories": [
-        "Programming Languages"
-    ],
-    "contributes": {
-        "languages": [
-            {
-                "id": "yuescript",
-                "aliases": [
-                    "YueScript",
-                    "Yuescript",
-                    "yuescript",
-                    "yue"
-                ],
-                "extensions": [
-                    ".yue"
-                ],
-                "configuration": "./language-configuration.json"
-            }
-        ],
-        "grammars": [
-            {
-                "language": "yuescript",
-                "scopeName": "source.yue",
-                "path": "./syntaxes/yuescript.tmLanguage.json"
-            }
-        ],
-        "snippets": [
-            {
-                "language": "yuescript",
-                "path": "./snippets/operators.json"
-            },
-            {
-                "language": "yuescript",
-                "path": "./snippets/flow-control.json"
-            },
-            {
-                "language": "yuescript",
-                "path": "./snippets/standard-lua.json"
-            },
-            {
-                "language": "yuescript",
-                "path": "./snippets/constants.json"
-            },
-            {
-                "language": "yuescript",
-                "path": "./snippets/standard-yue.json"
-            }
-        ]
-    },
-    "icon": "images/icon.png",
-    "publisher": "SkyyySi",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/SkyyySi/yuescript-vscode"
-    },
-    "devDependencies": {
-        "typescript": "^5.0.0",
-        "vscode": "^1.90",
-        "@types/node": "^20",
-        "@type/vscode": "^1.90"
-    }
+	"name": "yuescript",
+	"displayName": "YueScript",
+	"description": "An extension for YueScript",
+	"version": "0.1.0",
+	"engines": {
+		"vscode": "^1.90.0"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"contributes": {
+		"languages": [
+			{
+				"id": "yuescript",
+				"aliases": [
+					"YueScript",
+					"Yuescript",
+					"yuescript",
+					"yue"
+				],
+				"extensions": [
+					".yue"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "yuescript",
+				"scopeName": "source.yue",
+				"path": "./syntaxes/yuescript.tmLanguage.json"
+			}
+		],
+		"snippets": [
+			{
+				"language": "yuescript",
+				"path": "./snippets/operators.json"
+			},
+			{
+				"language": "yuescript",
+				"path": "./snippets/flow-control.json"
+			},
+			{
+				"language": "yuescript",
+				"path": "./snippets/standard-lua.json"
+			},
+			{
+				"language": "yuescript",
+				"path": "./snippets/constants.json"
+			},
+			{
+				"language": "yuescript",
+				"path": "./snippets/standard-yue.json"
+			}
+		]
+	},
+	"icon": "images/icon.png",
+	"publisher": "SkyyySi",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/SkyyySi/yuescript-vscode"
+	},
+	"devDependencies": {
+		"typescript": "^5.0.0",
+		"vscode": "^1.90",
+		"@types/node": "^20",
+		"@type/vscode": "^1.90"
+	}
 }

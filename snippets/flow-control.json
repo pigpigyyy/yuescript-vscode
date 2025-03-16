@@ -1,42 +1,42 @@
 {
-    "Flow-Control - If": {
-        "prefix": "if",
-        "body": "if (${1:condition}) $0"
-    },
-    "Flow-Control - Elseif": {
-        "prefix": "elseif",
-        "body": "elseif (${1:condition}) $0"
-    },
-    "Flow-Control - Else": {
-        "prefix": "else",
-        "body": "else\n\t$0"
-    },
-    "Flow-Control - While": {
-        "prefix": "while",
-        "body": "while (${1:condition}) $0"
-    },
-    "Flow-Control - Continue": {
-        "prefix": "continue",
-        "body": "continue$0"
-    },
-    "Flow-Control - Break": {
-        "prefix": "break",
-        "body": "break$0"
-    },
-    "Flow-Control - Return": {
-        "prefix": "return",
-        "body": "return $0"
-    },
-    "Flow-Control - For ipairs": {
-        "prefix": "foripairs",
-        "body": "for $2,$3 in ipairs($1) $0"
-    },
-    "Flow-Control - For pairs": {
-        "prefix": "forpairs",
-        "body": "for $2,$3 in pairs($1) $0"
-    },
-    "Flow-Control - Pass/No Operation": {
-        "prefix": ["pass", "noop"],
-        "body": "(()->nil)!$0"
-    }
+	"Flow-Control - If": {
+		"prefix": "if",
+		"body": "if (${1:condition}) $0"
+	},
+	"Flow-Control - Elseif": {
+		"prefix": "elseif",
+		"body": "elseif (${1:condition}) $0"
+	},
+	"Flow-Control - Else": {
+		"prefix": "else",
+		"body": "else\n\t$0"
+	},
+	"Flow-Control - While": {
+		"prefix": "while",
+		"body": "while (${1:condition}) $0"
+	},
+	"Flow-Control - Continue": {
+		"prefix": "continue",
+		"body": "continue$0"
+	},
+	"Flow-Control - Break": {
+		"prefix": "break",
+		"body": "break$0"
+	},
+	"Flow-Control - Return": {
+		"prefix": "return",
+		"body": "return $0"
+	},
+	"Flow-Control - For ipairs": {
+		"prefix": "foripairs",
+		"body": "for $2,$3 in ipairs($1) $0"
+	},
+	"Flow-Control - For pairs": {
+		"prefix": "forpairs",
+		"body": "for $2,$3 in pairs($1) $0"
+	},
+	"Flow-Control - Pass/No Operation": {
+		"prefix": ["pass", "noop"],
+		"body": "(()->nil)!$0"
+	}
 }

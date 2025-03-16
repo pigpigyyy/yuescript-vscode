@@ -1,5 +1,5 @@
 {
-    "Constant - True": {
+	"Constant - True": {
 		"prefix": "true",
 		"body": "true $0"
 	},
@@ -11,9 +11,9 @@
 		"prefix": "nil",
 		"body": "nil $0"
 	},
-    "Constant - Lua Version": {
-        "prefix": "_VERSION",
-        "body": "_VERSION$0",
-        "description": "represents the current Lua version"
-    }
+	"Constant - Lua Version": {
+		"prefix": "_VERSION",
+		"body": "_VERSION$0",
+		"description": "represents the current Lua version"
+	}
 }
