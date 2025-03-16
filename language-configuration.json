@@ -16,7 +16,8 @@
         ["[", "]"],
         ["(", ")"],
         ["'", "'"],
-        ["\"", "\""]
+        ["\"", "\""],
+        ["<", ">"]
     ],
     // symbols that can be used to surround a selection
     "surroundingPairs": [
@@ -26,5 +27,18 @@
         ["'", "'"],
         ["\"", "\""],
         ["<", ">"]
-    ]
+    ],
+    "colorizedBracketPairs": [
+        ["(", ")"],
+        ["[", "]"],
+        ["{", "}"]
+    ],
+    "autoCloseBefore": ";:.,=}])> \n\t",
+    "folding": {
+        "offSide": true
+    },
+    "indentationRules": {
+        // TODO: Add function expression and other keywords that mark blocks here
+        "increaseIndentPattern": "(^[ \t]*class)"
+    }
 }

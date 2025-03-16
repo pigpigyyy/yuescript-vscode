@@ -90,12 +90,16 @@
 			"name": "string.tag.lua"
 		},
 		{
-			"match": "(?x)\\b(?<![(?:\\.|\\:\\:|\\\\)\\$])(\\b(super|import|as|from|export|in|macro|local|global|close|const)\\b)(?!\\s*:)\\b",
+			"match": "(?x)\\b(?<![(?:\\.|\\:\\:|\\\\)\\$])(\\b(import|as|from|export|in|macro|local|global|close|const|class|extends|using)\\b)(?!\\s*:)\\b",
 			"name": "keyword.yue"
 		},
 		{
-			"match": "(?x)\\b(?<![(?:\\.|\\:\\:|\\\\)\\$])(\\b(if|then|else|elseif|until|switch|when|with|using|do|for|while|return|unless|continue|break|try|catch|goto)\\b)(?!\\s*:)\\b",
+			"match": "(?x)\\b(?<![(?:\\.|\\:\\:|\\\\)\\$])(\\b(if|then|else|elseif|until|switch|when|with|do|for|while|return|unless|continue|break|try|catch|goto)\\b)(?!\\s*:)\\b",
 			"name": "keyword.control.yue"
+		},
+		{
+			"match": "(?x)\\b(?<![(?:\\.|\\:\\:|\\\\)\\$])(\\b(super|new)\\b)(?!\\s*:)\\b",
+			"name": "support.variable.yue"
 		},
 		{
 			"match": "(\\+|-|\\*|\\/|%|\\^|\\/\\/|\\||\\&|\\>\\>|\\<\\<|\\?\\?|or|and)=?",

@@ -1,10 +1,10 @@
 {
     "name": "yuescript",
-    "displayName": "Yuescript",
-    "description": "An extension for Yuescript",
-    "version": "0.0.7",
+    "displayName": "YueScript",
+    "description": "An extension for YueScript",
+    "version": "0.1.0",
     "engines": {
-        "vscode": "^1.61.0"
+        "vscode": "^1.90.0"
     },
     "categories": [
         "Programming Languages"
@@ -14,8 +14,10 @@
             {
                 "id": "yuescript",
                 "aliases": [
+                    "YueScript",
                     "Yuescript",
-                    "yuescript"
+                    "yuescript",
+                    "yue"
                 ],
                 "extensions": [
                     ".yue"
@@ -54,9 +56,15 @@
         ]
     },
     "icon": "images/icon.png",
-    "publisher": "LiJin",
+    "publisher": "SkyyySi",
     "repository": {
         "type": "git",
-        "url": "https://github.com/pigpigyyy/yuescript-vscode.git"
+        "url": "https://github.com/SkyyySi/yuescript-vscode"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0",
+        "vscode": "^1.90",
+        "@types/node": "^20",
+        "@type/vscode": "^1.90"
     }
 }
