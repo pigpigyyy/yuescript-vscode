@@ -1,0 +1,117 @@
+#!/usr/bin/env yue
+--- This script is only meant as a test for syntax highlighting. If the code
+--- here looks like nonsense, that's because... it is. I just wrote down
+--- whatever I came up with while thinking of stuff that *looks* like "real"
+--- code, but it doesn't actually have any meaning and is not intended to be
+--- used or executed.
+
+--[[
+I'm a block comment!
+--]]
+
+
+const bar = require"foo.bar"
+const bar = require "foo.bar"
+const bar = require("foo.bar")
+import "foo.bar"
+import "foo.bar" as bar
+const { :bar } = require "foo"
+const { bar: bar } = require("foo")
+import bar from "foo"
+import bar from require("foo")
+from "foo" import bar
+from require("foo") import bar
+import "foo" as { :bar }
+import "foo" as :bar
+import "foo" as { bar: bar }
+import "foo" as bar: bar
+
+
+print(_G.table, _G::table, _G\table)
+print("#{_G.table}", "#{_G::table}", "#{_G\table}")
+
+
+const lua_version_string = _VERSION\match("^Lua ([0-9]+%.[0-9]+)$")
+print("You are running lua version #{lua_version_string}!")
+
+
+const unpack = _G.unpack ?? table.unpack
+"".<mod> = (format_args) =>
+	if type(format_args) == 'table'
+	@format(unpack(format_args, 1, format_args.n or #format_args))
+
+
+
+array = [
+	"foo", "bar"
+	"biz"
+	"baz",
+]
+[x, y] = array
+print("x = %q, y = %q" % [x, y])
+
+
+table = {
+	"foo", "bar"
+	"biz"
+	"baz",
+
+	foo: "bar"
+	"foo": "bar"
+	["foo"]: "bar"
+
+	foo: "bar",
+	"foo": "bar",
+	["foo"]: "bar",
+
+	function: "Yep, this is allowed, too!"
+}
+
+
+---@class Object
+---@field __tostring fun(self: self): string
+---@field __class Object.__class
+---
+---@class Object.__class : Object
+---@field __init fun()
+---@field __base Object
+---@field __name "Object"
+---@overload fun(): Object
+class Object
+	<tostring>: () => "<instance of class \"#{@@__name}\">"
+
+Object.<tostring>: () => string.format("<class %q>", @__class.__name)
+
+
+export class Record extends Object
+	new: (...) =>
+		const argc = select("#", ...)
+		const argv = { ... }
+
+		if argc == 1 and type(argv[1]) == "table" then
+			for k, v in pairs(argv[1]) do
+				@[k] = v
+		else
+			for i = 1, argc, 1 do
+				self[i] = argv[i]
+
+	__tostring: () =>
+		local result = "%s {"::format(self.__class.__name)
+
+		if next(@, nil)?
+			for k, v in pairs(self)
+
+		result .. "}"
+
+
+macro yuex = (markup) ->
+	from require("xml.parser") import Parser
+
+	parser = Parser!
+
+	ast = parser.parse(markup)
+
+	--- Pretend like this is doing some cool JSX-like templating here
+	transformed_ast = error("To-do")
+
+	"{ 'yeah' }"

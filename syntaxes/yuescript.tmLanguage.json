@@ -184,7 +184,7 @@
 			"name": "constant.language.yue"
 		},
 		{
-			"match": "\\b__(init|name|add|sub|mul|div|mod|pow|unm|idiv|band|bor|bxor|bnot|shl|shr|concat|len|eq|lt|le|index|newindex|call|metatable|gc|close|mode)\\b",
+			"match": "\\b__(init|class|name|add|sub|mul|div|mod|pow|unm|idiv|band|bor|bxor|bnot|shl|shr|concat|len|eq|lt|le|index|newindex|call|metatable|gc|close|mode)\\b",
 			"name": "entity.name.function.yue"
 		},
 		{
@@ -287,6 +287,14 @@
 		}
 	],
 	"repository": {
+		"string_format_code": {
+			"patterns": [
+				{
+					"match": "",
+					"name": "constant.character.yue"
+				}
+			]
+		},
 		"double_quoted_string": {
 			"patterns": [
 				{
