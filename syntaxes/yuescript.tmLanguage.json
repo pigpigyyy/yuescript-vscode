@@ -94,7 +94,7 @@
 			"name": "keyword.yue"
 		},
 		{
-			"match": "(?x)\\b(?<![(?:\\.|\\:\\:|\\\\)\\$])(\\b(if|then|else|elseif|until|switch|when|with|do|for|while|return|unless|continue|break|try|catch|goto)\\b)(?!\\s*:)\\b",
+			"match": "(?x)\\b(?<![(?:\\.|\\:\\:|\\\\)\\$])(\\b(if|then|else|elseif|until|unless|switch|when|with|do|for|while|return|continue|break|try|catch|goto)\\b)(?!\\s*:)\\b",
 			"name": "keyword.control.yue"
 		},
 		{

@@ -115,3 +115,59 @@ macro yuex = (markup) ->
 	transformed_ast = error("To-do")
 
 	"{ 'yeah' }"
+
+
+do_thing() unless i_dont_want_to
+
+
+map = (tb, func) -> { k, func(k, v) for k, v in pairs(tb) }
+filter = (tb, func) -> { k, v for k, v in pairs(tb) where func(k, v) }
+
+["foo", "bar", "biz", "baz"]
+	|> filter((k, v) -> (k % 2) == 0)
+	|> map((k, v) -> v .. v)
+
+
+x = { k, v for k, v in pairs(data) }
+y = [ i for i = 1, 10, 2]
+
+
+
+class Array
+	new: (...) =>
+		const argc = select("#", ...)
+		const argv = [...]
+
+		@n = argc
+
+		for i = 1, argc
+			@[i] = argv[i]
+
+	append: (object) =>
+		@n += 1
+		@[@n] = object
+		@
+
+	map: (func) =>
+		const result = @@()
+
+		result::append(func(@[i], i)) for i = 1, @n
+
+		result
+
+	filter: (func) =>
+		const result = self.__class()
+
+		for i = 1, self.n
+			const value = self[i]
+
+			if not func(value, i)
+				continue
+
+			result::append(value)
+
+		result
+
+
+x = with Array("foo", "bar", "biz", "baz")
+	::gsub("Lua", "YueScript")
