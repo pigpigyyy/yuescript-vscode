@@ -171,3 +171,257 @@ class Array
 
 x = with Array("foo", "bar", "biz", "baz")
 	::gsub("Lua", "YueScript")
+
+
+null = nil
+boolean = true or false
+number = 10e+10
+string = "Hello!"
+table = { [123]: "abc" }
+func = () -> nil
+thread = coroutine.create((...) -> ...)
+
+x = {
+	<name>: "Mr. x"
+
+	--- Invalid metatable events get highlighted as errors
+	<foobar>: ':('
+
+	--- Class fields (`@@field`) and class instance fields (`@field`)
+	--- get highlighted separately; `.`, `::` and `\` are also highlighted
+	<call>: () => @@.p(@get_name!)
+
+	p: (x) -> print(x)
+
+	get_name: () => @name
+}
+
+y = {
+	--- The metatable-access operator also gets highlighted
+	<>: {
+		--- Metatable keys are highlighted separately...
+		__call: (x) => "Yes"
+
+		--- ... as are special fields of yuescript classes ...
+		--- (ah, and notice how PascalCased vairables are highlighted as class names)
+		stolen_init = SomeClass.__init
+
+		--- ... but not other "dunder" fields
+		__foobar: ":("
+	}
+}
+
+--- Strings generally don't mess up the highlighing of operators (unlike how the default
+--- Lua highlighting file does)
+print("Hello " .. 'world!')
+
+foo::bar!
+
+{:a, :b} = { "foo", "bar" }
+[x, y] = ["biz", "baz"]
+
+readable_number = 123_456_789
+
+for k, v in _G.pairs({ "first", "second", "thrid" })
+	print(k, v)
+
+local  loc = "I am local"
+global GLO = "I am global"
+const  CON = "I am constant"
+close  clo = "My .<close> meta-method will be called"
+class  Foo
+
+goto jmp
+::jmp::
+
+f = (x, y, z, ...) -> print(select("#", ...))
+
+print x.<name>
+print x\<index>
+print x.<"foo">
+
+--[[
+Multi-line comment
+]]
+
+$i_am_macro()
+
+-- Not valid!
+....
+function
+end
+x.<foo>
+10number_with_illeal_suffix
+x:::y()
+"\a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u{0000}\v\w\x07\y\z"
+"\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U{0000}\V\W\X\Y\Z"
+
+table =
+	function: "foo"
+	end: "bar"
+	already_legal: "biz baz"
+
+---@class Man asdf
+class Man
+	new: (name) =>
+		@_name = name
+
+	introduce: () =>
+		--- Syntax highlighting also works within string interpolation (at least, to an extend;
+		--- notabliy, having table brackets within it will mess it up)
+		"Hello, my name is #{'Mr. ' .. @@_name}. Nice to meet you!"
+
+--- Lua-language-server-style annotations also have basic support
+---@alias x y -- Foo bar
+
+x = [ i for i = 1, 10 ]
+
+assert ""\sub(1, 1) ~= x
+assert(""::sub(1, 1) != x)
+
+function you_cannot_use_these_keywords_in_yuescript()
+	-- ...
+end
+
+"Test" |> print
+
+print @foo.bar()
+print @foo::bar()
+print @foo\bar()
+
+list[] = "Appended"
+
+func!
+func()
+
+print x.y
+print x::y
+print x\y
+
+print x.test
+print x.Test
+print x.TEST
+print x.for
+print x.const
+
+print i ~= j
+print i != j
+
+print #i
+print -i
+print ~i
+
+i += 1
+i -= 1
+i *= 1
+i /= 1
+i ..= 1
+i //= 1
+i %= 1
+i ^= 1
+i &= 1
+i |= 1
+i >>= 1
+i <<= 1
+i ??= 1
+i or= 1
+i and= 1
+
+do
+	const f = (a, func, b) ->
+		print(a)
+		func("second")
+		print(b)
+
+	(x) <- f("first", _, "third")
+
+	print(x)
+
+x.<index>
+x.<newindex>
+x.<mode>
+x.<call>
+x.<metatable>
+x.<tostring>
+x.<len>
+x.<pairs>
+x.<ipairs>
+x.<gc>
+x.<name>
+x.<close>
+x.<unm>
+x.<add>
+x.<sub>
+x.<mul>
+x.<div>
+x.<idiv>
+x.<mod>
+x.<pow>
+x.<concat>
+x.<band>
+x.<bor>
+x.<bxor>
+x.<bnot>
+x.<shl>
+x.<shr>
+x.<eq>
+x.<lt>
+x.<le>
+
+x.<nonsense>
+
+
+print(string.format("Hello, %s!", "world"))
+
+
+while true do
+	break
+
+for i = 1, 10, 2 do
+	continue
+
+for k, v in pairs(x) do
+	return
+
+repeat
+	break
+until false
+
+until false do
+	break
+
+if true do
+	return
+
+unless false do
+	return
+
+switch type(x)
+	when "nil" then
+		--
+	when "boolean"
+		--
+	else
+		---
+
+switch math.random(1, 5) when 1
+	print("you are lucky")
+else
+	print("not so lucky")
+
+items =
+  * x: 100
+    y: 200
+  * width: 300
+    height: 400
+
+for item in *items
+	switch item
+		when :x, :y
+			print "Vec2 #{x}, #{y}"
+		when :width, :height
+			print "size #{width}, #{height}"
+
+print("hello world") if name == "Rob"
+
+print "item: ", item for item in *items

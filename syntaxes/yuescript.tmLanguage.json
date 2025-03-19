@@ -9,6 +9,15 @@
 	"foldingStopMarker": "^\\s*$|^\\s*[}\\]]\\s*$",
 	"patterns": [
 		{
+			"begin": "<",
+			"end": ">",
+			"patterns": [
+				{
+					"include": "#metatable_event"
+				}
+			]
+		},
+		{
 			"captures": {
 				"1": {
 					"name": "variable.parameter.function.yue"
@@ -94,7 +103,7 @@
 			"name": "keyword.yue"
 		},
 		{
-			"match": "(?x)\\b(?<![(?:\\.|\\:\\:|\\\\)\\$])(\\b(if|then|else|elseif|until|unless|switch|when|with|do|for|while|return|continue|break|try|catch|goto)\\b)(?!\\s*:)\\b",
+			"match": "(?x)\\b(?<![(?:\\.|\\:\\:|\\\\)\\$])(\\b(if|then|else|elseif|until|unless|switch|when|with|do|for|while|repeat|return|continue|break|try|catch|goto)\\b)(?!\\s*:)\\b",
 			"name": "keyword.control.yue"
 		},
 		{
@@ -287,10 +296,38 @@
 		}
 	],
 	"repository": {
+		"keyword": {
+			"patterns": [
+				{
+					"match": "\\b(import|as|from|export|macro|local|global|close|const|class|extends|using|super)\\b",
+					"name": "keyword.yue"
+				},
+				{
+					"match": "\\b(if|then|else|elseif|until|unless|switch|when|with|do|for|while|repeat|return|continue|break|try|catch|goto)\\b",
+					"name": "keyword.control.yue"
+				},
+				{
+					"match": "\\b(or|and|in)\\b",
+					"name": "keyword.operator.yue"
+				}
+			]
+		},
+		"metatable_event": {
+			"patterns": [
+				{
+					"match": "(name|add|sub|mul|div|mod|pow|unm|idiv|band|bor|bxor|bnot|shl|shr|concat|len|eq|lt|le|index|newindex|call|metatable|gc|close|mode|tostring|pairs|ipairs)",
+					"name": "constant.language.yue"
+				},
+				{
+					"match": "(class|base|init|inherited)",
+					"name": "constant.language.yue"
+				}
+			]
+		},
 		"string_format_code": {
 			"patterns": [
 				{
-					"match": "",
+					"match": "%(%|a|A|c|d|e|E|f|g|G|i|o|p|q|s|u|x|X)",
 					"name": "constant.character.yue"
 				}
 			]
@@ -318,6 +355,9 @@
 						},
 						{
 							"include": "#interpolated_yue"
+						},
+						{
+							"include": "#string_format_code"
 						}
 					]
 				}
