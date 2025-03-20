@@ -96,12 +96,25 @@ export class Record extends Object
 				self[i] = argv[i]
 
 	__tostring: () =>
-		local result = "%s {"::format(self.__class.__name)
+		local result = "#{@@__name} {"
 
-		if next(@, nil)?
-			for k, v in pairs(self)
+		if next(@, nil) == nil
+			return result "}"
 
-		result .. "}"
+		for k, v in pairs(self)
+			result ..= "\n    " .. (switch type(k)
+				when "boolean", "number"
+					tostring(k)
+				when "string"
+					if k::match("^[a-zA-Z_][a-zA-Z0-9_]*$")
+						k
+					else
+						"[%q]"::format(k)
+				else
+					error("Unsupported type %q of Record key!"::format(type(k)))
+			) .. ": #{v}"
+
+		result .. "\n}"
 
 
 macro yuex = (markup) ->
@@ -121,7 +134,7 @@ do_thing() unless i_dont_want_to
 
 
 map = (tb, func) -> { k, func(k, v) for k, v in pairs(tb) }
-filter = (tb, func) -> { k, v for k, v in pairs(tb) where func(k, v) }
+filter = (tb, func) -> { k, v for k, v in pairs(tb) when func(k, v) }
 
 ["foo", "bar", "biz", "baz"]
 	|> filter((k, v) -> (k % 2) == 0)
@@ -129,7 +142,9 @@ filter = (tb, func) -> { k, v for k, v in pairs(tb) where func(k, v) }
 
 
 x = { k, v for k, v in pairs(data) }
-y = [ i for i = 1, 10, 2]
+x = [i for i = 1, 10, 2]
+x = [v for i, v in ipairs(data)]
+x = [v for i, v in *data]
 
 
 
@@ -149,11 +164,8 @@ class Array
 		@
 
 	map: (func) =>
-		const result = @@()
-
-		result::append(func(@[i], i)) for i = 1, @n
-
-		result
+		with @@!
+			::append(func(@[i], i)) for i = 1, @n
 
 	filter: (func) =>
 		const result = self.__class()
@@ -304,28 +316,31 @@ print x.TEST
 print x.for
 print x.const
 
-print i ~= j
-print i != j
+print x in y
 
-print #i
-print -i
-print ~i
+print x ~= y
+print x != y
 
-i += 1
-i -= 1
-i *= 1
-i /= 1
-i ..= 1
-i //= 1
-i %= 1
-i ^= 1
-i &= 1
-i |= 1
-i >>= 1
-i <<= 1
-i ??= 1
-i or= 1
-i and= 1
+print #x
+print -x
+print ~x
+print not x
+
+x += 1
+x -= 1
+x *= 1
+x /= 1
+x ..= 1
+x //= 1
+x %= 1
+x ^= 1
+x &= 1
+x |= 1
+x >>= 1
+x <<= 1
+x ??= 1
+x or= 1
+x and= 1
 
 do
 	const f = (a, func, b) ->
