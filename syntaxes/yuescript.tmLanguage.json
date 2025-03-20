@@ -9,15 +9,6 @@
 	"foldingStopMarker": "^\\s*$|^\\s*[}\\]]\\s*$",
 	"patterns": [
 		{
-			"begin": "<",
-			"end": ">",
-			"patterns": [
-				{
-					"include": "#metatable_event"
-				}
-			]
-		},
-		{
 			"captures": {
 				"1": {
 					"name": "variable.parameter.function.yue"
@@ -101,6 +92,35 @@
 		{
 			"match": "(?x)\\b(?<![(?:\\.|\\:\\:|\\\\)\\$])(\\b(import|as|from|export|in|macro|local|global|close|const|class|extends|using)\\b)(?!\\s*:)\\b",
 			"name": "keyword.yue"
+		},
+		{
+			"begin": "<",
+			"beginCaptures": {
+				"0": {
+					"name": "constant.language.yue"
+				}
+			},
+			"end": ">",
+			"endCaptures": {
+				"0": {
+					"name": "constant.language.yue"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#metatable_event"
+				},
+				{
+					"include": "#single_quoted_string"
+				},
+				{
+					"include": "#double_quoted_string"
+				},
+				{
+					"match": "[^>]*",
+					"name": "invalid.illegal.yue"
+				}
+			]
 		},
 		{
 			"match": "(?x)\\b(?<![(?:\\.|\\:\\:|\\\\)\\$])(\\b(if|then|else|elseif|until|unless|switch|when|with|do|for|while|repeat|return|continue|break|try|catch|goto)\\b)(?!\\s*:)\\b",
@@ -315,7 +335,7 @@
 		"metatable_event": {
 			"patterns": [
 				{
-					"match": "(name|add|sub|mul|div|mod|pow|unm|idiv|band|bor|bxor|bnot|shl|shr|concat|len|eq|lt|le|index|newindex|call|metatable|gc|close|mode|tostring|pairs|ipairs)",
+					"match": "(mode|name|add|sub|mul|div|mod|pow|unm|idiv|band|bor|bxor|bnot|shl|shr|concat|len|eq|lt|le|index|newindex|call|metatable|gc|close|tostring|pairs|ipairs)",
 					"name": "constant.language.yue"
 				},
 				{
