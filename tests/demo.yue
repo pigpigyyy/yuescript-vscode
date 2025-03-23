@@ -182,7 +182,7 @@ class Array
 
 
 x = with Array("foo", "bar", "biz", "baz")
-	::gsub("Lua", "YueScript")
+	::map (str) -> str::upper()
 
 
 null = nil
@@ -348,6 +348,22 @@ x ??= 1
 x or= 1
 x and= 1
 
+x = x + 1
+x = x - 1
+x = x * 1
+x = x / 1
+x = x .. 1
+x = x // 1
+x = x % 1
+x = x ^ 1
+x = x & 1
+x = x | 1
+x = x >> 1
+x = x << 1
+x = x ?? 1
+x = x or 1
+x = x and 1
+
 do
 	const f = (a, func, b) ->
 		print(a)
@@ -455,10 +471,10 @@ class Bar
 	new: () =>
 		super()
 
-decimal     = 255.5
-octal       = 0o377.4
-binary      = 0b11111111.01
-hexadecimal = 0xff.8
+decimal     = 2_55.5
+octal       = 0o3_77.4
+binary      = 0b11_111111.01
+hexadecimal = 0xf_f.8
 
 trailing_dot = 10.
 
@@ -477,3 +493,10 @@ super()
 
 print x::self
 print $self
+
+print @
+print @@
+print @@@
+
+print $
+print $$

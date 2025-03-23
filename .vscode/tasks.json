@@ -14,6 +14,24 @@
 				"${workspaceFolder}/syntaxes/yuescript.tmLanguage.json5",
 				"--out-file",
 				"${workspaceFolder}/syntaxes/yuescript.tmLanguage.json"
+			],
+			"hide": true,
+			"presentation": {
+				"echo": false,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": true
+			}
+		},
+		{
+			"label": "Build VSIX extension package",
+			"type": "process",
+			"command": "npx",
+			"args": [
+				"vsce",
+				"package"
 			]
 		}
 	]
