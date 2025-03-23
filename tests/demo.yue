@@ -263,9 +263,9 @@ $i_am_macro()
 function
 end
 x.<foo>
-10number_with_illeal_suffix
+10number_with_illegal_suffix
 x:::y()
-"\a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u{0000}\v\w\x07\y\z"
+"\a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u{0000}\v\w\x07\y\z\001"
 "\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U{0000}\V\W\X\Y\Z"
 
 table =
@@ -320,6 +320,12 @@ print x in y
 
 print x ~= y
 print x != y
+
+print x == y
+print x > y
+print x >= y
+print x < y
+print x <= y
 
 print #x
 print -x
@@ -442,3 +448,32 @@ for item in *items
 print("hello world") if name == "Rob"
 
 print "item: ", item for item in *items
+
+class Foo
+
+class Bar
+	new: () =>
+		super()
+
+decimal     = 255.5
+octal       = 0o377.4
+binary      = 0b11111111.01
+hexadecimal = 0xff.8
+
+trailing_dot = 10.
+
+decimal_no_whole = .5
+hexadecimal_no_whole = 0x.8
+
+decimal_scientific_notaion = 2.3e10 + 10e+5 - .25e-7
+
+foo😀bar = x
+
+static_class_member = @@foo
+instance_member = @foo
+macro_name = $foo
+
+super()
+
+print x::self
+print $self

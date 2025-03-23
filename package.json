@@ -65,8 +65,9 @@
 		"@types/vscode": "1.98.0"
 	},
 	"devDependencies": {
-		"typescript": "^5.0.0",
 		"@types/node": "^20.0.0",
-		"@vscode/test-electron": "latest"
+		"@vscode/test-electron": "latest",
+		"json5": "^2.2.3",
+		"typescript": "^5.0.0"
 	}
 }
