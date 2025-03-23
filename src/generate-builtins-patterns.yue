@@ -109,7 +109,7 @@ for _, i in ipairs([
 
 targets
 	|> map((k, v) -> "%s(?:%s)\\b"::format(
-		(v == _G) and "(?:\\b_G\\.)*" or "(?:\\b(?:_G\\.)+|\\b)#{k}\\."
+		(v == _G) and "(?:\\b_G(?:\\.|::|\\\\))*" or "(?:\\b(?:_G(?:\\.|::|\\\\))+|\\b)#{k}(?:\\.|::|\\\\)"
 		v |> filter(is_valid_identifier) |> keys |> sort |> table.concat("|")
 	))
 	|> values
