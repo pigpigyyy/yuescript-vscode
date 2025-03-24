@@ -463,6 +463,7 @@
 					match: "\\b([\\d_]+(\\.[\\d_]+)?|\\.[\\d_]+)(e[+\\-]?[\\d_]+)?\\b",
 					name: "constant.numeric.yue"
 				},
+				// TODO: Add hexadecimal exponents (`0x...[pP][+\\-]?\\d`)
 				{
 					match: "\\b0x(((?:\\h|\\h[\\h_]*\\h)(\\.(?:\\h|\\h[\\h_]*\\h))?)|\\.(?:\\h|\\h[\\h_]*\\h))\\b",
 					name: "constant.numeric.yue"
