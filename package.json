@@ -4,7 +4,7 @@
 	"description": "An extension for YueScript",
 	"version": "0.1.0",
 	"engines": {
-		"vscode": "1.98.0"
+		"vscode": "^1.98.0"
 	},
 	"categories": [
 		"Programming Languages"
@@ -62,7 +62,7 @@
 		"url": "https://github.com/SkyyySi/yuescript-vscode"
 	},
 	"peerDependencies": {
-		"@types/vscode": "1.98.0"
+		"@types/vscode": "^1.98.0"
 	},
 	"devDependencies": {
 		"@types/node": "^20.0.0",
