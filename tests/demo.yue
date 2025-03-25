@@ -486,12 +486,16 @@ octal       = 0o3_77.4
 binary      = 0b11_111111.01
 hexadecimal = 0xf_f.8
 
+-- FIXME: The '.' at the end isn't being colored in yet
 trailing_dot = 10.
 
+-- FIXME: The '.' at the beginning isn't being colored in yet
 decimal_no_whole = .5
 hexadecimal_no_whole = 0x.8
 
 decimal_scientific_notaion = 2.3e10 + 10e+5 - .25e-7
+
+-- TODO: Add hexadecimal exponential notation (using 'p'/'P' instead of 'e'/'E')
 
 foo😀bar = x
 
