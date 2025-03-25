@@ -327,6 +327,16 @@ print x >= y
 print x < y
 print x <= y
 
+(x) <= f
+do (x) <= f
+nope (x) <= f
+yep(do (x) <= f)
+
+(x) <- f
+do (x) <- f
+nope (x) <- f
+yep(do (x) <- f)
+
 print #x
 print -x
 print ~x
@@ -441,7 +451,7 @@ switch type(x)
 	when "boolean"
 		--
 	else
-		---
+		--
 
 switch math.random(1, 5) when 1
 	print("you are lucky")
@@ -500,3 +510,16 @@ print @@@
 
 print $
 print $$
+
+x = do
+x = { do: ... }
+x = { :do }
+
+x = true
+true = x
+true += x
+x.true += x
+
+print table, table.concat
+
+f = (x) ->

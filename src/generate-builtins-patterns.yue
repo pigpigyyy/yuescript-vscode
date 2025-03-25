@@ -41,6 +41,11 @@ const targets = {
 	:utf8
 }
 
+
+const escape_regex = (str) ->
+	str::gsub("[%[%]%(%)%{%}%?%.%+%-%|]", (char) -> "\\" .. char)
+
+
 const include_module = (module_name, aliases) ->
 	try
 		local imported = require(module_name)
@@ -55,9 +60,9 @@ const include_module = (module_name, aliases) ->
 
 		if aliases?
 			for name in *aliases
-				targets["(?:" .. (aliases |> sort |> table.concat("|")) .. ")"] = imported
+				targets["(?:" .. (aliases |> map((k, v) -> escape_regex(v)) |> sort |> table.concat("|")) .. ")"] = imported
 		else
-			targets[module_name] = imported
+			targets[escape_regex(module_name)] = imported
 	catch err
 		io.stderr::write(debug.traceback(err), "\n")
 
@@ -108,10 +113,31 @@ for _, i in ipairs([
 
 
 targets
-	|> map((k, v) -> "%s(?:%s)\\b"::format(
-		(v == _G) and "(?:\\b_G(?:\\.|::|\\\\))*" or "(?:\\b(?:_G(?:\\.|::|\\\\))+|\\b)#{k}(?:\\.|::|\\\\)"
-		v |> filter(is_valid_identifier) |> keys |> sort |> table.concat("|")
-	))
+	--|> map((k, v) -> "%s(?:%s)\\b"::format(
+	--	(v == _G) and "(?:\\b_G(?:\\.|::|\\\\))*" or "(?:\\b(?:_G(?:\\.|::|\\\\))+|\\b)#{k}(?:\\.|::|\\\\)"
+	--	v |> filter(is_valid_identifier) |> keys |> sort |> table.concat("|")
+	--))
+	|> map((k, v) ->
+		const members = "(?:" .. (do
+			v
+			|> (if k == "_G"
+				(...) -> ...
+			else
+				(...) -> ...
+			)
+			|> filter(is_valid_identifier)
+			|> keys
+			|> sort
+			|> table.concat("|")
+		) .. ")"
+
+		const delimiter = "(?:\\.|:|::|\\\\)"
+
+		"\\b(?:_G#{delimiter})*" .. if k == "_G"
+			"#{members}\\b"
+		else
+			"#{k}(?:#{delimiter}#{members})?\\b"
+	)
 	|> values
 	|> sort
 	|> map((_, v) -> {
