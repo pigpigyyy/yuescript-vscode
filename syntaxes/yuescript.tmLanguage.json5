@@ -4,9 +4,18 @@
 	fileTypes: [
 		"yue"
 	],
-	firstLineMatch: "^#!.*\\byue",
+	//firstLineMatch: "^#!.*\\byue",
 	//foldingStopMarker: "^\\s*$|^\\s*[}\\]]\\s*$",
 	patterns: [
+		{
+			"match": "\\A(#!).*$\\n?",
+			"name": "comment.line.shebang.yue",
+			"captures": {
+				"1": {
+					"name": "punctuation.definition.comment.yue"
+				}
+			}
+		},
 		{
 			// Functions
 			match: "(\\(.*?\\))?\\s*([=-]>)",
