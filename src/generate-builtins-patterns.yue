@@ -1,0 +1,154 @@
+import "cjson" as json
+
+const sort = (tb, ...) ->
+	table.sort(tb, ...)
+	tb
+
+
+const map = (tb, f) ->
+	{k, f(k, v) for k, v in pairs(tb)}
+
+
+const filter = (tb, f) ->
+	{k, v for k, v in pairs(tb) when f(k, v)}
+
+
+const keys = (tb) ->
+	[k for k, v in pairs(tb)]
+
+
+const values = (tb) ->
+	[v for k, v in pairs(tb)]
+
+
+const is_valid_identifier = (str) ->
+	(type(str) == "string") and
+	(str::match("^[a-zA-Z_][a-zA-Z90-9_]*$")) and
+	(not str::match("^__"))
+
+
+const targets = {
+	:_G
+	:coroutine
+	:debug
+	:io
+	:math
+	:os
+	:package
+	:pretty
+	:string
+	:table
+	:utf8
+}
+
+
+const escape_regex = (str) ->
+	str::gsub("[%[%]%(%)%{%}%?%.%+%-%|]", (char) -> "\\" .. char)
+
+
+const include_module = (module_name, aliases) ->
+	try
+		local imported = require(module_name)
+
+		if imported == true
+			imported = _G[module_name]
+		elseif type(imported) != "table"
+			error("Module %q did not return a table! (got: %q)"::format(module_name, type(imported)))
+
+		if imported == nil
+			error("Could not find a suitable namespace for module %q!"::format(module_name))
+
+		if aliases?
+			for name in *aliases
+				targets["(?:" .. (aliases |> map((k, v) -> escape_regex(v)) |> sort |> table.concat("|")) .. ")"] = imported
+		else
+			targets[escape_regex(module_name)] = imported
+	catch err
+		io.stderr::write(debug.traceback(err), "\n")
+
+include_module("yue")
+include_module("lpeglabel", ["lpeglabel", "lpeg"])
+include_module("relabel", ["relabel", "re"])
+for _, i in ipairs([
+		"pl.app"
+		"pl.array2d"
+		"pl.class"
+		"pl.compat"
+		"pl.comprehension"
+		"pl.config"
+		"pl.data"
+		"pl.dir"
+		"pl.file"
+		"pl.func"
+		--"pl.import_into"
+		"pl.input"
+		"pl.lapp"
+		"pl.lexer"
+		"pl.luabalanced"
+		"pl.operator"
+		"pl.path"
+		"pl.permute"
+		"pl.pretty"
+		"pl.seq"
+		"pl.sip"
+		"pl.strict"
+		"pl.stringio"
+		"pl.stringx"
+		"pl.tablex"
+		"pl.template"
+		"pl.test"
+		"pl.text"
+		"pl.types"
+		"pl.url"
+		"pl.utils"
+		"pl.xml"
+		"pl.Date"
+		"pl.List"
+		"pl.Map"
+		"pl.MultiMap"
+		"pl.OrderedMap"
+		"pl.Set"
+	])
+	include_module(i)
+
+
+targets
+	--|> map((k, v) -> "%s(?:%s)\\b"::format(
+	--	(v == _G) and "(?:\\b_G(?:\\.|::|\\\\))*" or "(?:\\b(?:_G(?:\\.|::|\\\\))+|\\b)#{k}(?:\\.|::|\\\\)"
+	--	v |> filter(is_valid_identifier) |> keys |> sort |> table.concat("|")
+	--))
+	|> map((k, v) ->
+		const members = "(?:" .. (do
+			v
+			|> (if k == "_G"
+				(...) -> ...
+			else
+				(...) -> ...
+			)
+			|> filter(is_valid_identifier)
+			|> keys
+			|> sort
+			|> table.concat("|")
+		) .. ")"
+
+		const delimiter = "(?:\\.|:|::|\\\\)"
+
+		"\\b(?:_G#{delimiter})*" .. if k == "_G"
+			"#{members}\\b"
+		else
+			"#{k}(?:#{delimiter}#{members})?\\b"
+	)
+	|> values
+	|> sort
+	|> map((_, v) -> {
+		match: v, name: "support.function.library.yue"
+	})
+	--[[ |> ((x) -> {
+		repository: {
+			builtins: {
+				patterns: x
+			}
+		}
+	}) ]]
+	|> json.encode
+	|> print

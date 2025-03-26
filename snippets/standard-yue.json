@@ -1,42 +1,42 @@
 {
-    "Yuescript - Class": {
-        "prefix": "class",
-        "body": "class $1\n\t$0"
-    },
-    "Yuescript - Extended Class": {
-        "prefix": "class",
-        "body": "class $1 extends $2\n\t$0"
-    },
-    "Yuescript - Mixed Class": {
-        "prefix": "class",
-        "body": "class $1 using $2\n\t$0"
-    },
-    "Yuescript - Self Inherited": {
-        "prefix": "@__inherited",
-        "body": "@__inherited: (child)=>\n\t$0"
-    },
-    "Yuescript - New": {
-        "prefix": "new",
-        "body": "new: ($1)=>\n\t$0"
-    },
-    "Yuescript - Inherited": {
-        "prefix": "__inherited",
-        "body": "__inherited$0"
-    },
-    "Yuescript - Self Name": {
-        "prefix": "@__name",
-        "body": "@__name$0"
-    },
-    "Yuescript - Name": {
-        "prefix": "__name",
-        "body": "__name$0"
-    },
-    "Yuescript - Super Class": {
-        "prefix": "super",
-        "body": "super$0"
-    },
-    "Yuescript - Import": {
-        "prefix": "import",
-        "body": "import $1 as :$0"
-    }
+	"Yuescript - Class": {
+		"prefix": "class",
+		"body": "class $1\n\t$0"
+	},
+	"Yuescript - Extended Class": {
+		"prefix": "class",
+		"body": "class $1 extends $2\n\t$0"
+	},
+	"Yuescript - Mixed Class": {
+		"prefix": "class",
+		"body": "class $1 using $2\n\t$0"
+	},
+	"Yuescript - Self Inherited": {
+		"prefix": "@__inherited",
+		"body": "@__inherited: (child)=>\n\t$0"
+	},
+	"Yuescript - New": {
+		"prefix": "new",
+		"body": "new: ($1)=>\n\t$0"
+	},
+	"Yuescript - Inherited": {
+		"prefix": "__inherited",
+		"body": "__inherited$0"
+	},
+	"Yuescript - Self Name": {
+		"prefix": "@__name",
+		"body": "@__name$0"
+	},
+	"Yuescript - Name": {
+		"prefix": "__name",
+		"body": "__name$0"
+	},
+	"Yuescript - Super Class": {
+		"prefix": "super",
+		"body": "super$0"
+	},
+	"Yuescript - Import": {
+		"prefix": "import",
+		"body": "import $1 as :$0"
+	}
 }

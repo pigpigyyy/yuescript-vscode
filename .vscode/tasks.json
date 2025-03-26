@@ -1,0 +1,38 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Compile syntax to JSON",
+			"type": "process",
+			"command": "npx",
+			"args": [
+				"json5",
+				"--space",
+				"t",
+				"${workspaceFolder}/syntaxes/yuescript.tmLanguage.json5",
+				"--out-file",
+				"${workspaceFolder}/syntaxes/yuescript.tmLanguage.json"
+			],
+			"hide": true,
+			"presentation": {
+				"echo": false,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": true
+			}
+		},
+		{
+			"label": "Build VSIX extension package",
+			"type": "process",
+			"command": "npx",
+			"args": [
+				"vsce",
+				"package"
+			]
+		}
+	]
+}

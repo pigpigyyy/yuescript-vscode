@@ -1,0 +1,529 @@
+#!/usr/bin/env yue
+--- This script is only meant as a test for syntax highlighting. If the code
+--- here looks like nonsense, that's because... it is. I just wrote down
+--- whatever I came up with while thinking of stuff that *looks* like "real"
+--- code, but it doesn't actually have any meaning and is not intended to be
+--- used or executed.
+
+--[[
+I'm a block comment!
+--]]
+
+
+const bar = require"foo.bar"
+const bar = require "foo.bar"
+const bar = require("foo.bar")
+import "foo.bar"
+import "foo.bar" as bar
+const { :bar } = require "foo"
+const { bar: bar } = require("foo")
+import bar from "foo"
+import bar from require("foo")
+from "foo" import bar
+from require("foo") import bar
+import "foo" as { :bar }
+import "foo" as :bar
+import "foo" as { bar: bar }
+import "foo" as bar: bar
+
+
+print(_G.table, _G::table, _G\table)
+print("#{_G.table}", "#{_G::table}", "#{_G\table}")
+
+
+const lua_version_string = _VERSION\match("^Lua ([0-9]+%.[0-9]+)$")
+print("You are running lua version #{lua_version_string}!")
+
+
+const unpack = _G.unpack ?? table.unpack
+"".<mod> = (format_args) =>
+	if type(format_args) == 'table'
+	@format(unpack(format_args, 1, format_args.n or #format_args))
+
+
+
+array = [
+	"foo", "bar"
+	"biz"
+	"baz",
+]
+[x, y] = array
+print("x = %q, y = %q" % [x, y])
+
+
+table = {
+	"foo", "bar"
+	"biz"
+	"baz",
+
+	foo: "bar"
+	"foo": "bar"
+	["foo"]: "bar"
+
+	foo: "bar",
+	"foo": "bar",
+	["foo"]: "bar",
+
+	function: "Yep, this is allowed, too!"
+}
+
+
+---@class Object
+---@field __tostring fun(self: self): string
+---@field __class Object.__class
+---
+---@class Object.__class : Object
+---@field __init fun()
+---@field __base Object
+---@field __name "Object"
+---@overload fun(): Object
+class Object
+	<tostring>: () => "<instance of class \"#{@@__name}\">"
+
+Object.<tostring>: () => string.format("<class %q>", @__class.__name)
+
+
+export class Record extends Object
+	new: (...) =>
+		const argc = select("#", ...)
+		const argv = { ... }
+
+		if argc == 1 and type(argv[1]) == "table" then
+			for k, v in pairs(argv[1]) do
+				@[k] = v
+		else
+			for i = 1, argc, 1 do
+				self[i] = argv[i]
+
+	__tostring: () =>
+		local result = "#{@@__name} {"
+
+		if next(@, nil) == nil
+			return result "}"
+
+		for k, v in pairs(self)
+			result ..= "\n    " .. (switch type(k)
+				when "boolean", "number"
+					tostring(k)
+				when "string"
+					if k::match("^[a-zA-Z_][a-zA-Z0-9_]*$")
+						k
+					else
+						"[%q]"::format(k)
+				else
+					error("Unsupported type %q of Record key!"::format(type(k)))
+			) .. ": #{v}"
+
+		result .. "\n}"
+
+
+macro yuex = (markup) ->
+	from require("xml.parser") import Parser
+
+	parser = Parser!
+
+	ast = parser.parse(markup)
+
+	--- Pretend like this is doing some cool JSX-like templating here
+	transformed_ast = error("To-do")
+
+	"{ 'yeah' }"
+
+
+do_thing() unless i_dont_want_to
+
+
+map = (tb, func) -> { k, func(k, v) for k, v in pairs(tb) }
+filter = (tb, func) -> { k, v for k, v in pairs(tb) when func(k, v) }
+
+["foo", "bar", "biz", "baz"]
+	|> filter((k, v) -> (k % 2) == 0)
+	|> map((k, v) -> v .. v)
+
+
+x = { k, v for k, v in pairs(data) }
+x = [i for i = 1, 10, 2]
+x = [v for i, v in ipairs(data)]
+x = [v for i, v in *data]
+
+
+
+class Array
+	new: (...) =>
+		const argc = select("#", ...)
+		const argv = [...]
+
+		@n = argc
+
+		for i = 1, argc
+			@[i] = argv[i]
+
+	append: (object) =>
+		@n += 1
+		@[@n] = object
+		@
+
+	map: (func) =>
+		with @@!
+			::append(func(@[i], i)) for i = 1, @n
+
+	filter: (func) =>
+		const result = self.__class()
+
+		for i = 1, self.n
+			const value = self[i]
+
+			if not func(value, i)
+				continue
+
+			result::append(value)
+
+		result
+
+
+x = with Array("foo", "bar", "biz", "baz")
+	::map (str) -> str::upper()
+
+
+null = nil
+boolean = true or false
+number = 10e+10
+string = "Hello!"
+table = { [123]: "abc" }
+func = () -> nil
+thread = coroutine.create((...) -> ...)
+
+x = {
+	<name>: "Mr. x"
+
+	--- Invalid metatable events get highlighted as errors
+	<foobar>: ':('
+
+	--- Class fields (`@@field`) and class instance fields (`@field`)
+	--- get highlighted separately; `.`, `::` and `\` are also highlighted
+	<call>: () => @@.p(@get_name!)
+
+	p: (x) -> print(x)
+
+	get_name: () => @name
+}
+
+y = {
+	--- The metatable-access operator also gets highlighted
+	<>: {
+		--- Metatable keys are highlighted separately...
+		__call: (x) => "Yes"
+
+		--- ... as are special fields of yuescript classes ...
+		--- (ah, and notice how PascalCased vairables are highlighted as class names)
+		stolen_init = SomeClass.__init
+
+		--- ... but not other "dunder" fields
+		__foobar: ":("
+	}
+}
+
+--- Strings generally don't mess up the highlighing of operators (unlike how the default
+--- Lua highlighting file does)
+print("Hello " .. 'world!')
+
+foo::bar!
+
+{:a, :b} = { "foo", "bar" }
+[x, y] = ["biz", "baz"]
+
+readable_number = 123_456_789
+
+for k, v in _G.pairs({ "first", "second", "thrid" })
+	print(k, v)
+
+local  loc = "I am local"
+global GLO = "I am global"
+const  CON = "I am constant"
+close  clo = "My .<close> meta-method will be called"
+class  Foo
+
+goto jmp
+::jmp::
+
+f = (x, y, z, ...) -> print(select("#", ...))
+
+print x.<name>
+print x\<index>
+print x.<"foo">
+
+--[[
+Multi-line comment
+]]
+
+$i_am_macro()
+
+-- Not valid!
+....
+function
+end
+x.<foo>
+10number_with_illegal_suffix
+x:::y()
+"\a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u{0000}\v\w\x07\y\z\001"
+"\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U{0000}\V\W\X\Y\Z"
+
+table =
+	function: "foo"
+	end: "bar"
+	already_legal: "biz baz"
+
+---@class Man asdf
+class Man
+	new: (name) =>
+		@_name = name
+
+	introduce: () =>
+		--- Syntax highlighting also works within string interpolation (at least, to an extend;
+		--- notabliy, having table brackets within it will mess it up)
+		"Hello, my name is #{'Mr. ' .. @@_name}. Nice to meet you!"
+
+--- Lua-language-server-style annotations also have basic support
+---@alias x y -- Foo bar
+
+x = [ i for i = 1, 10 ]
+
+assert ""\sub(1, 1) ~= x
+assert(""::sub(1, 1) != x)
+
+function you_cannot_use_these_keywords_in_yuescript()
+	-- ...
+end
+
+"Test" |> print
+
+print @foo.bar()
+print @foo::bar()
+print @foo\bar()
+
+list[] = "Appended"
+
+func!
+func()
+
+print x.y
+print x::y
+print x\y
+
+print x.test
+print x.Test
+print x.TEST
+print x.for
+print x.const
+
+print x in y
+
+print x ~= y
+print x != y
+
+print x == y
+print x > y
+print x >= y
+print x < y
+print x <= y
+
+(x) <= f
+do (x) <= f
+nope (x) <= f
+yep(do (x) <= f)
+
+(x) <- f
+do (x) <- f
+nope (x) <- f
+yep(do (x) <- f)
+
+print #x
+print -x
+print ~x
+print not x
+
+x += 1
+x -= 1
+x *= 1
+x /= 1
+x ..= 1
+x //= 1
+x %= 1
+x ^= 1
+x &= 1
+x |= 1
+x >>= 1
+x <<= 1
+x ??= 1
+x or= 1
+x and= 1
+
+x = x + 1
+x = x - 1
+x = x * 1
+x = x / 1
+x = x .. 1
+x = x // 1
+x = x % 1
+x = x ^ 1
+x = x & 1
+x = x | 1
+x = x >> 1
+x = x << 1
+x = x ?? 1
+x = x or 1
+x = x and 1
+
+do
+	const f = (a, func, b) ->
+		print(a)
+		func("second")
+		print(b)
+
+	(x) <- f("first", _, "third")
+
+	print(x)
+
+x.<index>
+x.<newindex>
+x.<mode>
+x.<call>
+x.<metatable>
+x.<tostring>
+x.<len>
+x.<pairs>
+x.<ipairs>
+x.<gc>
+x.<name>
+x.<close>
+x.<unm>
+x.<add>
+x.<sub>
+x.<mul>
+x.<div>
+x.<idiv>
+x.<mod>
+x.<pow>
+x.<concat>
+x.<band>
+x.<bor>
+x.<bxor>
+x.<bnot>
+x.<shl>
+x.<shr>
+x.<eq>
+x.<lt>
+x.<le>
+
+x.<"literal string">
+
+x.<nonsense>
+
+
+print(string.format("Hello, %s!", "world"))
+
+
+while true do
+	break
+
+for i = 1, 10, 2 do
+	continue
+
+for k, v in pairs(x) do
+	return
+
+repeat
+	break
+until false
+
+until false do
+	break
+
+if true do
+	return
+
+unless false do
+	return
+
+switch type(x)
+	when "nil" then
+		--
+	when "boolean"
+		--
+	else
+		--
+
+switch math.random(1, 5) when 1
+	print("you are lucky")
+else
+	print("not so lucky")
+
+items =
+  * x: 100
+    y: 200
+  * width: 300
+    height: 400
+
+for item in *items
+	switch item
+		when :x, :y
+			print "Vec2 #{x}, #{y}"
+		when :width, :height
+			print "size #{width}, #{height}"
+
+print("hello world") if name == "Rob"
+
+print "item: ", item for item in *items
+
+class Foo
+
+class Bar
+	new: () =>
+		super()
+
+decimal     = 2_55.5
+octal       = 0o3_77.4
+binary      = 0b11_111111.01
+hexadecimal = 0xf_f.8
+
+-- FIXME: The '.' at the end isn't being colored in yet
+trailing_dot = 10.
+
+-- FIXME: The '.' at the beginning isn't being colored in yet
+decimal_no_whole = .5
+hexadecimal_no_whole = 0x.8
+
+decimal_scientific_notaion = 2.3e10 + 10e+5 - .25e-7
+
+-- TODO: Add hexadecimal exponential notation (using 'p'/'P' instead of 'e'/'E')
+
+foo😀bar = x
+
+static_class_member = @@foo
+instance_member = @foo
+macro_name = $foo
+
+super()
+
+print x::self
+print $self
+
+print @
+print @@
+print @@@
+
+print $
+print $$
+
+x = do
+x = { do: ... }
+x = { :do }
+
+x = true
+true = x
+true += x
+x.true += x
+
+print table, table.concat
+
+f = (x) ->
