@@ -56,10 +56,10 @@
 		]
 	},
 	"icon": "images/icon.png",
-	"publisher": "SkyyySi",
+	"publisher": "LiJin",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/SkyyySi/yuescript-vscode"
+		"url": "https://github.com/pigpigyyy/yuescript-vscode"
 	},
 	"peerDependencies": {
 		"@types/vscode": "^1.98.0"
