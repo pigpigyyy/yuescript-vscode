@@ -7,7 +7,7 @@
 			"ES2022"
 		],
 		"moduleDetection": "force",
-		"allowJs": false,
+		"allowJs": true,
 
 		"sourceMap": true,
 		"rootDir": "src",
