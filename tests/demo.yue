@@ -38,7 +38,7 @@ print("You are running lua version #{lua_version_string}!")
 const unpack = _G.unpack ?? table.unpack
 "".<mod> = (format_args) =>
 	if type(format_args) == 'table'
-	@format(unpack(format_args, 1, format_args.n or #format_args))
+		@format(unpack(format_args, 1, format_args.n or #format_args))
 
 
 

@@ -32,7 +32,7 @@ type ParseInfo = {
 	exportMacro: boolean;
 	exportMetatable: boolean;
 	moduleName: string;
-	usedNames: Set;
+	usedNames: Set<string>;
 	errorMessage: string;
 };
 

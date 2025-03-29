@@ -1,12 +1,15 @@
 import * as vscode from "vscode";
-import { highlightSyntax } from "./syntaxHighlighter";
+//import { highlightSyntax } from "./syntaxHighlighter";
+import {} from "./semanticHighlighter";
 
 export function activate(context: vscode.ExtensionContext) {
-	let disposable = vscode.commands.registerCommand(
-		"extension.highlightSyntax",
+	/*
+	const disposable = vscode.commands.registerCommand(
+		"yuescript.highlightSyntax",
 		async () => {
 			const editor = vscode.window.activeTextEditor;
-			if (!editor) {
+
+			if (editor == null) {
 				vscode.window.showErrorMessage("No active text editor.");
 				return;
 			}
@@ -21,6 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(disposable);
+	//*/
 }
 
-export function deactivate() { }
+export function deactivate() {}

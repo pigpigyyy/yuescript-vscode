@@ -1,4 +1,13 @@
 .vscode/**
 .vscode-test/**
 .gitignore
-vsc-extension-quickstart.md
+**/tsconfig.json
+**/*.md
+**/*.map
+**/*.json5
+**/*.ts
+!LICENSE.md
+types/*.lua
+.gitattributes
+src/**
+bun.lock

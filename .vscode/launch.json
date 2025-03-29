@@ -12,7 +12,7 @@
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}"
 			],
-			"preLaunchTask": "Compile syntax to JSON"
+			"preLaunchTask": "compile"
 		}
 	],
 }
