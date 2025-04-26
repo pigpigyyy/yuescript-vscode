@@ -21,9 +21,19 @@
 		"skipLibCheck": true,
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitReturns": true,
-
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
-		"noPropertyAccessFromIndexSignature": false
+		"noPropertyAccessFromIndexSignature": true,
+		"noImplicitAny": true,
+		"noUncheckedIndexedAccess": true,
+		"strictNullChecks": true,
+		"strictFunctionTypes": true,
+		"strictBindCallApply": true,
+		"noImplicitThis": true,
+		"alwaysStrict": true,
+		"strictPropertyInitialization": true,
+		"useUnknownInCatchVariables": true,
+		"exactOptionalPropertyTypes": true,
+		"noImplicitOverride": true
 	}
 }
