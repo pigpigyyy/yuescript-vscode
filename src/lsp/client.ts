@@ -58,7 +58,7 @@ function sendMessage(id: Json | undefined, msg: Record<string, Json>): void {
 	const header: string = `Content-Length: ${json.length}\r\n\r\n${json}\r\n`;
 	const content: Uint8Array = encoder.encode(header);
 	
-	console.log(`sendMessage(id=${id}, msg=${json});`);
+	//console.log(`sendMessage(id=${id}, msg=${json});`);
 
 	server.stdin!.write(content);
 }
@@ -86,8 +86,8 @@ async function readMessages(stream: ReadableStream<Uint8Array>) {
 
 	while (true) {
 		const { value, done } = await reader.read();
+		console.log(`{ value: ${decoder.decode(value)}, done: ${done} }`);
 		if (done) {
-			console.log(`{ value: ${value}, done: ${done} }`);
 			break;
 		}
 

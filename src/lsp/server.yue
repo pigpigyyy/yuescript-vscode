@@ -33,16 +33,23 @@ const read_message = () ->
 		elseif line == ""
 			break
 
-		if length_str := string.match(line, "^Content%-Length: (%d+)")
+		if length_str := string.match(line, "^Content%-Length: (%d+)\r?$")
+			--eprintf(">>> length_str = %q", length_str)
 			length = assert(tonumber(length_str))
-		else
+			--eprintf(">>> length = %d", length)
+			io.read("*l")
+				|> assert()
+				|> string.match("^\r?$")
+				|> assert()
+			break
+		--[[ else
 			eprintf(
 				">>> %q:%d - WARNING: could not determine content length\n" ..
 				"    from header line %q!"
 				$FILE
 				$LINE
 				line
-			)
+			) --]]
 
 	--eprintf(">>> length = %s", length)
 
@@ -88,18 +95,29 @@ const handle_shutdown = (id) ->
 
 
 const handle_exit = () ->
-	print("\nExit request recieved, goodbye!")
+	eprintf("\n>>> Exit request recieved, goodbye!")
 	os.exit(0)
 
 
 const main = (argv=[]) ->
+	local count = 0
 	while true
+		count += 1
+		eprintf(">>> count = %d", count)
 		const raw = read_message()
 
 		if raw == nil
+			eprintf(">>> No more messages to read, exiting")
 			break
 
 		const raw_decode_ok, msg = pcall(decode, raw)
+		eprintf(
+			">>> raw_decode_ok: %s = %s, msg: %s = %q"
+			type(raw_decode_ok)
+			raw_decode_ok
+			type(msg)
+			msg
+		)
 
 		if (not raw_decode_ok) or (type(msg) != "table")
 			continue
@@ -107,6 +125,8 @@ const main = (argv=[]) ->
 		const { :method, :id } = msg
 		--assert(method != nil, "`msg.method` is nil!")
 		--assert(id != nil,     "`msg.id` is nil!")
+
+		eprintf(">>> method = %q", method)
 
 		switch method
 			when "initialize"
