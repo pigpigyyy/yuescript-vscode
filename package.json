@@ -84,6 +84,7 @@
 		"typescript": "^5.0.0"
 	},
 	"dependencies": {
+		"@types/bun": "^1.2.13",
 		"peggy": "^4.2.0"
 	}
 }
