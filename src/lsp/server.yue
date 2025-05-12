@@ -35,6 +35,8 @@ const read_message = () ->
 
 		if length_str := string.match(line, "^Content%-Length: (%d+)")
 			length = assert(tonumber(length_str))
+		else
+			eprintf(">>> %q:%d - WARNING: could not determine length", $FILE, $LINE, type(line), line)
 
 	--eprintf(">>> length = %s", length)
 
