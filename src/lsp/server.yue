@@ -36,7 +36,13 @@ const read_message = () ->
 		if length_str := string.match(line, "^Content%-Length: (%d+)")
 			length = assert(tonumber(length_str))
 		else
-			eprintf(">>> %q:%d - WARNING: could not determine length", $FILE, $LINE)
+			eprintf(
+				">>> %q:%d - WARNING: could not determine content length\n" ..
+				"    from header line %q!"
+				$FILE
+				$LINE
+				line
+			)
 
 	--eprintf(">>> length = %s", length)
 
@@ -58,9 +64,9 @@ const send_message = (id, payload) ->
 	local encoded_payload = encode(payload)
 
 	io.write(string.format(
-		"Content-Length: %d\r\n\r\n%s",
-		#encoded_payload,
-		encoded_payload,
+		"Content-Length: %d\r\n\r\n%s"
+		#encoded_payload
+		encoded_payload
 	))
 	io.flush()
 

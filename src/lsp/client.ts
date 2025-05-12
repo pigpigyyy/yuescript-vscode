@@ -55,7 +55,7 @@ function sendMessage(id: Json | undefined, msg: Record<string, Json>): void {
 	msg["jsonrpc"] ??= "2.0";
 
 	const json: string = JSON.stringify(msg);
-	const header: string = `Content-Length: ${json.length}\r\n\r\n${json}`;
+	const header: string = `Content-Length: ${json.length}\r\n\r\n${json}\r\n`;
 	const content: Uint8Array = encoder.encode(header);
 	
 	console.log(`sendMessage(id=${id}, msg=${json});`);
@@ -65,8 +65,8 @@ function sendMessage(id: Json | undefined, msg: Record<string, Json>): void {
 
 function parseContentLength(headers: string[]): number {
 	const matches: string[] | undefined = headers.find(h => h
-		.toLowerCase()
-		.startsWith("content-length:")
+		//.toLowerCase()
+		.startsWith("Content-Length: ")
 	)?.split(":");
 	if (matches === undefined) {
 		return 0;
