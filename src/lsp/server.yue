@@ -1,4 +1,11 @@
-from _G import require, pcall, assert, type, print, select, os
+from _G import require, pcall, assert, type, print, select, tostring, io, os, string
+
+(...) <- xpcall(_, ((err) ->
+	from "yue" import traceback
+	io.stderr::write(traceback(tostring(err)))
+	io.stderr::flush()
+	os.exit(1)
+), ...)
 
 const try_require = (modname) ->
 	assert(type(modname) == "string")
@@ -57,7 +64,7 @@ const read_message = () ->
 		return nil
 
 	const result = io.read(length)
-	eprintf(">>> %q:%d - result: %s = %q", $FILE, $LINE, type(result), result)
+	--[[ eprintf(">>> %q:%d - result: %s = %q", $FILE, $LINE, type(result), result) --]]
 	result
 
 
@@ -95,7 +102,7 @@ const handle_shutdown = (id) ->
 
 
 const handle_exit = () ->
-	eprintf("\n>>> Exit request recieved, goodbye!")
+	eprintf("\n[SERVER] >>> Exit request recieved, goodbye!\n")
 	os.exit(0)
 
 
@@ -103,21 +110,21 @@ const main = (argv=[]) ->
 	local count = 0
 	while true
 		count += 1
-		eprintf(">>> count = %d", count)
+		--[[ eprintf(">>> count = %d", count) --]]
 		const raw = read_message()
 
 		if raw == nil
-			eprintf(">>> No more messages to read, exiting")
+			--[[ eprintf(">>> No more messages to read, exiting") --]]
 			break
 
 		const raw_decode_ok, msg = pcall(decode, raw)
-		eprintf(
-			">>> raw_decode_ok: %s = %s, msg: %s = %q"
+		--[[ eprintf(
+			">>> raw_decode_ok: %s = %s, msg: %s = %s"
 			type(raw_decode_ok)
 			raw_decode_ok
 			type(msg)
-			msg
-		)
+			type(msg) == "string" and "%q"::format(msg) or tostring(msg)
+		) --]]
 
 		if (not raw_decode_ok) or (type(msg) != "table")
 			continue
@@ -126,7 +133,7 @@ const main = (argv=[]) ->
 		--assert(method != nil, "`msg.method` is nil!")
 		--assert(id != nil,     "`msg.id` is nil!")
 
-		eprintf(">>> method = %q", method)
+		eprintf("[SERVER] >>> method = %q", method)
 
 		switch method
 			when "initialize"

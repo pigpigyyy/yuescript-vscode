@@ -86,7 +86,7 @@ async function readMessages(stream: ReadableStream<Uint8Array>) {
 
 	while (true) {
 		const { value, done } = await reader.read();
-		console.log(`{ value: ${decoder.decode(value)}, done: ${done} }`);
+		console.log(`[CLIENT] >>>`, { value: decoder.decode(value), done });
 		if (done) {
 			break;
 		}
@@ -98,7 +98,7 @@ async function readMessages(stream: ReadableStream<Uint8Array>) {
 		while (true) {
 			const headerEnd: number = buffer.indexOf("\r\n\r\n");
 			if (headerEnd < 0) {
-				console.log(`headerEnd=${headerEnd} < 0`);
+				console.log(`[CLIENT] >>> headerEnd=${headerEnd} < 0`);
 				break;
 			}
 
@@ -107,13 +107,13 @@ async function readMessages(stream: ReadableStream<Uint8Array>) {
 
 			const totalLength: number = headerEnd + 4 + contentLength;
 			if (buffer.length < totalLength) {
-				console.log(`buffer.length=${buffer.length} < totalLength=${totalLength}`);
+				console.log(`[CLIENT] >>> buffer.length=${buffer.length} < totalLength=${totalLength}`);
 				break;
 			}
 
 			const body: string = buffer.slice(headerEnd + 4, totalLength);
 			const message: Json = JSON.parse(body);
-			console.log("Received message: ", message);
+			console.log("[CLIENT] >>> Received message:", message);
 			buffer = buffer.slice(totalLength);
 		}
 	}
