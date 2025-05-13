@@ -1,11 +1,11 @@
-// TODO: Complete this function.
 function log(strings: TemplateStringsArray, ...args: any[]) {
-	console.log("log(strings =", strings, "args =", args, ")");
-	console.log(`\x1b[1;35m[\x1b[34mSERVER\x1b[35m]\x1b[22m >>>`, ...args);
+	let combined: string = strings[0];
+	for (let i = 0; i < args.length; i++) {
+		combined += JSON.stringify(args[i]) ?? args[i].toString();
+		combined += strings[i + 1];
+	}
+	console.log(`\x1b[1;35m[\x1b[31mCLIENT\x1b[35m]\x1b[0m ` + combined);
 }
-log`log = ${log};`;
-process.exit(0);
-//console.log(Bun.env["PATH"]?.replaceAll(":", "\n"))
 
 const home = Bun.env["HOME"] ?? Bun.env["USERPROFILE"];
 
@@ -71,10 +71,9 @@ function sendMessage(id: Json | undefined, msg: Record<string, Json>): void {
 }
 
 function parseContentLength(headers: string[]): number {
-	const matches: string[] | undefined = headers.find(h => h
-		//.toLowerCase()
-		.startsWith("Content-Length: ")
-	)?.split(":");
+	const matches: string[] | undefined = headers
+		.find(h => h.startsWith("Content-Length: "))
+		?.split(":");
 	if (matches === undefined) {
 		return 0;
 	}
@@ -93,7 +92,7 @@ async function readMessages(stream: ReadableStream<Uint8Array>) {
 
 	while (true) {
 		const { value, done } = await reader.read();
-		log({ value: decoder.decode(value), done });
+		log`{ value: ${decoder.decode(value)}, done: ${done} }`;
 		if (done) {
 			break;
 		}
@@ -105,7 +104,7 @@ async function readMessages(stream: ReadableStream<Uint8Array>) {
 		while (true) {
 			const headerEnd: number = buffer.indexOf("\r\n\r\n");
 			if (headerEnd < 0) {
-				log("headerEnd=", headerEnd, " < 0");
+				log`headerEnd=${headerEnd} < 0`;
 				break;
 			}
 
@@ -114,13 +113,13 @@ async function readMessages(stream: ReadableStream<Uint8Array>) {
 
 			const totalLength: number = headerEnd + 4 + contentLength;
 			if (buffer.length < totalLength) {
-				log("buffer.length=", buffer.length, " < ", "totalLength=", totalLength);
+				log`buffer.length=${buffer.length} < totalLength=${totalLength}`;
 				break;
 			}
 
 			const body: string = buffer.slice(headerEnd + 4, totalLength);
 			const message: Json = JSON.parse(body);
-			log("message =", message);
+			log`message=${message}`;
 			buffer = buffer.slice(totalLength);
 		}
 	}

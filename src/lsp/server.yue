@@ -8,13 +8,13 @@ macro LOG = (...) ->
 	const joined = table.concat(argv, ", ")
 
 	[[do
-		const __prefix__ = string.format(
-			"\027[1;35m[\027[34mSERVER\027[35m]\027[22m >>> \027[33m%q\027[35m:\027[34m%d\027[39;2m -\027[22m "
-			($FILE)
-			($LINE)
+		const __io_stderr__ = io.stderr
+		__io_stderr__::write(
+			"\027[1;35m[\027[34mSERVER\027[35m]\027[22;39m "
+			string.format(]] .. joined .. [[)
+			"\027[0m\n"
 		)
-		io.stderr::write(__prefix__ .. string.format(]] .. joined .. [[), "\027[0m\n")
-		io.stderr::flush()
+		__io_stderr__::flush()
 	]]
 
 
@@ -96,9 +96,9 @@ const read_message = () ->
 	if length == nil
 		return nil
 
-	const result = io.read(length)
-	$LOG_VAR(result)
-	result
+	const message = io.read(length)
+	$LOG_VAR(message)
+	message
 
 
 const send_message = (id, payload) ->
@@ -110,11 +110,13 @@ const send_message = (id, payload) ->
 
 	local encoded_payload = encode(payload)
 
-	io.write(string.format(
+	const message = string.format(
 		"Content-Length: %d\r\n\r\n%s"
 		#encoded_payload
 		encoded_payload
-	))
+	)
+	$LOG_VAR(message)
+	io.write(message)
 	io.flush()
 
 
@@ -135,7 +137,7 @@ const handle_shutdown = (id) ->
 
 
 const handle_exit = () ->
-	eprintf("\n[SERVER] >>> Exit request recieved, goodbye!\n")
+	$LOG("Exit request recieved, goodbye!")
 	os.exit(0)
 
 
