@@ -1,11 +1,44 @@
 from _G import require, pcall, assert, type, print, select, tostring, io, os, string
 
+
+macro LOG = (...) ->
+	--const argc = select("#", ...)
+	const argv = { ... }
+
+	const joined = table.concat(argv, ", ")
+
+	[[do
+		const __prefix__ = string.format(
+			"\027[1;35m[\027[34mSERVER\027[35m]\027[22m >>> \027[33m%q\027[35m:\027[34m%d\027[39;2m -\027[22m "
+			($FILE)
+			($LINE)
+		)
+		io.stderr::write(__prefix__ .. string.format(]] .. joined .. [[), "\027[0m\n")
+		io.stderr::flush()
+	]]
+
+
+macro LOG_VAR = (varname) ->
+	[[do
+		const __quoted_name__ = (]] .. string.format("%q", varname)::gsub([[#]], [[\#]]) .. [[)
+		const __value__ = (]] .. varname .. [[)
+		const __type_of_value__ = type(__value__)
+		const __quoted_value__ = if __type_of_value__ == "string"
+			string.format("%q", __value__)
+		else
+			tostring(__value__)
+
+		$LOG("\027[31m%s\027[2;39m: \027[36m%s\027[22m \027[35m=\027[33m %s", __quoted_name__, __type_of_value__, __quoted_value__)
+	]]
+
+
 (...) <- xpcall(_, ((err) ->
 	from "yue" import traceback
 	io.stderr::write(traceback(tostring(err)))
 	io.stderr::flush()
 	os.exit(1)
 ), ...)
+
 
 const try_require = (modname) ->
 	assert(type(modname) == "string")
@@ -15,12 +48,14 @@ const try_require = (modname) ->
 	if has_module
 		module
 
+
 const json = try_require("cjson") ?? try_require("json")
 assert(type(json) == "table")
 
-from json import encode, decode
+from json import encode, decode, null
 assert(type(encode) == "function")
 assert(type(decode) == "function")
+--assert(null == nil or type(null) == "userdata")
 
 
 const eprintf = (format_string, ...) ->
@@ -33,7 +68,7 @@ const read_message = () ->
 
 	while true
 		const line = io.read("*l")
-		--eprintf(">>> %q:%d - line: %s = %q", $FILE, $LINE, type(line), line)
+		$LOG_VAR(line)
 
 		if line == nil
 			return nil
@@ -41,9 +76,8 @@ const read_message = () ->
 			break
 
 		if length_str := string.match(line, "^Content%-Length: (%d+)\r?$")
-			--eprintf(">>> length_str = %q", length_str)
+			$LOG_VAR(length_str)
 			length = assert(tonumber(length_str))
-			--eprintf(">>> length = %d", length)
 			io.read("*l")
 				|> assert()
 				|> string.match("^\r?$")
@@ -58,13 +92,12 @@ const read_message = () ->
 				line
 			) --]]
 
-	--eprintf(">>> length = %s", length)
-
+	$LOG_VAR(length)
 	if length == nil
 		return nil
 
 	const result = io.read(length)
-	--[[ eprintf(">>> %q:%d - result: %s = %q", $FILE, $LINE, type(result), result) --]]
+	$LOG_VAR(result)
 	result
 
 
@@ -97,7 +130,7 @@ const handle_initialize = (id) ->
 
 const handle_shutdown = (id) ->
 	send_message(id, {
-		result: nil
+		result: null
 	})
 
 
@@ -110,8 +143,10 @@ const main = (argv=[]) ->
 	local count = 0
 	while true
 		count += 1
-		--[[ eprintf(">>> count = %d", count) --]]
+		$LOG_VAR(count)
+
 		const raw = read_message()
+		$LOG_VAR(ok)
 
 		if raw == nil
 			--[[ eprintf(">>> No more messages to read, exiting") --]]
@@ -127,13 +162,15 @@ const main = (argv=[]) ->
 		) --]]
 
 		if (not raw_decode_ok) or (type(msg) != "table")
+			$LOG_VAR(raw_decode_ok)
+			$LOG_VAR(ok)
 			continue
 
 		const { :method, :id } = msg
 		--assert(method != nil, "`msg.method` is nil!")
 		--assert(id != nil,     "`msg.id` is nil!")
 
-		eprintf("[SERVER] >>> method = %q", method)
+		$LOG_VAR(method)
 
 		switch method
 			when "initialize"
@@ -147,7 +184,7 @@ const main = (argv=[]) ->
 			when "exit"
 				handle_exit()
 			else
-				eprintf("ERROR: Unknown LSP method %q!", method)
+				eprintf("[SERVER] >>> ERROR: Unknown LSP method %q!", method)
 
 				if id == nil
 					continue
