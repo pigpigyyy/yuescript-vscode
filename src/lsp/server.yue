@@ -68,7 +68,7 @@ const read_message = () ->
 
 	while true
 		const line = io.read("*l")
-		$LOG_VAR(line)
+		--$LOG_VAR(line)
 
 		if line == nil
 			return nil
@@ -76,7 +76,7 @@ const read_message = () ->
 			break
 
 		if length_str := string.match(line, "^Content%-Length: (%d+)\r?$")
-			$LOG_VAR(length_str)
+			--$LOG_VAR(length_str)
 			length = assert(tonumber(length_str))
 			io.read("*l")
 				|> assert()
@@ -92,12 +92,12 @@ const read_message = () ->
 				line
 			) --]]
 
-	$LOG_VAR(length)
+	--$LOG_VAR(length)
 	if length == nil
 		return nil
 
 	const message = io.read(length)
-	$LOG_VAR(message)
+	--$LOG_VAR(message)
 	message
 
 
@@ -145,10 +145,10 @@ const main = (argv=[]) ->
 	local count = 0
 	while true
 		count += 1
-		$LOG_VAR(count)
+		--$LOG_VAR(count)
 
 		const raw = read_message()
-		$LOG_VAR(ok)
+		--$LOG_VAR(raw)
 
 		if raw == nil
 			--[[ eprintf(">>> No more messages to read, exiting") --]]
@@ -164,8 +164,8 @@ const main = (argv=[]) ->
 		) --]]
 
 		if (not raw_decode_ok) or (type(msg) != "table")
-			$LOG_VAR(raw_decode_ok)
-			$LOG_VAR(ok)
+			--$LOG_VAR(raw_decode_ok)
+			--$LOG_VAR(ok)
 			continue
 
 		const { :method, :id } = msg

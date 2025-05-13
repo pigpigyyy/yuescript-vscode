@@ -92,7 +92,7 @@ async function readMessages(stream: ReadableStream<Uint8Array>) {
 
 	while (true) {
 		const { value, done } = await reader.read();
-		log`{ value: ${decoder.decode(value)}, done: ${done} }`;
+		//log`{ value: ${decoder.decode(value)}, done: ${done} }`;
 		if (done) {
 			break;
 		}
@@ -104,7 +104,7 @@ async function readMessages(stream: ReadableStream<Uint8Array>) {
 		while (true) {
 			const headerEnd: number = buffer.indexOf("\r\n\r\n");
 			if (headerEnd < 0) {
-				log`headerEnd=${headerEnd} < 0`;
+				//log`headerEnd=${headerEnd} < 0`;
 				break;
 			}
 
@@ -113,7 +113,7 @@ async function readMessages(stream: ReadableStream<Uint8Array>) {
 
 			const totalLength: number = headerEnd + 4 + contentLength;
 			if (buffer.length < totalLength) {
-				log`buffer.length=${buffer.length} < totalLength=${totalLength}`;
+				//log`buffer.length=${buffer.length} < totalLength=${totalLength}`;
 				break;
 			}
 
@@ -144,6 +144,8 @@ setTimeout(() => {
 }, 100);
 
 setTimeout(() => {
+	log`Timeout reached, shutting down...`;
+
 	sendMessage(2, {
 		method: "shutdown",
 		params: null,
