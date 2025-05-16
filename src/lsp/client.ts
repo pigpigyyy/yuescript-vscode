@@ -1,5 +1,8 @@
+import { spawn } from "node:child_process";
+import Stream from "node:stream";
+
 function log(strings: TemplateStringsArray, ...args: any[]) {
-	let combined: string = strings[0];
+	let combined: string = strings[0]!;
 	for (let i = 0; i < args.length; i++) {
 		combined += JSON.stringify(args[i]) ?? args[i].toString();
 		combined += strings[i + 1];
@@ -13,12 +16,11 @@ if (typeof(home) !== "string") {
 	throw new Error("Failed to get user home path!");
 }
 
-const server: Bun.Subprocess<"pipe", "pipe", "inherit"> = Bun.spawn(
-	[home + "/.luarocks/bin/yue", "-e", "./src/lsp/server.yue"],
+const server = spawn(
+	home + "/.luarocks/bin/yue",
+	["-e", "./src/lsp/server.yue"],
 	{
-		stdin: "pipe",
-		stdout: "pipe",
-		stderr: "inherit",
+		stdio: ["pipe", "pipe", "inherit"],
 		env: {
 			"LUA_PATH": [
 				"./?.lua",
@@ -86,20 +88,21 @@ function parseContentLength(headers: string[]): number {
 	return parseInt(first.trim());
 }
 
-async function readMessages(stream: ReadableStream<Uint8Array>) {
-	const reader = stream.getReader();
+async function readMessages(stream: Stream.Readable/* ReadableStream<Uint8Array> */) {
+	/* const reader = stream.getReader(); */
 	let buffer: string = "";
 
-	while (true) {
-		const { value, done } = await reader.read();
+	let value: string;
+	while (null !== (value = stream.read())) {
+		/* const { value, done } = await reader.read();
 		//log`{ value: ${decoder.decode(value)}, done: ${done} }`;
 		if (done) {
 			break;
-		}
+		} */
 
-		buffer += decoder.decode(value, {
+		buffer += value/* decoder.decode(value, {
 			stream: true,
-		});
+		}) */;
 
 		while (true) {
 			const headerEnd: number = buffer.indexOf("\r\n\r\n");
