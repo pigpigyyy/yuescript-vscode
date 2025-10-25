@@ -527,3 +527,5 @@ x.true += x
 print table, table.concat
 
 f = (x) ->
+
+outer(inner(foo, bar, ((biz) -> biz), baz))

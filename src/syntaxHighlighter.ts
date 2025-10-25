@@ -16,7 +16,13 @@ async function parse(source: string): Promise<AstNode> {
 	};
 }
 
-export async function highlightSyntax(source: string) {
+export type StyledRange = {
+	firstIndex: number,
+	lastIndex: number,
+	style: unknown,
+};
+
+export async function highlightSyntax(source: string): Promise<StyledRange[]> {
 	try {
 		const ast = await parse(source);
 
