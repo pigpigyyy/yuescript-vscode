@@ -149,9 +149,11 @@ function runCommand(
 	args: string[],
 	input: string,
 	callback: (code: number, stdout: string, stderr: string) => void,
-) {
-	const child: ChildProcessWithoutNullStreams = spawn(command, args, {
+): ChildProcessWithoutNullStreams {
+	const child: ChildProcessWithoutNullStreams = spawn("stdbuf", ["-i0", "-o0", "-e0", command, ...args], {
 		shell: false,
+		stdio: ["pipe", "pipe", "pipe"],
+		// serialization: "json",
 	});
 
 	let stdout: string = "";
@@ -162,6 +164,8 @@ function runCommand(
 			return;
 		}
 
+		logger?.debug(`New stdout chunk: "${chunk}"`);
+
 		stdout += String(chunk);
 	});
 
@@ -170,6 +174,8 @@ function runCommand(
 			return;
 		}
 
+		logger?.debug(`New stderr chunk: "${chunk}"`);
+
 		stderr += String(chunk);
 	});
 
@@ -177,22 +183,100 @@ function runCommand(
 		callback(code ?? 0, stdout, stderr);
 	});
 
-	child.stdin.write(input);
-	child.stdin.end();
+	/*child.stdin.write(input);
+	child.stdin.end();*/
+
+	return child;
 }
 
-const checkYueScript: string = `import "yue"
+async function writeToCommandStdin(child: ChildProcessWithoutNullStreams, input: string) {
+	await new Promise<any[]>((resolve, reject) => {
+		if (child.stdin.writableLength === 0) {
+			resolve([]);
+			return;
+		}
 
-const success, astOrErr, transpiledSource = yue.check(assert(io.read("*a")))
+		child.stdin.once("drain", (...args: any[]) => {
+			resolve(args);
+		});
+	});
 
-if success
-	return os.exit(0)
+	//logger?.debug(input);
+	child.stdin.write(JSON.stringify(input) + "\n\n");
+}
 
-const err = assert(astOrErr[1])
-assert(err[1] == "error")
+const checkYueScript: string = `\
+import "yue"
+const json = do
+	local success, result = nil, nil
 
-print("%d:%d:%s"::format(err[3], err[4], err[2]))
-os.exit(1)`;
+	if success, result := pcall(require, "cjson")
+		result
+	elseif success, result := pcall(require, "json")
+		result
+	else
+		error("Could not find a JSON-module for YueScript! Please install one.")
+
+
+const writeOutput = (message) ->
+	assert(type(message) == "string")
+
+	io.stdout::write(message) -- , "\\n")
+	io.stdout::flush()
+	--- An explicit 'return' is needed here because calling the 'flush()'-method
+	--- returns the file-handle it was called on (i.e. 'io.stdout').
+	return
+
+
+const transpile = (sourceCode) ->
+	const input = io.read("*a")
+
+	if input == nil
+		return os.exit(0)
+	elseif type(input) != "string"
+		return os.exit(1)
+
+	const success, astOrError, transpiledLuaCode = yue.check(sourceCode)
+
+	assert(type(success) == "boolean")
+	assert(type(astOrError) == "table")
+	assert(type(transpiledLuaCode) == (success and "string" or "nil"))
+
+	const result = json.encode(success and {
+		:success,
+		ast: astOrError,
+		:transpiledLuaCode
+	} or {
+		:success,
+		error: astOrError
+	})::gsub("[%z-\\031]+", "")
+
+	assert(type(result) == "string")
+	-- assert(result::match("[^%z-\\031]+()") == (#result + 1))
+
+	result
+
+
+const main = () ->
+	--os.execute("stty raw icanon")
+	io.stderr::write("Test")
+	io.stderr::flush()
+	const input = io.stdin::read("*l")
+	os.execute("sleep 1")
+
+	if input == nil
+		os.exit(0)
+	elseif type(input) != "string"
+		os.exit(1)
+	elseif input != ""
+		writeOutput(transpile(json.decode(input)))
+
+
+while true
+	main()
+`;
+
+let temp: ChildProcessWithoutNullStreams | null = null;
 
 async function editorCallback(editor: vscode.TextEditor | undefined): Promise<void> {
 	if (!editor) {
@@ -209,20 +293,28 @@ async function editorCallback(editor: vscode.TextEditor | undefined): Promise<vo
 	//logger?.debug(`sourceCode[${sourceCode.length}] = ${sourceCode}`);
 	//const decorations: StyledRange[] = await highlightSyntax(sourceCode);
 
-	runCommand("yue", ["-e", checkYueScript], sourceCode.trimEnd(), (code: number, stdout: string, stderr: string): void => {
+	if (temp) {
+		writeToCommandStdin(temp, sourceCode.trimEnd());
+		return;
+	}
+
+	temp = runCommand("yue", ["-e", checkYueScript], sourceCode.trimEnd(), (code: number, stdout: string, stderr: string): void => {
 		if (code === 0) {
 			diagnostics?.clear();
 			return;
 		}
 
+		logger?.debug(`stdout = "${stdout}"`);
+		return;
+
 		const parts: [string, string, string] = stdout.split(":", 3) as any;
-		const line: number = Number(parts[0]);
-		const column: number = Number(parts[1]);
+		const line: number = Math.max(1, Number(parts[0]));
+		const column: number = Math.max(1, Number(parts[1]));
 		const message: string = parts[2];
 
 		logger?.debug(`Error at line ${line}, column ${column}: ${message}`);
 		diagnostics?.set(uri, [new vscode.Diagnostic(
-			new vscode.Range(line, column - 1, line, column + 1),
+			new vscode.Range(line - 1, column - 1, line - 1, column),
 			message,
 			vscode.DiagnosticSeverity.Error,
 		)]);
