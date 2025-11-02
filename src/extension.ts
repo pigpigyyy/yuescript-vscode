@@ -24,7 +24,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.workspace.onDidChangeTextDocument(async (event: vscode.TextDocumentChangeEvent) => {
 		const activeEditor = vscode.window.activeTextEditor;
 
-		if ((!activeEditor) || (event.document !== activeEditor.document)) {
+		if ((!activeEditor) || (event.document !== activeEditor.document) || (activeEditor.document.languageId !== "yuescript")) {
 			return;
 		}
 

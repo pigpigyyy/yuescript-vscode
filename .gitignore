@@ -9,3 +9,4 @@ bower_components
 build
 /syntaxes/yuescript.tmLanguage.json
 /package-lock.json
+/bun.lock
