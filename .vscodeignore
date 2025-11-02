@@ -10,4 +10,5 @@
 types/*.lua
 .gitattributes
 src/**
+!src/server.yue
 bun.lock
