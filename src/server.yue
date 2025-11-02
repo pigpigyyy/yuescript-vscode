@@ -1,0 +1,107 @@
+import "yue"
+const json = do
+	local success, result = nil, nil
+
+	if success, result := pcall(require, "cjson")
+		result
+	elseif success, result := pcall(require, "json")
+		result
+	else
+		error("Could not find a JSON-module for YueScript! Please install one.")
+
+
+const writeOutput = (message) ->
+	assert(type(message) == "string")
+
+	io.stdout::write(message) -- , "\\n")
+	io.stdout::flush()
+	--- An explicit 'return' is needed here because calling the 'flush()'-method
+	--- returns the file-handle it was called on (i.e. 'io.stdout').
+	return
+
+
+const transpile = (sourceCode) ->
+	const input = io.read("*a")
+
+	if input == nil
+		return os.exit(0)
+	elseif type(input) != "string"
+		return os.exit(1)
+
+	const success, astOrError, transpiledLuaCode = yue.check(sourceCode)
+
+	assert(type(success) == "boolean")
+	assert(type(astOrError) == "table")
+	assert(type(transpiledLuaCode) == (success and "string" or "nil"))
+
+	const result = json.encode(success and {
+		:success,
+		ast: astOrError,
+		:transpiledLuaCode
+	} or {
+		:success,
+		error: astOrError
+	})::gsub("[%z-\\031]+", "")
+
+	assert(type(result) == "string")
+	-- assert(result::match("[^%z-\\031]+()") == (#result + 1))
+
+	result
+
+
+const main = () ->
+	--os.execute("stty raw icanon")
+	io.stderr::write("Test")
+	io.stderr::flush()
+	const input = io.stdin::read("*l")
+	os.execute("sleep 1")
+
+	if input == nil
+		os.exit(0)
+	elseif type(input) != "string"
+		os.exit(1)
+	elseif input != ""
+		writeOutput(transpile(json.decode(input)))
+
+
+--[[
+while true
+	main()
+--]]
+
+
+--------------------------------------------------------------------------------
+
+
+const sleep = (seconds) ->
+	assert(type(seconds) == "number")
+	assert(seconds >= 0)
+
+	if seconds == 0
+		return
+
+	os.execute("sleep %01.7f"::format(seconds))
+	return
+
+
+const send = (data) ->
+	io.stdout::write(json.encode(data)::gsub("[\r\n]", ""), "\n")
+	io.stdout::flush()
+	return
+
+
+const recieve = () ->
+	const rawData = io.stdin::read("*l")
+	const data = if type(rawData) == "string"
+		json.decode(rawData)
+	else
+		nil
+	data, rawData
+
+
+for i = 1, 5
+	const data = recieve()
+	io.stderr::write(json.encode(data))
+	const success, astOrError, transpiledLuaCode = yue.check(data.sourceCode)
+	send({ :success, :astOrError, :transpiledLuaCode })
+	--sleep(1)
