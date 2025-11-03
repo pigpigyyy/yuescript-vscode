@@ -26,6 +26,24 @@
 			}
 		},
 		{
+			"label": "compile",
+			"type": "process",
+			"command": "npm",
+			"args": [
+				"run",
+				"compile"
+			],
+			"hide": true,
+			"presentation": {
+				"echo": false,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": true
+			}
+		},
+		{
 			"label": "Build VSIX extension package",
 			"type": "process",
 			"command": "npx",

@@ -1,0 +1,49 @@
+import "yue"
+const json = do
+	local success, result = nil, nil
+
+	if success, result := pcall(require, "cjson")
+		result
+	elseif success, result := pcall(require, "json")
+		result
+	else
+		error("Could not find a JSON-module for YueScript! Please install one.")
+
+
+const send = (data, raw = false) ->
+	if not raw
+		data = json.encode(data)::gsub("[\r\n]", "")
+
+	assert(type(data) == "string")
+
+	io.stdout::write(data, "\n")
+	io.stdout::flush()
+	return
+
+
+const recieve = () ->
+	const rawData = io.stdin::read("*l")
+
+	const data = if type(rawData) == "string"
+		json.decode(rawData)
+	else
+		nil
+
+	data, rawData
+
+
+while true
+	const input, rawInput = recieve()
+
+	if input == nil
+		send("{}")
+		return
+
+	const success, astOrError, transpiledLuaCode = yue.check(input.sourceCode)
+
+	send({
+		:success
+		-- :transpiledLuaCode
+		-- :rawInput
+		[success and "ast" or "error"]: astOrError
+	})
