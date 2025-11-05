@@ -2,7 +2,9 @@ import "yue"
 const json = do
 	local success, result = nil, nil
 
-	if success, result := pcall(require, "cjson")
+	if success, result := pcall(require, "cojson")
+		result
+	elseif success, result := pcall(require, "cjson")
 		result
 	elseif success, result := pcall(require, "json")
 		result
@@ -12,7 +14,7 @@ const json = do
 
 const send = (data, raw = false) ->
 	if not raw
-		data = json.encode(data)::gsub("[\r\n]", "")
+		data = (json.dump or json.encode)(data)::gsub("[\r\n]", "")
 
 	assert(type(data) == "string")
 
@@ -25,7 +27,7 @@ const recieve = () ->
 	const rawData = io.stdin::read("*l")
 
 	const data = if type(rawData) == "string"
-		json.decode(rawData)
+		(json.load or json.decode)(rawData)
 	else
 		nil
 
