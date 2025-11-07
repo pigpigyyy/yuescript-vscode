@@ -1,6 +1,6 @@
 import "yue"
 const json = do
-	local success, result = nil, nil
+	local success, result
 
 	if success, result := pcall(require, "cojson")
 		result
@@ -14,7 +14,7 @@ const json = do
 
 const send = (data, raw = false) ->
 	if not raw
-		data = (json.dump or json.encode)(data)::gsub("[\r\n]", "")
+		data = json.encode(data)::gsub("[\r\n]", "")
 
 	assert(type(data) == "string")
 
@@ -27,7 +27,7 @@ const recieve = () ->
 	const rawData = io.stdin::read("*l")
 
 	const data = if type(rawData) == "string"
-		(json.load or json.decode)(rawData)
+		json.decode(rawData)
 	else
 		nil
 
@@ -38,14 +38,17 @@ while true
 	const input, rawInput = recieve()
 
 	if input == nil
-		send("{}")
+		send("{}", true)
 		return
 
-	const success, astOrError, transpiledLuaCode = yue.check(input.sourceCode)
+	success, messages, transpiledLuaCode = yue.check(input.sourceCode, {lint_global: true})
+
+	if messages
+		messages = [message for message in *messages when message[1] == "error" or (message[1] == "global" and not _G[message[2]])]
 
 	send({
 		:success
 		-- :transpiledLuaCode
 		-- :rawInput
-		[success and "ast" or "error"]: astOrError
+		:messages
 	})

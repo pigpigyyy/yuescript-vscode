@@ -44,31 +44,42 @@ export async function activate(context: vscode.ExtensionContext) {
 			throw new Error(`${err} -> ${rawReply}`);
 		}
 
-		diagnostics.clear();
-
-		if (!reply || typeof reply !== "object" || reply["success"] || !reply["error"]) {
+		if (!reply || typeof reply !== "object") {
 			return;
 		}
 
-		const [[node, message, line, column]] = reply["error"];
-		if (node !== "error") {
-			throw new Error(`Invalid node '${node}'!`);
-		}
-		if (typeof message !== "string") {
-			throw new TypeError(`typeof message === '${typeof message}'`);
-		}
-		if (typeof line !== "number") {
-			throw new TypeError(`typeof line === '${typeof line}'`);
-		}
-		if (typeof column !== "number") {
-			throw new TypeError(`typeof column === '${typeof column}'`);
+		if (!reply["messages"]) {
+			return;
 		}
 
-		diagnostics.set(activeEditor.document.uri, [new vscode.Diagnostic(
-			new vscode.Range(line - 1, column - 1, line - 1, column),
-			message,
-			vscode.DiagnosticSeverity.Error,
-		)]);
+		const messages = reply["messages"] as [string, string, number, number][];
+		const diags: vscode.Diagnostic[] = [];
+		for (const message of messages) {
+			let [type, msg, line, column] = message;
+			if (typeof type !== "string") {
+				throw new Error(`Invalid type '${type}'!`);
+			}
+			if (typeof msg !== "string") {
+				throw new TypeError(`typeof message === '${typeof msg}'`);
+			}
+			if (typeof line !== "number") {
+				throw new TypeError(`typeof line === '${typeof line}'`);
+			}
+			if (typeof column !== "number") {
+				throw new TypeError(`typeof column === '${typeof column}'`);
+			}
+			if (type === "global") {
+				msg = `use of undeclared global variable '${msg}'`;
+			}
+			const range = activeEditor.document.getWordRangeAtPosition(new vscode.Position(line - 1, column - 1));
+			diags.push(new vscode.Diagnostic(
+				range ?? new vscode.Range(line - 1, column - 1, line - 1, column),
+				msg,
+				type === "global" ? vscode.DiagnosticSeverity.Warning : vscode.DiagnosticSeverity.Error,
+			));
+		}
+
+		diagnostics.set(activeEditor.document.uri, diags);
 	}));
 }
 
