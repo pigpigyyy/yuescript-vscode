@@ -49,6 +49,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 
 		if (!reply["messages"]) {
+			diagnostics.set(activeEditor.document.uri, []);
 			return;
 		}
 
