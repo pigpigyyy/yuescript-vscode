@@ -48,7 +48,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
-		if (!reply["messages"]) {
+		if (!reply["messages"] || !(reply["messages"] instanceof Array) || (reply["messages"].length === 0)) {
 			diagnostics.set(activeEditor.document.uri, []);
 			return;
 		}
