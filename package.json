@@ -1,90 +1,91 @@
 {
-	"name": "yuescript",
-	"displayName": "YueScript",
-	"description": "An extension for YueScript",
-	"version": "0.2.3",
-	"license": "MIT",
-	"engines": {
-		"vscode": "^1.98.0"
-	},
-	"categories": [
-		"Programming Languages"
-	],
-	"activationEvents": [],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"title": "Start extension",
-				"command": "yuescript.highlightSyntax"
-			}
-		],
-		"languages": [
-			{
-				"id": "yuescript",
-				"aliases": [
-					"YueScript",
-					"Yuescript",
-					"yuescript",
-					"yue"
-				],
-				"extensions": [
-					".yue"
-				],
-				"configuration": "./language-configuration.json"
-			}
-		],
-		"grammars": [
-			{
-				"language": "yuescript",
-				"scopeName": "source.yue",
-				"path": "./syntaxes/yuescript.tmLanguage.json"
-			}
-		],
-		"snippets": [
-			{
-				"language": "yuescript",
-				"path": "./snippets/operators.json"
-			},
-			{
-				"language": "yuescript",
-				"path": "./snippets/flow-control.json"
-			},
-			{
-				"language": "yuescript",
-				"path": "./snippets/standard-lua.json"
-			},
-			{
-				"language": "yuescript",
-				"path": "./snippets/constants.json"
-			},
-			{
-				"language": "yuescript",
-				"path": "./snippets/standard-yue.json"
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "\"$HOME/.bun/bin/bun\" run compile",
-		"parser": "peggy --output './src/parser.js' --format 'commonjs' './src/parser.peggy'",
-		"compile": "\"$HOME/.bun/bin/bunx\" json5 --space t './syntaxes/yuescript.tmLanguage.json5' --out-file './syntaxes/yuescript.tmLanguage.json' && \"$HOME/.bun/bin/bun\" build --target='node' --outdir='./out' --sourcemap='external' --external='vscode' --format='cjs' --splitting -- './src/extension.ts'",
-		"package": "\"$HOME/.bun/bin/bunx\" vsce package",
-		"packageAndInstall": "\"$HOME/.bun/bin/bunx\" vsce package --out='/tmp/yuescript.vsix' && code --install-extension '/tmp/yuescript.vsix' && rm -fv '/tmp/yuescript.vsix'"
-	},
-	"icon": "images/icon.png",
-	"publisher": "LiJin",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/pigpigyyy/yuescript-vscode"
-	},
-	"devDependencies": {
-		"@types/vscode": "^1.98.0",
-		"@vscode/test-electron": "latest",
-		"json5": "^2.2.3",
-		"typescript": "^5.0.0"
-	},
-	"dependencies": {
-		"@types/bun": "^1.2.13",
-		"peggy": "^4.2.0"
-	}
+  "name": "yuescript",
+  "displayName": "YueScript",
+  "description": "An extension for YueScript",
+  "version": "0.2.3",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.98.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "title": "Start extension",
+        "command": "yuescript.highlightSyntax"
+      }
+    ],
+    "languages": [
+      {
+        "id": "yuescript",
+        "aliases": [
+          "YueScript",
+          "Yuescript",
+          "yuescript",
+          "yue"
+        ],
+        "extensions": [
+          ".yue"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "yuescript",
+        "scopeName": "source.yue",
+        "path": "./syntaxes/yuescript.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "yuescript",
+        "path": "./snippets/operators.json"
+      },
+      {
+        "language": "yuescript",
+        "path": "./snippets/flow-control.json"
+      },
+      {
+        "language": "yuescript",
+        "path": "./snippets/standard-lua.json"
+      },
+      {
+        "language": "yuescript",
+        "path": "./snippets/constants.json"
+      },
+      {
+        "language": "yuescript",
+        "path": "./snippets/standard-yue.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "\"$HOME/.bun/bin/bun\" run compile",
+    "parser": "peggy --output './src/parser.js' --format 'commonjs' './src/parser.peggy'",
+    "compile": "\"$HOME/.bun/bin/bunx\" json5 --space t './syntaxes/yuescript.tmLanguage.json5' --out-file './syntaxes/yuescript.tmLanguage.json' && \"$HOME/.bun/bin/bun\" build --target='node' --outdir='./out' --sourcemap='external' --external='vscode' --format='cjs' --splitting -- './src/extension.ts'",
+    "package": "\"$HOME/.bun/bin/bunx\" vsce package",
+    "packageAndInstall": "\"$HOME/.bun/bin/bunx\" vsce package --out='/tmp/yuescript.vsix' && code --install-extension '/tmp/yuescript.vsix' && rm -fv '/tmp/yuescript.vsix'"
+  },
+  "icon": "images/icon.png",
+  "publisher": "LiJin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pigpigyyy/yuescript-vscode"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.98.0",
+    "@vscode/test-electron": "latest",
+    "json5": "^2.2.3",
+    "typescript": "^5.0.0",
+    "@types/bun": "latest"
+  },
+  "dependencies": {
+    "peggy": "^4.2.0"
+  },
+  "private": true
 }

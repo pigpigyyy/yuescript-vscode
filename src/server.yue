@@ -2,32 +2,32 @@ import "yue"
 const json = do
 	local success, result
 
-	if success, result := pcall(require, "cojson")
+	if success, result := pcall require, "cojson"
 		result
-	elseif success, result := pcall(require, "cjson")
+	elseif success, result := pcall require, "cjson"
 		result
-	elseif success, result := pcall(require, "json")
+	elseif success, result := pcall require, "json"
 		result
 	else
-		error("Could not find a JSON-module for YueScript! Please install one.")
+		error "Could not find a JSON-module for YueScript! Please install one."
 
 
 const send = (data, raw = false) ->
 	if not raw
-		data = json.encode(data)::gsub("[\r\n]", "")
+		data = json.encode(data)::gsub "[\r\n]", ""
 
-	assert(type(data) == "string")
+	assert type(data) == "string"
 
-	io.stdout::write(data, "\n")
-	io.stdout::flush()
+	io.stdout::write data, "\n"
+	io.stdout::flush!
 	return
 
 
 const recieve = () ->
-	const rawData = io.stdin::read("*l")
+	const rawData = io.stdin::read "*l"
 
 	const data = if type(rawData) == "string"
-		json.decode(rawData)
+		json.decode rawData
 	else
 		nil
 
@@ -35,20 +35,57 @@ const recieve = () ->
 
 
 while true
-	const input, rawInput = recieve()
+	const input, rawInput = recieve!
 
 	if input == nil
-		send("{}", true)
+		send "{}", true
 		return
 
-	success, messages, transpiledLuaCode = yue.check(input.sourceCode, {lint_global: true})
+	try
+		config = if content := input.config?.content
+			try? yue.loadstring(content)!
 
-	if messages
-		messages = [message for message in *messages when message[1] == "error" or (message[1] == "global" and not _G[message[2]])]
+		configDir = input.config?.dir
 
-	send({
-		:success
-		-- :transpiledLuaCode
-		-- :rawInput
-		:messages
-	})
+		config ??= {
+			lint_global: true
+		}
+
+		path = config.options?.path ?? ""
+		if configDir and config.include and type(config.include) == "table"
+			includes = ["#{configDir}/?.lua",]
+			for include in *config.include
+				if type(include) == "string"
+					includes[] = "#{configDir}/#{include}/?.lua"
+			path ..= ";" if path ~= ""
+			path ..= table.concat includes, ";"
+
+		oldPath = package.path
+		package.path ..= ";" .. path
+
+		success, messages, transpiledLuaCode = yue.check input.sourceCode, config
+
+		package.path = oldPath
+
+		if messages
+			:globals = config
+			globals = {name, true for name in *globals} if type(globals) == "table"
+			messages = [message for message in *messages when message[1] == "error" or (message[1] == "global" and not _G[message[2]] and (not globals or not globals[message[2]]))]
+		else
+			messages = []
+
+		send input.isSaveEvent and {
+			:success
+			:transpiledLuaCode
+			include: config.include
+			:configDir
+			build: config.build
+			:messages
+		} or {
+			:success
+			:messages
+		}
+	catch err
+		send
+			success: false
+			messages: [ ["error", err, 1, 1],]
