@@ -33,7 +33,6 @@ const recieve = () ->
 
 	data, rawData
 
-
 while true
 	const input, rawInput = recieve!
 

@@ -40,16 +40,43 @@ function updateDiagnostics(diagnostics: vscode.DiagnosticCollection, activeEdito
 	}
 
 	const diags: vscode.Diagnostic[] = [];
+
+	const globalMap = new Map<string, string[]>();
+	const others: [string, string, number, number][] = [];
+
 	for (const message of messages) {
-		let [type, msg, line, column] = message;
+		const [type, msg, line, column] = message;
 		if (type === "global") {
-			msg = `use of undeclared global variable '${msg}'`;
+			const key = `${line}:${column}`;
+			if (!globalMap.has(key)) {
+				globalMap.set(key, []);
+			}
+			globalMap.get(key)!.push(msg);
+		} else {
+			others.push(message);
 		}
+	}
+
+	for (const [key, msgArr] of globalMap) {
+		const [lineStr, colStr] = key.split(":");
+		const line = Number(lineStr);
+		const column = Number(colStr);
+		const msg = `use of undeclared global variable: ${msgArr.join(", ")}`;
 		const range = activeEditor.document.getWordRangeAtPosition(new vscode.Position(line - 1, column - 1));
 		diags.push(new vscode.Diagnostic(
 			range ?? new vscode.Range(line - 1, column - 1, line - 1, column),
 			msg,
-			type === "global" ? vscode.DiagnosticSeverity.Warning : vscode.DiagnosticSeverity.Error,
+			vscode.DiagnosticSeverity.Warning,
+		));
+	}
+
+	for (const message of others) {
+		const [, msg, line, column] = message;
+		const range = activeEditor.document.getWordRangeAtPosition(new vscode.Position(line - 1, column - 1));
+		diags.push(new vscode.Diagnostic(
+			range ?? new vscode.Range(line - 1, column - 1, line - 1, column),
+			msg,
+			vscode.DiagnosticSeverity.Error,
 		));
 	}
 

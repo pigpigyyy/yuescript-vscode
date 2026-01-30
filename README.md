@@ -27,6 +27,8 @@ A `VSCode` extension for [`Yuescript`](https://github.com/pigpigyyy/yuescript-vs
 The extension supports loading a `yueconfig.yue` file from your workspace. This file allows you to configure how the extension compiles your Yuescript code. Create a `yueconfig.yue` file in your workspace with the following format:
 
 ```moonscript
+-- create a `yueconfig.yue` file in your workspace with the following options
+
 return
 	-- Whether the vscode extension should build the code to Lua file on save.
 	build: false
@@ -47,6 +49,9 @@ return
 
 	-- Whether the compiler should reserve the original line number in the compiled code.
 	reserve_line_number: true
+
+	-- Whether the compiler should reserve the original comment in statement in the compiled code.
+	reserve_comment: true
 
 	-- Whether the compiler should use the space character instead of the tab character in the compiled code.
 	space_over_tab: false
