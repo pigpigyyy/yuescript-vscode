@@ -46,9 +46,13 @@ while true
 
 		configDir = input.config?.dir
 
+		module = input.config?.module ?? "yuescript"
+
 		config ??= {
 			lint_global: true
 		}
+
+		config.module = module
 
 		path = config.options?.path ?? ""
 		if configDir and config.include and type(config.include) == "table"

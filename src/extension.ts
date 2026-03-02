@@ -100,9 +100,19 @@ export async function activate(context: vscode.ExtensionContext) {
 	const diagnostics = vscode.languages.createDiagnosticCollection("YueScript");
 	context.subscriptions.push(diagnostics);
 
+	const yueConfigWatcher = vscode.workspace.createFileSystemWatcher("**/yueconfig.yue");
+	context.subscriptions.push(yueConfigWatcher);
+	context.subscriptions.push(yueConfigWatcher.onDidCreate((uri) => invalidateYueConfigCaches(uri.fsPath)));
+	context.subscriptions.push(yueConfigWatcher.onDidChange((uri) => invalidateYueConfigCaches(uri.fsPath)));
+	context.subscriptions.push(yueConfigWatcher.onDidDelete((uri) => invalidateYueConfigCaches(uri.fsPath)));
+
 	context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(async (document: vscode.TextDocument) => {
 		if (document.languageId !== "yuescript") {
 			return;
+		}
+
+		if (basename(document.uri.fsPath).toLowerCase() === "yueconfig.yue") {
+			invalidateYueConfigCaches(document.uri.fsPath);
 		}
 
 		const activeEditor = vscode.window.activeTextEditor;
@@ -167,14 +177,6 @@ export function deactivate() {}
 
 ////////////////////////////////////////////////////////////////////////////////
 
-function typeName(object: any) {
-	const type = typeof object;
-
-	return type === "object"
-		? (object?.constructor?.name ?? "object")
-		: type;
-}
-
 interface YueReply {
 	success: boolean;
 	transpiledLuaCode?: string;
@@ -187,9 +189,132 @@ interface YueReply {
 interface YueConfig {
 	content: string;
 	dir: string;
+	module: string;
 }
 
-let locked = false;
+interface NearestYueConfig {
+	content: string;
+	dir: string;
+}
+
+let yueTaskQueue: Promise<void> = Promise.resolve();
+let yueStdoutBuffer = "";
+const nearestConfigLookupCache = new Map<string, NearestYueConfig | null>();
+const configContentCache = new Map<string, string>();
+
+function enqueueYueTask<T>(task: () => Promise<T>): Promise<T> {
+	const run = yueTaskQueue.then(task, task);
+	yueTaskQueue = run.then(
+		() => undefined,
+		() => undefined,
+	);
+	return run;
+}
+
+function invalidateYueConfigCaches(configPath?: string) {
+	if (configPath) {
+		configContentCache.delete(configPath);
+	}
+	nearestConfigLookupCache.clear();
+}
+
+function readYueReplyLine(yueProcess: ChildProcessByStdio<Writable, Readable, null>): Promise<string> {
+	return new Promise((resolve, reject) => {
+		const cleanup = () => {
+			yueProcess.stdout.off("data", onData);
+			yueProcess.stdout.off("error", onError);
+			yueProcess.stdout.off("close", onClose);
+		};
+
+		const tryConsumeLine = () => {
+			const newlineIndex = yueStdoutBuffer.indexOf("\n");
+			if (newlineIndex === -1) {
+				return false;
+			}
+
+			const line = yueStdoutBuffer.slice(0, newlineIndex);
+			yueStdoutBuffer = yueStdoutBuffer.slice(newlineIndex + 1);
+			cleanup();
+			resolve(line);
+			return true;
+		};
+
+		const onData = (chunk: Buffer | string) => {
+			yueStdoutBuffer += chunk instanceof Buffer ? chunk.toString("utf8") : chunk;
+			tryConsumeLine();
+		};
+
+		const onError = (error: Error) => {
+			cleanup();
+			reject(error);
+		};
+
+		const onClose = () => {
+			cleanup();
+			reject(new Error("Yue process stdout closed before a complete reply was received."));
+		};
+
+		if (tryConsumeLine()) {
+			return;
+		}
+
+		yueProcess.stdout.on("data", onData);
+		yueProcess.stdout.once("error", onError);
+		yueProcess.stdout.once("close", onClose);
+	});
+}
+
+async function findNearestYueConfig(documentUri: vscode.Uri): Promise<NearestYueConfig | undefined> {
+	const workspaceFolder = vscode.workspace.getWorkspaceFolder(documentUri);
+	const workspaceRoot = workspaceFolder?.uri.fsPath;
+	const startDir = dirname(documentUri.fsPath);
+	const cacheKey = workspaceRoot ? `${workspaceRoot}::${startDir}` : startDir;
+
+	if (nearestConfigLookupCache.has(cacheKey)) {
+		const cached = nearestConfigLookupCache.get(cacheKey);
+		if (!cached) {
+			return undefined;
+		}
+		return {
+			content: cached.content,
+			dir: cached.dir,
+		};
+	}
+
+	let currentDir = startDir;
+	while (true) {
+		const configPath = resolve(currentDir, "yueconfig.yue");
+		let content = configContentCache.get(configPath);
+		if (content === undefined) {
+			try {
+				content = await fs.readFile(configPath, "utf8");
+				configContentCache.set(configPath, content);
+			} catch (error) {
+				const code = (error as NodeJS.ErrnoException).code;
+				if (code !== "ENOENT") {
+					console.error(`Failed to read yueconfig.yue at ${configPath}:`, error);
+				}
+			}
+		}
+		if (content !== undefined) {
+			const config = {
+				content,
+				dir: currentDir,
+			};
+			nearestConfigLookupCache.set(cacheKey, config);
+			return config;
+		}
+
+		if ((workspaceRoot && currentDir === workspaceRoot) || dirname(currentDir) === currentDir) {
+			break;
+		}
+		currentDir = dirname(currentDir);
+	}
+
+	nearestConfigLookupCache.set(cacheKey, null);
+	return undefined;
+}
+
 async function textChangeCallback({
 	activeEditor,
 	yueProcess,
@@ -200,27 +325,8 @@ async function textChangeCallback({
 	yueProcess: ChildProcessByStdio<Writable, Readable, null>,
 	isSaveEvent: boolean,
 }): Promise<YueReply | null> {
-	return new Promise(async (resolve, reject) => {
-		if (locked) {
-			resolve(null);
-			return;
-		}
-
-		locked = true;
-
-		// find yueconfig.yue
-		let yueConfigContent: string | undefined = undefined;
-		let yueConfigDir: string | undefined = undefined;
-		try {
-			const configFiles = await vscode.workspace.findFiles("**/yueconfig.yue", '**/node_modules/**', 1);
-			if (configFiles.length > 0 && configFiles[0]) {
-				const configDocument = await vscode.workspace.openTextDocument(configFiles[0]);
-				yueConfigContent = configDocument.getText();
-				yueConfigDir = dirname(configFiles[0].fsPath);
-			}
-		} catch (error) {
-			console.error("Failed to find or read yueconfig.yue:", error);
-		}
+	return enqueueYueTask(async () => {
+		const nearestConfig = await findNearestYueConfig(activeEditor.document.uri);
 
 		const dataToSend: { sourceCode: string; config?: YueConfig; isSaveEvent?: boolean } = {
 			sourceCode: activeEditor.document.getText().trimEnd(),
@@ -228,36 +334,39 @@ async function textChangeCallback({
 		if (isSaveEvent) {
 			dataToSend.isSaveEvent = true;
 		}
-		if (yueConfigContent !== undefined && yueConfigDir !== undefined) {
+		if (nearestConfig) {
 			dataToSend.config = {
-				content: yueConfigContent,
-				dir: yueConfigDir,
+				content: nearestConfig.content,
+				dir: nearestConfig.dir,
+				module: relative(nearestConfig.dir, activeEditor.document.fileName),
 			};
 		}
 
-		const callback = () => {
-			process.nextTick(() => {
-				yueProcess.stdout.once("data", (data: Buffer) => {
-					locked = false;
-					if (data instanceof Buffer) {
-						let reply: YueReply;
-						try {
-							reply = JSON.parse(String(data));
-						} catch (err) {
-							throw new Error(`${err} -> ${String(data)}`);
-						}
+		return await new Promise<YueReply>((resolve, reject) => {
+			const callback = () => {
+				process.nextTick(async () => {
+					let replyText: string;
+					try {
+						replyText = await readYueReplyLine(yueProcess);
+					} catch (error) {
+						reject(error instanceof Error ? error : new Error(String(error)));
+						return;
+					}
+
+					try {
+						const reply = JSON.parse(replyText) as YueReply;
 						resolve(reply);
-					} else {
-						reject(`Invalid type of data! (Buffer expected, got ${typeName(data)} - ${data})`);
+					} catch (err) {
+						reject(new Error(`${err} -> ${replyText}`));
 					}
 				});
-			});
-		};
+			};
 
-		if (!yueProcess.stdin.write(JSON.stringify(dataToSend) + "\n")) {
-			yueProcess.stdin.once("drain", callback);
-		} else {
-			callback();
-		}
+			if (!yueProcess.stdin.write(JSON.stringify(dataToSend) + "\n")) {
+				yueProcess.stdin.once("drain", callback);
+			} else {
+				callback();
+			}
+		});
 	});
 }

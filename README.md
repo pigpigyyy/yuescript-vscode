@@ -1,6 +1,6 @@
 <center>
 
-# Yuescript
+# YueScript
 
 ###### (yuescript-vscode)
 
@@ -10,7 +10,7 @@
 ![Repo Size](https://img.shields.io/github/repo-size/pigpigyyy/yuescript-vscode?style=flat-square)
 ![Repo Stars](https://img.shields.io/github/stars/pigpigyyy/yuescript-vscode?style=flat-square)
 
-A `VSCode` extension for [`Yuescript`](https://github.com/pigpigyyy/yuescript-vscode.git)
+A `VSCode` extension for [`YueScript`](https://github.com/pigpigyyy/yuescript-vscode.git)
 
 [read the documentation here 🔗](https://yuescript.org/)
 
@@ -18,9 +18,9 @@ A `VSCode` extension for [`Yuescript`](https://github.com/pigpigyyy/yuescript-vs
 
 ## Features
 
-- Provides **syntax-highlighting** and **snippets** for `Yuescript`.
+- Provides **syntax-highlighting** and **snippets** for `YueScript`.
 - Supports loading `yueconfig.yue` file from the workspace as the compilation configuration file.
-- Automatic build to `.lua` file on save (when enabled in configuration).
+- Automatic build to `.lua` file on save (when `build` enabled in configuration).
 
 ## Configuration
 
