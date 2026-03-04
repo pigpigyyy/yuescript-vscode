@@ -53,6 +53,9 @@ while true
 		}
 
 		config.module = module
+		config.build = false if config.build == nil
+		config.reserve_line_number = false if config.reserve_line_number == nil
+		config.reserve_comment = false if config.reserve_comment == nil
 
 		path = config.options?.path ?? ""
 		if configDir and config.include and type(config.include) == "table"
@@ -67,6 +70,9 @@ while true
 		package.path ..= ";" .. path
 
 		success, messages, transpiledLuaCode = yue.check input.sourceCode, config
+		realtimeTranspiledLuaCode = nil
+		if input.realtimeLua
+			_, _, realtimeTranspiledLuaCode = yue.check input.sourceCode, config, true
 
 		package.path = oldPath
 
@@ -80,12 +86,19 @@ while true
 		send input.isSaveEvent and {
 			:success
 			:transpiledLuaCode
+			:realtimeTranspiledLuaCode
 			include: config.include
 			:configDir
 			build: config.build
+			reserveLineNumber: config.reserve_line_number
+			reserveComment: config.reserve_comment
 			:messages
 		} or {
 			:success
+			:realtimeTranspiledLuaCode
+			build: config.build
+			reserveLineNumber: config.reserve_line_number
+			reserveComment: config.reserve_comment
 			:messages
 		}
 	catch err

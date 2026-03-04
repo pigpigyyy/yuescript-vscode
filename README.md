@@ -20,7 +20,10 @@ A `VSCode` extension for [`YueScript`](https://github.com/pigpigyyy/yuescript-vs
 
 - Provides **syntax-highlighting** and **snippets** for `YueScript`.
 - Supports loading `yueconfig.yue` file from the workspace as the compilation configuration file.
-- Automatic build to `.lua` file on save (when `build` enabled in configuration).
+- Automatic build to `.lua` file on save (when `build` is enabled in configuration).
+- Skip generating `.lua` for `yueconfig.yue` (config-only file).
+- Includes an internal LuaLS bridge (LSP over stdio), so Yue diagnostics/completion/signature/hover/definition can work without opening generated `.lua` files.
+- Supports Yue-style completion probing for chained calls, including `.` and `\` method call forms.
 
 ## Configuration
 
@@ -66,11 +69,21 @@ return
 
 ## Requirements
 
-- None.
+- `yue` command available in PATH.
+- For LuaLS features, install `lua-language-server`: [LuaLS Install Guide](https://luals.github.io/#install)
 
 ## Extension Settings
 
-- None yet.
+- `yuescript.luaLS.executablePath`: optional explicit path to `lua-language-server` (leave empty for auto-detection).
+- `yuescript.luaLS.parameters`: optional extra command line args passed to LuaLS.
+
+## LuaLS Enable Conditions
+
+LuaLS analysis for a Yue file is enabled only when all of the following are true in `yueconfig.yue`:
+
+- `build: true`
+- `reserve_line_number: true`
+- `reserve_comment: true`
 
 ## Known Issues
 

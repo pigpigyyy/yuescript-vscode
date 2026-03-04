@@ -2,7 +2,7 @@
   "name": "yuescript",
   "displayName": "YueScript",
   "description": "An extension for YueScript",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "license": "MIT",
   "engines": {
     "vscode": "^1.98.0"
@@ -52,17 +52,27 @@
       },
       {
         "language": "yuescript",
-        "path": "./snippets/standard-lua.json"
-      },
-      {
-        "language": "yuescript",
-        "path": "./snippets/constants.json"
-      },
-      {
-        "language": "yuescript",
         "path": "./snippets/standard-yue.json"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "YueScript",
+      "properties": {
+        "yuescript.luaLS.executablePath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the lua-language-server executable. Leave empty to auto-detect."
+        },
+        "yuescript.luaLS.parameters": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Additional command line parameters passed to lua-language-server."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "\"$HOME/.bun/bin/bun\" run compile",
