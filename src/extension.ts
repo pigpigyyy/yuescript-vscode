@@ -673,13 +673,13 @@ function extractYueCompletionChain(linePrefix: string): string | undefined {
 	return undefined;
 }
 
-function buildDoraFallbackCompletionSource(document: vscode.TextDocument, position: vscode.Position): string {
+function buildGlobalFallbackCompletionSource(document: vscode.TextDocument, position: vscode.Position): string {
 	const beforeCurrentLine = document.getText(new vscode.Range(new vscode.Position(0, 0), new vscode.Position(position.line, 0)));
 	const afterCurrentLine = position.line + 1 < document.lineCount
 		? document.getText(new vscode.Range(new vscode.Position(position.line + 1, 0), new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length)))
 		: "";
 	const leadingWhitespace = (document.lineAt(position.line).text.match(/^\s*/) ?? [""])[0];
-	const dummyLine = `${leadingWhitespace}print(Dora.${COMPLETION_DUMMY})`;
+	const dummyLine = `${leadingWhitespace}print(_G.${COMPLETION_DUMMY})`;
 	if (afterCurrentLine.length === 0) {
 		return `${beforeCurrentLine}${dummyLine}\n`;
 	}
@@ -1155,18 +1155,21 @@ export async function activate(context: vscode.ExtensionContext) {
 		});
 	};
 
-	const refreshDocumentState = async (document: vscode.TextDocument, isSaveEvent: boolean) => {
+	const refreshDocumentState = async (document: vscode.TextDocument, isSaveEvent: boolean, laxCheck?: boolean) => {
 		await ensureLuaClient(false);
 		const reply = await textChangeCallback({
 			document,
 			yueProcess,
 			isSaveEvent,
 			realtimeLua: true,
+			laxCheck: laxCheck ?? false,
 		});
 		if (!reply) {
 			return null;
 		}
-		updateDiagnostics(diagnostics, document, reply.messages);
+		if (!laxCheck) {
+			updateDiagnostics(diagnostics, document, reply.messages);
+		}
 		await syncLuaState(document, reply);
 		return reply;
 	};
@@ -1214,6 +1217,7 @@ export async function activate(context: vscode.ExtensionContext) {
 							yueProcess,
 							isSaveEvent: false,
 							realtimeLua: true,
+							laxCheck: true,
 							sourceCode: source,
 						});
 						if (!completionReply?.realtimeTranspiledLuaCode) {
@@ -1262,9 +1266,9 @@ export async function activate(context: vscode.ExtensionContext) {
 						return first;
 					}
 
-					const doraFallback = await requestCompletionFromSource(buildDoraFallbackCompletionSource(document, position));
-					if (doraFallback && doraFallback.items.length > 0) {
-						return doraFallback;
+					const globalFallback = await requestCompletionFromSource(buildGlobalFallbackCompletionSource(document, position));
+					if (globalFallback && globalFallback.items.length > 0) {
+						return globalFallback;
 					}
 
 					const keywordItems = YUE_KEYWORDS.map((word) => {
@@ -1342,6 +1346,7 @@ export async function activate(context: vscode.ExtensionContext) {
 						yueProcess,
 						isSaveEvent: false,
 						realtimeLua: true,
+						laxCheck: true,
 						sourceCode: source,
 					});
 					if (!reply?.realtimeTranspiledLuaCode) {
@@ -1401,8 +1406,8 @@ export async function activate(context: vscode.ExtensionContext) {
 					return undefined;
 				}
 				let state = luaStates.get(document.uri.fsPath);
-				if (!state) {
-					await refreshDocumentState(document, false);
+				if (!state || !state.enabled) {
+					await refreshDocumentState(document, false, true);
 					state = luaStates.get(document.uri.fsPath);
 				}
 				if (!state || !state.enabled) {
@@ -1438,8 +1443,8 @@ export async function activate(context: vscode.ExtensionContext) {
 					return undefined;
 				}
 				let state = luaStates.get(document.uri.fsPath);
-				if (!state) {
-					await refreshDocumentState(document, false);
+				if (!state || !state.enabled) {
+					await refreshDocumentState(document, false, true);
 					state = luaStates.get(document.uri.fsPath);
 				}
 				if (!state || !state.enabled) {
@@ -1654,18 +1659,20 @@ async function textChangeCallback({
 	yueProcess,
 	isSaveEvent,
 	realtimeLua,
+	laxCheck,
 	sourceCode,
 }: {
 	document: vscode.TextDocument;
 	yueProcess: ChildProcessByStdio<Writable, Readable, null>;
 	isSaveEvent: boolean;
 	realtimeLua?: boolean;
+	laxCheck?: boolean;
 	sourceCode?: string;
 }): Promise<YueReply | null> {
 	return enqueueYueTask(async () => {
 		const nearestConfig = await findNearestYueConfig(document.uri);
 
-		const dataToSend: { sourceCode: string; config?: YueConfig; isSaveEvent?: boolean; realtimeLua?: boolean } = {
+		const dataToSend: { sourceCode: string; config?: YueConfig; isSaveEvent?: boolean; realtimeLua?: boolean; laxCheck?: boolean } = {
 			sourceCode: sourceCode ?? document.getText().trimEnd(),
 		};
 		if (isSaveEvent) {
@@ -1673,6 +1680,9 @@ async function textChangeCallback({
 		}
 		if (realtimeLua) {
 			dataToSend.realtimeLua = true;
+		}
+		if (laxCheck) {
+			dataToSend.laxCheck = true;
 		}
 		if (nearestConfig) {
 			dataToSend.config = {

@@ -56,6 +56,7 @@ while true
 		config.build = false if config.build == nil
 		config.reserve_line_number = false if config.reserve_line_number == nil
 		config.reserve_comment = false if config.reserve_comment == nil
+		config.lax = true if input.laxCheck == true
 
 		path = config.options?.path ?? ""
 		if configDir and config.include and type(config.include) == "table"
