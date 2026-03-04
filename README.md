@@ -79,11 +79,36 @@ return
 
 ## LuaLS Enable Conditions
 
-LuaLS analysis for a Yue file is enabled only when all of the following are true in `yueconfig.yue`:
+LuaLS analysis for a Yue file is fully enabled only when all of the following are true in `yueconfig.yue`:
 
 - `build: true`
 - `reserve_line_number: true`
 - `reserve_comment: true`
+
+## Use Project Library Definitions With LuaLS
+
+To make LuaLS load your project-provided type/library definition files, add a `.luarc.json` in the workspace root:
+
+```json
+{
+  "workspace.library": [
+    "./Script/Types",
+    "./Script/Meta"
+  ]
+}
+```
+
+If you also use third-party LuaLS addon packages, you can set:
+
+```json
+{
+  "workspace.userThirdParty": [
+    "./.luals"
+  ]
+}
+```
+
+After updating `.luarc.json`, reload VSCode (or restart the extension host) to ensure LuaLS picks up the new library paths.
 
 ## Known Issues
 
