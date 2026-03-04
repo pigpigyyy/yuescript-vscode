@@ -1025,8 +1025,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	const luaStates = new Map<string, LuaDocState>();
 	const luaToYue = new Map<string, vscode.Uri>();
-	const completionSourceStates = new Map<string, CompletionSourceState>();
-	const signatureSourceStates = new Map<string, CompletionSourceState>();
 
 	let luaClient: LuaLsClient | null = null;
 	let luaClientStarting = false;
@@ -1121,16 +1119,6 @@ export async function activate(context: vscode.ExtensionContext) {
 			luaClient.didClose(state.luaUri.toString());
 			luaToYue.delete(state.luaUri.toString());
 		}
-		const completionState = completionSourceStates.get(document.uri.fsPath);
-		if (completionState && luaClient && completionState.opened) {
-			luaClient.didClose(completionState.uri.toString());
-		}
-		completionSourceStates.delete(document.uri.fsPath);
-		const signatureState = signatureSourceStates.get(document.uri.fsPath);
-		if (signatureState && luaClient && signatureState.opened) {
-			luaClient.didClose(signatureState.uri.toString());
-		}
-		signatureSourceStates.delete(document.uri.fsPath);
 		luaStates.delete(document.uri.fsPath);
 		luaLsDiagnostics.delete(document.uri);
 	};
@@ -1239,23 +1227,12 @@ export async function activate(context: vscode.ExtensionContext) {
 
 						const lineMap = parseLuaLineMap(completionLuaText);
 						const completionPos = toLspPositionFromOffset(completionLuaText, dummyMarker.offset);
-						const key = document.uri.fsPath;
-						let completionState = completionSourceStates.get(key);
-						if (!completionState) {
-							completionState = {
-								uri: vscode.Uri.file(`${getLuaPath(document.uri.fsPath)}.__yue_completion__.lua`),
-								version: 0,
-								opened: false,
-							};
-							completionSourceStates.set(key, completionState);
-						}
-						completionState.version += 1;
-						if (!completionState.opened) {
-							client.didOpen(completionState.uri.toString(), completionLuaText, completionState.version);
-							completionState.opened = true;
-						} else {
-							client.didChange(completionState.uri.toString(), completionLuaText, completionState.version);
-						}
+						const completionState: CompletionSourceState = {
+							uri: vscode.Uri.file(`${getLuaPath(document.uri.fsPath)}.__yue_completion__.lua`),
+							version: 1,
+							opened: true,
+						};
+						client.didOpen(completionState.uri.toString(), completionLuaText, completionState.version);
 						const completion = await client.completion(
 							completionState.uri.toString(),
 							completionPos,
@@ -1270,10 +1247,14 @@ export async function activate(context: vscode.ExtensionContext) {
 							resolvedItems,
 							8,
 						);
-						return new vscode.CompletionList(
-							toCompletionItems(resolvedItems, lineMap, document, position, completionState.uri.toString()),
-							completion.isIncomplete,
-						);
+						try {
+							return new vscode.CompletionList(
+								toCompletionItems(resolvedItems, lineMap, document, position, completionState.uri.toString()),
+								completion.isIncomplete,
+							);
+						} finally {
+							client.didClose(completionState.uri.toString());
+						}
 					};
 
 					const first = await requestCompletionFromSource(buildYueCompletionSource(document, position, linePrefix));
@@ -1374,24 +1355,12 @@ export async function activate(context: vscode.ExtensionContext) {
 					}
 					const signaturePos = toLspPositionFromOffset(luaText, markerOffset);
 
-					const key = document.uri.fsPath;
-					let state = signatureSourceStates.get(key);
-					if (!state) {
-						state = {
-							uri: vscode.Uri.file(`${getLuaPath(document.uri.fsPath)}.__yue_signature__.lua`),
-							version: 0,
-							opened: false,
-						};
-						signatureSourceStates.set(key, state);
-					}
-					state.version += 1;
-					if (!state.opened) {
-						client.didOpen(state.uri.toString(), luaText, state.version);
-						state.opened = true;
-					} else {
-						client.didChange(state.uri.toString(), luaText, state.version);
-					}
-
+					const state: CompletionSourceState = {
+						uri: vscode.Uri.file(`${getLuaPath(document.uri.fsPath)}.__yue_signature__.lua`),
+						version: 1,
+						opened: true,
+					};
+					client.didOpen(state.uri.toString(), luaText, state.version);
 					const lspHelp = await client.signatureHelp(
 						state.uri.toString(),
 						signaturePos,
@@ -1408,6 +1377,13 @@ export async function activate(context: vscode.ExtensionContext) {
 				} catch (error) {
 					console.error("LuaLS signatureHelp failed:", error);
 					return undefined;
+				} finally {
+					const uri = vscode.Uri.file(`${getLuaPath(document.uri.fsPath)}.__yue_signature__.lua`).toString();
+					try {
+						luaClient?.didClose(uri);
+					} catch {
+						// ignore
+					}
 				}
 			},
 		},
