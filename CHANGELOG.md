@@ -1,4 +1,8 @@
 # Changelog
+### $0.2.10$
+    - Hide the Yue and LuaLS subprocess console windows on Windows.
+    - Fix syntax highlighting when identifiers begin with `and` or `or`.
+    - Use lax Yue checks only for completion, signature help, and type inference fallbacks.
 ### $0.2.1$
     - Warn about undeclared global variables by enabling Yue's `lint_global` checks and surfacing them as editor diagnostics.
     - Support `cojson` (alongside `cjson`/`json`) for serializing messages between the extension and Yue runtime.
