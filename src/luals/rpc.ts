@@ -43,6 +43,7 @@ export class JsonRpcProcess {
 		this.process = spawn(command, args, {
 			stdio: ["pipe", "pipe", "pipe"],
 			cwd: options?.cwd,
+			windowsHide: true,
 		});
 
 		this.process.stdout.on("data", (chunk: Buffer) => this.onData(chunk));

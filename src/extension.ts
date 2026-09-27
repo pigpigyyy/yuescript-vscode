@@ -1008,6 +1008,7 @@ function toCompletionItems(items: LspCompletionItem[], lineMap: LuaLineMap, docu
 export async function activate(context: vscode.ExtensionContext) {
 	const yueProcess: ChildProcessByStdio<Writable, Readable, null> = spawn("yue", ["-e", context.extensionPath + "/src/server.yue"], {
 		stdio: ["pipe", "pipe", "inherit"],
+		windowsHide: true,
 	});
 
 	context.subscriptions.push({
