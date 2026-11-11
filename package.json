@@ -2,7 +2,7 @@
   "name": "yuescript",
   "displayName": "YueScript",
   "description": "An extension for YueScript",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "license": "MIT",
   "engines": {
     "vscode": "^1.98.0"
@@ -75,11 +75,11 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "\"$HOME/.bun/bin/bun\" run compile",
+    "vscode:prepublish": "bun run compile",
     "parser": "peggy --output './src/parser.js' --format 'commonjs' './src/parser.peggy'",
-    "compile": "\"$HOME/.bun/bin/bunx\" json5 --space t './syntaxes/yuescript.tmLanguage.json5' --out-file './syntaxes/yuescript.tmLanguage.json' && \"$HOME/.bun/bin/bun\" build --target='node' --outdir='./out' --sourcemap='external' --external='vscode' --format='cjs' --splitting -- './src/extension.ts'",
-    "package": "\"$HOME/.bun/bin/bunx\" vsce package",
-    "packageAndInstall": "\"$HOME/.bun/bin/bunx\" vsce package --out='/tmp/yuescript.vsix' && code --install-extension '/tmp/yuescript.vsix' && rm -fv '/tmp/yuescript.vsix'"
+    "compile": "bunx json5 --space t './syntaxes/yuescript.tmLanguage.json5' --out-file './syntaxes/yuescript.tmLanguage.json' && bun build --target='node' --outdir='./out' --sourcemap='external' --external='vscode' --format='cjs' -- './src/extension.ts'",
+    "package": "bunx vsce package",
+    "packageAndInstall": "bunx vsce package --out='/tmp/yuescript.vsix' && code --install-extension '/tmp/yuescript.vsix' && rm -fv '/tmp/yuescript.vsix'"
   },
   "icon": "images/icon.png",
   "publisher": "LiJin",

@@ -1,4 +1,6 @@
 # Changelog
+### $0.2.11$
+    - Remove unnecessary parentheses from control-flow and operator snippets.
 ### $0.2.10$
     - Hide the Yue and LuaLS subprocess console windows on Windows.
     - Fix syntax highlighting when identifiers begin with `and` or `or`.
