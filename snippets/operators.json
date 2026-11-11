@@ -9,7 +9,7 @@
 	},
 	"Operator - Not": {
 		"prefix": "not",
-		"body": "not($0)"
+		"body": "not $0"
 	},
 	"Operator - Uppercase variables as Globals": {
 		"prefix": "global ^",
@@ -35,7 +35,7 @@
 	},
 	"Operator - Switch": {
 		"prefix": "switch",
-		"body": "switch ($1)\n\twhen ($2)\n$0"
+		"body": "switch $1\n\twhen $2\n$0"
 	},
 	"Operator - Using": {
 		"prefix": "using",
