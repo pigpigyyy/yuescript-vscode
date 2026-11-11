@@ -16,8 +16,7 @@
 		["[", "]"],
 		["(", ")"],
 		["'", "'"],
-		["\"", "\""],
-		["<", ">"]
+		["\"", "\""]
 	],
 	// symbols that can be used to surround a selection
 	"surroundingPairs": [
@@ -37,8 +36,30 @@
 	"folding": {
 		"offSide": true
 	},
-	"indentationRules": {
-		// TODO: Add function expression and other keywords that mark blocks here
-		"increaseIndentPattern": "(^[ \t]*class)"
-	}
+	"onEnterRules": [
+		{
+			"beforeText": "^\\s*(if|else|elseif|when|until|for|while|switch|do|repeat|catch|try|with|class)\\b.*$",
+			"action": {
+				"indent": "indent"
+			}
+		},
+		{
+			"beforeText": "(do|->)\\s*$",
+			"action": {
+				"indent": "indent"
+			}
+		},
+		{
+			"beforeText": "^\\s*(return)\\b.*$",
+			"action": {
+				"indent": "outdent"
+			}
+		},
+		{
+			"beforeText": "^\\s*(return|continue|break)\\s*$",
+			"action": {
+				"indent": "outdent"
+			}
+		},
+	]
 }
