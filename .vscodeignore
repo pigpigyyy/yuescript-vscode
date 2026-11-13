@@ -12,3 +12,4 @@ types/*.lua
 src/**
 !src/server.yue
 bun.lock
+tests/**

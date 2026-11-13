@@ -37,37 +37,33 @@
 		"offSide": true
 	},
 	"onEnterRules": [
+		// Block-opening do and function arrows, including trailing line comments.
 		{
-			"beforeText": "(\\bdo|->|=>)\\s*$",
+			"beforeText": "^(?:\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*'|[^\"'\\-]|-(?!-))*?(?:\\bdo|->|=>)[ \\t]*(?:--.*)?$",
 			"action": {
 				"indent": "indent"
 			}
 		},
-		// If the word "then" or "do" was present and there was content after it,
-		// the statement was already complete. No indent needed.
+		// Only unquoted then/do with a body marks a completed inline statement.
 		{
-			"beforeText": "^.*\\b(then|do)\\b\\s+\\S.*$",
+			"beforeText": "^(?:\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*'|[^\"'\\-]|-(?!-))*?\\b(?:then|do)\\b[ \\t]+(?![ \\t]|--|$).*$",
 			"action": {
 				"indent": "none"
 			}
 		},
+		// until closes repeat; return can introduce a nested block expression.
 		{
-			"beforeText": "^\\s*(if|unless|elseif|when|else|until|for|while|switch|do|repeat|catch|try|with|class)\\b.*$",
+			"beforeText": "^[ \\t]*(?:return[ \\t]+)?(?:if|unless|elseif|when|else|for|while|switch|do|repeat|catch|try|with|class)\\b.*$",
 			"action": {
 				"indent": "indent"
 			}
 		},
+		// Only bare terminal statements outdent; return values and open brackets use normal indentation.
 		{
-			"beforeText": "^\\s*(return)\\s*(\\|).*(?!})$",
-			"action": {
-				"indent": "indent"
-			}
-		},
-		{
-			"beforeText": "^\\s*(return|continue|break)\\s*$",
+			"beforeText": "^[ \\t]*(?:return|continue|break)[ \\t]*(?:--.*)?$",
 			"action": {
 				"indent": "outdent"
 			}
-		},
+		}
 	]
 }

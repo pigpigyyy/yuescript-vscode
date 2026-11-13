@@ -75,6 +75,8 @@
     }
   },
   "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "test:editor": "node tests/run-editor-tests.cjs",
     "vscode:prepublish": "bun run compile",
     "parser": "peggy --output './src/parser.js' --format 'commonjs' './src/parser.peggy'",
     "compile": "bunx json5 --space t './syntaxes/yuescript.tmLanguage.json5' --out-file './syntaxes/yuescript.tmLanguage.json' && bun build --target='node' --outdir='./out' --sourcemap='external' --external='vscode' --format='cjs' -- './src/extension.ts'",
