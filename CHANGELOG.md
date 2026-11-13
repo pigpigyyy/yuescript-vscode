@@ -1,4 +1,7 @@
 # Changelog
+### $0.2.12$
+    - Add Enter indentation for block keywords and function arrows, with fixes for inline statements, quoted strings, comments, and nested return expressions.
+    - Stop automatically closing `<` with `>` when typing comparisons.
 ### $0.2.11$
     - Remove unnecessary parentheses from control-flow and operator snippets.
 ### $0.2.10$
