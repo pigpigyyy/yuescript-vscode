@@ -1,4 +1,7 @@
 # Changelog
+### $0.2.13$
+    - Improve syntax highlighting for function parameters, member parameters, commas, and default values.
+    - Fix highlighting for nested function signatures and parameterless arrows.
 ### $0.2.12$
     - Add Enter indentation for block keywords and function arrows, with fixes for inline statements, quoted strings, comments, and nested return expressions.
     - Stop automatically closing `<` with `>` when typing comparisons.
