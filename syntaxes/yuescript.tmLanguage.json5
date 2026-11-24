@@ -19,26 +19,35 @@
 			}
 		},
 		{
-			// Functions and methods
-			// FIXME: In an expression like the example below, too much will
-			// be matched as the parameter list of `(biz) -> biz`. It should
-			// only match `(biz)`, but it matches `inner(foo, bar, ((biz)`
-			// instead. Since parameter lists can also contain arbitrary
-			// expressions, not just parameter names, maybe this pattern should
-			// just be removed altogether?
-			// ```yue
-			// outer(inner(foo, bar, ((biz) -> biz), baz))
-			// ```
-			match: "(\\(.*?\\))?\\s*([=-]>)",
+			begin: "\\((?=[^)]*\\)\\s*[=-]>)",
+			end: "\\)\\s*([=-]>)",
 			name: "meta.inline.function.yue",
-			captures: {
+			endCaptures: {
 				"1": {
-					name: "variable.parameter.function.yue"
-				},
-				"2": {
 					name: "storage.type.function.yue"
 				}
-			}
+			},
+			patterns: [
+				{
+					match: "(?:\\G|,)\\s*(@\\w+)",
+					captures: {
+						"1": {
+							name: "entity.other.attribute-name.yue"
+						}
+					}
+				},
+				{
+					match: "(?:\\G|,)\\s*(\\w+)",
+					captures: {
+						"1": {
+							name: "variable.parameter.function.yue"
+						}
+					}
+				},
+				{
+					include: "$self"
+				}
+			]
 		},
 		{
 			// Back-calls
