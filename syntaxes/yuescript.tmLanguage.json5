@@ -18,37 +18,9 @@
 				}
 			}
 		},
-		{
-			begin: "\\((?=[^)]*\\)\\s*[=-]>)",
-			end: "\\)\\s*([=-]>)",
-			name: "meta.inline.function.yue",
-			endCaptures: {
-				"1": {
-					name: "storage.type.function.yue"
-				}
-			},
-			patterns: [
-				{
-					match: "(?:\\G|,)\\s*(@\\w+)",
-					captures: {
-						"1": {
-							name: "entity.other.attribute-name.yue"
-						}
-					}
-				},
-				{
-					match: "(?:\\G|,)\\s*(\\w+)",
-					captures: {
-						"1": {
-							name: "variable.parameter.function.yue"
-						}
-					}
-				},
-				{
-					include: "$self"
-				}
-			]
-		},
+		// Parameter lists must close at the matching parenthesis before an arrow.
+		{ include: "#function-parameters" },
+		{ match: "[=-]>", name: "storage.type.function.yue" },
 		{
 			// Back-calls
 			match: "(?<=^|\\bdo\\b|[=-]>)\\s*(\\(.*?\\))?\\s*(<[=-]\\s*(?=[a-zA-Z_]))",
@@ -71,21 +43,7 @@
 				}
 			}
 		},
-		{
-			begin: "\\[(=*)\\[",
-			beginCaptures: {
-				"0": {
-					name: "punctuation.definition.string.begin.yue"
-				}
-			},
-			end: "\\]\\1\\]",
-			endCaptures: {
-				"0": {
-					name: "punctuation.definition.string.end.yue"
-				}
-			},
-			name: "string.quoted.other.multiline.yue"
-		},
+		{ include: "#long-string" },
 		{
 			begin: "(?<!-)--\\[\\[",
 			captures: {
@@ -307,6 +265,151 @@
 		}
 	],
 	repository: {
+		// Defaults consume nested delimiters before looking for the next argument comma.
+		"function-parameters": {
+			// Oniguruma subexpression recursion balances nested calls; quoted text
+			// is consumed atomically so its parentheses cannot terminate the list.
+			"begin": "(?=(?<params>\\((?:\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*'|\\[(?<equals>=*)\\[(?:(?!\\]\\k<equals>\\]).)*\\]\\k<equals>\\]|\\[(?!=*\\[)|[^()\"'\\[]|\\g<params>)*\\))[ \\t]*[=-]>)\\(",
+			"end": "(\\))[ \\t]*([=-]>)",
+			"name": "meta.inline.function.yue",
+			"beginCaptures": {
+				"0": {
+					"name": "meta.brace.round.yue"
+				}
+			},
+			"endCaptures": {
+				"1": {
+					"name": "meta.brace.round.yue"
+				},
+				"2": {
+					"name": "storage.type.function.yue"
+				}
+			},
+			"patterns": [
+				{
+					"match": "(?:\\G|(?<=,))[ \\t]*(@[a-zA-Z_]\\w*)",
+					"captures": {
+						"1": {
+							"name": "entity.other.attribute-name.yue"
+						}
+					}
+				},
+				{
+					"match": "(?:\\G|(?<=,))[ \\t]*([a-zA-Z_]\\w*)",
+					"captures": {
+						"1": {
+							"name": "variable.parameter.function.yue"
+						}
+					}
+				},
+				{
+					"begin": "=(?!=|>)",
+					"end": "(?=,|\\))",
+					"name": "meta.parameter.default.yue",
+					"beginCaptures": {
+						"0": {
+							"name": "keyword.operator.yue"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#parameter-default-expression"
+						}
+					]
+				},
+				{
+					"include": "$self"
+				}
+			]
+		},
+		"parameter-default-expression": {
+			"patterns": [
+				{
+					"include": "#function-parameters"
+				},
+				{
+					"include": "#string"
+				},
+				{
+					"include": "#long-string"
+				},
+				{
+					"begin": "\\(",
+					"end": "\\)",
+					"beginCaptures": {
+						"0": {
+							"name": "meta.brace.round.yue"
+						}
+					},
+					"endCaptures": {
+						"0": {
+							"name": "meta.brace.round.yue"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#parameter-default-expression"
+						}
+					]
+				},
+				{
+					"begin": "\\[",
+					"end": "\\]",
+					"beginCaptures": {
+						"0": {
+							"name": "meta.brace.square.yue"
+						}
+					},
+					"endCaptures": {
+						"0": {
+							"name": "meta.brace.square.yue"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#parameter-default-expression"
+						}
+					]
+				},
+				{
+					"begin": "\\{",
+					"end": "\\}",
+					"beginCaptures": {
+						"0": {
+							"name": "meta.brace.curly.yue"
+						}
+					},
+					"endCaptures": {
+						"0": {
+							"name": "meta.brace.curly.yue"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#parameter-default-expression"
+						}
+					]
+				},
+				{
+					"include": "$self"
+				}
+			]
+		},
+		"long-string": {
+			"begin": "\\[(=*)\\[",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.yue"
+				}
+			},
+			"end": "\\]\\1\\]",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end.yue"
+				}
+			},
+			"name": "string.quoted.other.multiline.yue"
+		},
 		expression: {
 			patterns: [
 				{

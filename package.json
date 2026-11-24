@@ -90,11 +90,13 @@
     "url": "https://github.com/pigpigyyy/yuescript-vscode"
   },
   "devDependencies": {
+    "@types/bun": "latest",
     "@types/vscode": "^1.98.0",
     "@vscode/test-electron": "latest",
     "json5": "^2.2.3",
     "typescript": "^5.0.0",
-    "@types/bun": "latest"
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.3.2"
   },
   "dependencies": {
     "peggy": "^4.2.0"

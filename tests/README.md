@@ -1,6 +1,14 @@
-# Indentation regression tests
+# Language regression tests
 
 Run `npm install` first.
+
+`npm test` also uses `vscode-textmate` and `vscode-oniguruma` (the TextMate grammar
+and regular-expression engines used by VS Code) to tokenize the JSON5 grammar.
+The highlighting tests check token scopes for parameters, member parameters,
+commas, nested default expressions, parameterless arrows, and surrounding code.
+Function-signature coverage is single-line and remains subject to Oniguruma's
+subexpression-recursion limit; it does not establish support for arbitrarily deep
+or multiline signatures.
 
 `npm test` reads the actual `language-configuration.json` file and checks which
 `onEnterRules` action wins for representative lines. These checks cover both
