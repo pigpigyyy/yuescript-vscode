@@ -11,5 +11,6 @@ types/*.lua
 .gitattributes
 src/**
 !src/server.yue
+!src/vendor/luaminify.lua
 bun.lock
 tests/**

@@ -36,6 +36,9 @@ return
 	-- Whether the vscode extension should build the code to Lua file on save.
 	build: false
 
+	-- Match the generated Lua's physical line numbers to the source, like yue -r.
+	rewrite: false
+
 	-- The search paths to be included when compiling the code. The search paths are relative to the `yueconfig.yue` file.
 	include:
 		- "Lib"
@@ -66,6 +69,8 @@ return
 		-- The path to be appended to the `package.path` for the compiler.
 		path: ""
 ```
+
+Set both `build: true` and `rewrite: true` to align Lua runtime error lines with the YueScript source when saving. Like `yue -r`, the rewrite removes source comments from the generated Lua. It works with either value of `reserve_line_number`. The LuaLS bridge follows the settings below.
 
 ## Requirements
 

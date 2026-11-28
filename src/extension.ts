@@ -25,6 +25,7 @@ import {
 } from "./luals/client";
 
 const LUA_SOURCE_COMMENT_PREFIX = "-- [yue]: ";
+const LUA_REWRITE_MARKER = "-- [yue-rewrite]";
 const COMPLETION_DUMMY = "___YUE_COMPLETION_DUMMY___";
 const COMPLETION_DUMMY_CALL = "___DUMMY_CALL___";
 const SIGNATURE_MARKER = "___YUE_SIGNATURE_MARKER___";
@@ -61,6 +62,7 @@ const COMPLETION_CACHE_LIMIT = 2000;
 interface YueReply {
 	success: boolean;
 	transpiledLuaCode?: string;
+	rewrite?: boolean;
 	realtimeTranspiledLuaCode?: string;
 	messages: [string, string, number, number][];
 	include?: string[];
@@ -131,7 +133,11 @@ function formatLuaText(document: vscode.TextDocument, reply: YueReply, luaCode: 
 
 async function writeLuaBuildFile(document: vscode.TextDocument, reply: YueReply, luaCode: string) {
 	const luaPath = getLuaPath(document.uri.fsPath);
-	await fs.writeFile(luaPath, formatLuaText(document, reply, luaCode), "utf8");
+	// A leading source comment would shift the runtime line numbers.
+	const luaText = reply.rewrite
+		? `${luaCode}\n${LUA_REWRITE_MARKER}\n`
+		: formatLuaText(document, reply, luaCode);
+	await fs.writeFile(luaPath, luaText, "utf8");
 }
 
 function toSeverity(level: number | undefined): vscode.DiagnosticSeverity {
@@ -912,11 +918,16 @@ async function toYueLocationFromLuaTarget(
 		return undefined;
 	}
 
+	const yueUri = vscode.Uri.file(yuePath);
 	const liveState = currentStates.get(yuePath);
 	let lineMap: LuaLineMap | undefined = liveState?.lineMap;
 	if (!lineMap) {
 		try {
 			const text = await fs.readFile(luaUri.fsPath, "utf8");
+			if (text.trimEnd().endsWith(`\n${LUA_REWRITE_MARKER}`)) {
+				// Rewriting changes columns, so jump to the start of the source line.
+				return new vscode.Location(yueUri, new vscode.Position(luaRange.start.line, 0));
+			}
 			lineMap = parseLuaLineMap(text);
 		} catch {
 			return undefined;
@@ -927,7 +938,7 @@ async function toYueLocationFromLuaTarget(
 	if (!mapped) {
 		return undefined;
 	}
-	return new vscode.Location(vscode.Uri.file(yuePath), mapped);
+	return new vscode.Location(yueUri, mapped);
 }
 
 function toCompletionItems(items: LspCompletionItem[], lineMap: LuaLineMap, document: vscode.TextDocument, position: vscode.Position, luaUri: string): vscode.CompletionItem[] {
@@ -1006,7 +1017,11 @@ function toCompletionItems(items: LspCompletionItem[], lineMap: LuaLineMap, docu
 }
 
 export async function activate(context: vscode.ExtensionContext) {
-	const yueProcess: ChildProcessByStdio<Writable, Readable, null> = spawn("yue", ["-e", context.extensionPath + "/src/server.yue"], {
+	const yueProcess: ChildProcessByStdio<Writable, Readable, null> = spawn("yue", [
+		"-e",
+		context.asAbsolutePath("src/server.yue"),
+		context.asAbsolutePath("src/vendor/luaminify.lua"),
+	], {
 		stdio: ["pipe", "pipe", "inherit"],
 		windowsHide: true,
 	});
@@ -1520,7 +1535,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			await syncLuaState(document, reply);
 		}
 
-		if (reply.build && reply.transpiledLuaCode) {
+		if (reply.build && reply.transpiledLuaCode !== undefined && (reply.rewrite || reply.transpiledLuaCode !== "")) {
 			if (basename(document.uri.fsPath).toLowerCase() === "yueconfig.yue") {
 				return;
 			}

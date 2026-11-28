@@ -1,4 +1,6 @@
 # Changelog
+### $0.2.14$
+    - Add the `rewrite` option in `yueconfig.yue` to align generated Lua line numbers with the YueScript source on save, like `yue -r`.
 ### $0.2.13$
     - Improve syntax highlighting for function parameters, member parameters, commas, and default values.
     - Fix highlighting for nested function signatures and parameterless arrows.

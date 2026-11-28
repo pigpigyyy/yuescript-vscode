@@ -11,6 +11,13 @@ const json = do
 	else
 		error "Could not find a JSON-module for YueScript! Please install one."
 
+local formatter
+
+const rewriteLua = (code) ->
+	-- Based on the CLI's -r formatter from ippclub/YueScript at 6a6fa26d.
+	formatter ??= dofile arg[1]
+	assert formatter.FormatYue code
+
 
 const send = (data, raw = false) ->
 	if not raw
@@ -70,7 +77,11 @@ while true
 		oldPath = package.path
 		package.path ..= ";" .. path
 
+		rewrite = input.isSaveEvent == true and config.build == true and config.rewrite == true
+		reserveLineNumber = config.reserve_line_number
+		config.reserve_line_number = true if rewrite
 		success, messages, transpiledLuaCode = yue.check input.sourceCode, config
+		config.reserve_line_number = reserveLineNumber
 		realtimeTranspiledLuaCode = nil
 		if input.realtimeLua
 			_, _, realtimeTranspiledLuaCode = yue.check input.sourceCode, config, true
@@ -84,9 +95,18 @@ while true
 		else
 			messages = []
 
+		if rewrite and success and transpiledLuaCode ~= nil
+			if rewritten, result := pcall rewriteLua, transpiledLuaCode
+				transpiledLuaCode = result
+			else
+				success = false
+				transpiledLuaCode = nil
+				messages[] = {"error", "Failed to rewrite Lua output: #{result}", 1, 1}
+
 		send input.isSaveEvent and {
 			:success
 			:transpiledLuaCode
+			:rewrite
 			:realtimeTranspiledLuaCode
 			include: config.include
 			:configDir
